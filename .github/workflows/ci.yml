@@ -123,39 +123,7 @@ jobs:
           tar -czvf dist/pounce-linux-x64.tar.gz -C build/linux/x64/release/bundle .
 
       - name: Build AppImage
-        run: |
-          curl -L -o appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x appimagetool
-
-          mkdir -p AppDir/usr/bin AppDir/usr/lib AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/256x256/apps
-          cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
-          cp docs/assets/icon.png AppDir/usr/share/icons/hicolor/256x256/apps/pounce.png
-          cp docs/assets/icon.png AppDir/pounce.png
-
-          cat << 'EOF' > AppDir/pounce.desktop
-[Desktop Entry]
-Name=Pounce
-Exec=pounce
-Icon=pounce
-Type=Application
-Categories=AudioVideo;Audio;Player;
-Terminal=false
-StartupWMClass=dev.kittyfork.kittyfork
-EOF
-          cp AppDir/pounce.desktop AppDir/usr/share/applications/
-
-          cat << 'EOF' > AppDir/AppRun
-#!/bin/sh
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
-export PATH="${HERE}/usr/bin:${PATH}"
-export LD_LIBRARY_PATH="${HERE}/usr/bin/lib:${HERE}/usr/lib:${LD_LIBRARY_PATH}"
-cd "${HERE}/usr/bin"
-exec "${HERE}/usr/bin/pounce" "$@"
-EOF
-          chmod +x AppDir/AppRun
-
-          ARCH=x86_64 ./appimagetool --appimage-extract-and-run AppDir dist/pounce-linux-x86_64.AppImage
+        run: bash tool/package_appimage.sh
 
       - uses: actions/upload-artifact@v4
         with:
