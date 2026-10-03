@@ -1,0 +1,26 @@
+name: native_player
+description: "Native playback (Media3 / AVPlayer) for Pounce."
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.4
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.kittyfork.native_player
+        pluginClass: NativePlayerPlugin
+      ios:
+        pluginClass: NativePlayerPlugin
+        sharedDarwinSource: true
+      macos:
+        pluginClass: NativePlayerPlugin
+        sharedDarwinSource: true

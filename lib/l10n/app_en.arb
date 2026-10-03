@@ -1,0 +1,482 @@
+{
+  "@@locale": "en",
+  "appName": "Pounce",
+  "navHome": "Home",
+  "navSearch": "Search",
+  "navLibrary": "Library",
+  "navSettings": "Settings",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "homeContinue": "Jump back in",
+  "homeBecauseYouPlayed": "Because you played {title}",
+  "@homeBecauseYouPlayed": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorLoading": "Couldn't load content",
+  "retry": "Retry",
+  "noResults": "No results",
+  "searchHint": "Songs, artists, playlists or links",
+  "searchRecent": "Recent searches",
+  "searchEmptyTitle": "Find something to play",
+  "tabTracks": "Tracks",
+  "tabPlaylists": "Playlists",
+  "tabAlbums": "Albums",
+  "tabArtists": "Artists",
+  "likedTracks": "Liked tracks",
+  "history": "History",
+  "playlists": "Playlists",
+  "newPlaylist": "New playlist",
+  "playlistName": "Name",
+  "create": "Create",
+  "cancel": "Cancel",
+  "rename": "Rename",
+  "delete": "Delete",
+  "deletePlaylistConfirm": "Delete \"{name}\"?",
+  "@deletePlaylistConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "clearHistory": "Clear history",
+  "emptyLikes": "Tracks you like appear here",
+  "emptyHistory": "Nothing played yet",
+  "emptyPlaylist": "This playlist is empty",
+  "emptyPlaylists": "Create playlists and add tracks via the ⋮ menu.",
+  "tracksCount": "{count, plural, =0{No tracks} =1{1 track} other{{count} tracks}}",
+  "@tracksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "followers": "{count} followers",
+  "@followers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "playNext": "Play next",
+  "addToQueue": "Add to queue",
+  "addToPlaylist": "Add to playlist",
+  "removeFromPlaylist": "Remove from playlist",
+  "like": "Like",
+  "unlike": "Remove from likes",
+  "goToArtist": "Go to artist",
+  "copyLink": "Copy link",
+  "linkCopied": "Link copied",
+  "addedToQueue": "Added to queue",
+  "addedToPlaylist": "Added to {name}",
+  "@addedToPlaylist": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "alreadyInPlaylist": "Already in {name}",
+  "@alreadyInPlaylist": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "nowPlaying": "Now playing",
+  "queue": "Queue",
+  "lyrics": "Lyrics",
+  "noLyrics": "No lyrics found",
+  "lyricsSource": "Lyrics: {source}",
+  "@lyricsSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepTimer": "Sleep timer",
+  "sleepOff": "Turn off timer",
+  "sleepIn": "Stops in {minutes} min",
+  "@sleepIn": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutes": "{count} min",
+  "@minutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "speed": "Speed",
+  "shuffle": "Shuffle",
+  "repeatOff": "Repeat off",
+  "repeatAll": "Repeat all",
+  "repeatOne": "Repeat one",
+  "play": "Play",
+  "pause": "Pause",
+  "next": "Next",
+  "previous": "Previous",
+  "popularTracks": "Popular",
+  "playbackError": "Can't play this track",
+  "preview": "Preview",
+  "protected": "Protected",
+  "protectedHint": "This track is DRM-protected and can’t be played in Pounce yet – even when signed in",
+  "protectedPlayable": "DRM-protected – decrypted by your browser’s DRM module",
+  "account": "Account",
+  "login": "Sign in with SoundCloud",
+  "loginSubtitle": "Sync likes, playlists and your stream",
+  "signup": "Create account",
+  "loginPrivacy": "You sign in on SoundCloud’s own page. Pounce never sees your password.",
+  "loginWaiting": "Finish signing in in the browser…",
+  "loginReopen": "Open again",
+  "loginPasteLabel": "Paste redirect link",
+  "loginPasteHint": "After signing in, SoundCloud redirects to a link starting with sc://auth?code=… If the app doesn’t pick it up automatically, copy it here.",
+  "loginPasteHintWeb": "A new tab opens. After signing in it shows an address like soundcloud.com/signin/callback?code=… Copy that address and paste it here.",
+  "loginConfirm": "Continue",
+  "loginFailed": "Sign-in failed",
+  "loggedInAs": "Signed in as {name}",
+  "@loggedInAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "logout": "Sign out",
+  "logoutConfirm": "Sign out? Your likes stay on this device.",
+  "homeStream": "Your stream",
+  "scPlaylists": "Your SoundCloud playlists",
+  "transferLikes": "{count, plural, =1{Transfer 1 local like to your account?} other{Transfer {count} local likes to your account?}}",
+  "@transferLikes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "transfer": "Transfer",
+  "notNow": "Not now",
+  "loudTitle": "Loudness mode",
+  "loudDesc": "Evens out loud and quiet tracks (ITU-R BS.1770) with a built-in limiter against clipping.",
+  "loudOff": "Off",
+  "loudQuiet": "Quiet",
+  "loudNormal": "Normal",
+  "loudLoud": "Loud",
+  "loudUnsupported": "Not available on this platform yet",
+  "signal": "Signal",
+  "sigSource": "Source",
+  "sigLoudness": "Source loudness",
+  "sigMomentary": "Momentary",
+  "sigGain": "Gain",
+  "sigLimiter": "Limiter",
+  "sigOutput": "Output",
+  "sigAnalysis": "Analysis",
+  "sigLive": "Live FFT",
+  "sigEnvelope": "Waveform envelope",
+  "sigClip": "Clipping",
+  "sigClean": "Clean",
+  "volume": "Volume",
+  "mute": "Mute",
+  "inspector": "Inspector",
+  "expandPlayer": "Focus view",
+  "expandRail": "Expand sidebar",
+  "collapseRail": "Collapse sidebar",
+  "accentAmber": "Electric Amber",
+  "accentCyan": "Cryo Cyan",
+  "accentCover": "From artwork",
+  "beatBg": "Background in time with the beat",
+  "beatBgDesc": "Colors pulse and change with every detected beat",
+  "beatLight": "Light",
+  "beatMedium": "Medium",
+  "beatStrong": "Strong",
+  "appearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "pureBlack": "Pure black",
+  "pureBlackDesc": "Black background in dark mode (OLED)",
+  "dynamicColor": "System colors",
+  "dynamicColorDesc": "Use your system's accent color",
+  "artworkColors": "Colors from artwork",
+  "artworkColorsDesc": "The player adapts its colors to the cover",
+  "accentColor": "Accent color",
+  "language": "Language",
+  "languageSystem": "System default",
+  "playback": "Playback",
+  "quality": "Stream quality",
+  "qualityHigh": "High",
+  "qualitySaver": "Data saver",
+  "autoplay": "Autoplay",
+  "autoplayDesc": "Keep playing similar tracks when the queue ends",
+  "network": "Network",
+  "proxy": "CORS proxy",
+  "proxyDesc": "Required in the browser, because SoundCloud only allows its own website.",
+  "about": "About",
+  "aboutText": "Inspired by KittyTune by alan7383 and written from scratch in Flutter. Free software under GPL-3.0.",
+  "licenses": "Open-source licenses",
+  "previewBadge": "Preview (30s)",
+  "previewHint": "SoundCloud only offers a 30-second preview of this track.",
+  "openInYtMusic": "Open in YouTube Music",
+  "skipPreviews": "Skip previews",
+  "skipPreviewsDesc": "Skip 30-second previews when the queue moves on",
+  "fastStart": "Fast start",
+  "fastStartDesc": "Tapped tracks start as MP3 128 kbit/s – faster, slightly lower quality. Pre-buffered tracks keep the chosen quality.",
+  "navDj": "DJ",
+  "djHeadline": "Your DJ",
+  "djIntro": "Pick what you want to hear – Pounce mixes your likes and similar tracks, with transitions matched on key, tempo and drop.",
+  "djCategories": "Categories",
+  "djBlend": "Blend",
+  "djFavorites": "Favorites",
+  "djDiscover": "Discover",
+  "djLookahead": "Analyse ahead",
+  "djLookaheadDesc": "{count} songs ahead (~{mb} MB)",
+  "@djLookaheadDesc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "djStart": "Start mix",
+  "djBuilding": "Building your mix…",
+  "djNothing": "Nothing suitable found – try another category.",
+  "djPickCategory": "Pick at least one category",
+  "djAnalyzed": "{done} of {total} songs analysed",
+  "@djAnalyzed": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "djMixStarted": "Mix with {count} songs started",
+  "@djMixStarted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "djStop": "Stop DJ",
+  "djSkip": "Skip (mixes over and learns)",
+  "srcAll": "All",
+  "srcRadio": "Web radio",
+  "radioSection": "Live radio · Stations",
+  "radioFavorites": "Favourite stations",
+  "radioTop": "Most listened",
+  "radioAll": "All stations",
+  "radioSource": "Web radio",
+  "radioSourceDesc": "Tens of thousands of stations from radio-browser.info. Off: no requests at all.",
+  "live": "LIVE",
+  "updates": "Updates",
+  "updatesAuto": "Check for updates automatically",
+  "updatesAutoDesc": "At most once a day, one request to GitHub without any device ID. Never downloads by itself.",
+  "updatesCheck": "Check now",
+  "updatesNone": "Pounce is up to date",
+  "updatesUnavailable": "Updates are not available in this build",
+  "updateTitle": "Update to {version}",
+  "@updateTitle": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateDownload": "Download & install ({mb} MB)",
+  "@updateDownload": {
+    "placeholders": {
+      "mb": {
+        "type": "String"
+      }
+    }
+  },
+  "updateViaPlay": "Update via Google Play",
+  "updateLater": "Later",
+  "updateReleasePage": "Release page",
+  "updateChecksumFailed": "Checksum mismatch – the download was discarded.",
+  "updateNeedsPermission": "Allow Pounce to install apps, then tap again.",
+  "updateFailed": "Update failed – please try again later.",
+  "beta": "Beta",
+  "betaNote": "Pounce is in beta. Things may change or break – feedback on GitHub is very welcome.",
+  "setupWelcome": "Welcome to Pounce",
+  "setupTagline": "Fast music from SoundCloud and web radio – with a DJ that mixes for you.",
+  "setupStart": "Let's go",
+  "setupNext": "Next",
+  "setupBack": "Back",
+  "setupSkip": "Skip setup",
+  "setupDone": "Start listening",
+  "setupSourcesTitle": "Where should music come from?",
+  "setupSoundcloudDesc": "Millions of tracks, mixes and remixes. Always on.",
+  "setupRadioDesc": "30,000+ stations via radio-browser.info. Off = no requests at all.",
+  "setupAccountTitle": "Bring your likes along?",
+  "setupAccountDesc": "Optional: sign in to SoundCloud to import likes and playlists. Pounce works fine without an account.",
+  "setupSignIn": "Sign in to SoundCloud",
+  "setupDjTitle": "What does your DJ play?",
+  "setupDjDesc": "Pick a few styles. You can change them any time in the DJ tab.",
+  "setupPrivacyTitle": "Your privacy",
+  "setupPrivacyDesc": "No tracking, no ads, no device IDs. Everything below is off unless you turn it on.",
+  "setupRecognition": "Song recognition (Echolot)",
+  "setupRecognitionDesc": "Coming in a later beta. Would send only anonymous audio fingerprints – never recordings – to the Echolot server.",
+  "setupAgain": "Run setup again",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "syncLast": "Synced ({count} new events)",
+  "@syncLast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncTitle": "Device sync",
+  "syncBackground": "Background sync",
+  "syncServerActive": "Server active (port {port}) · peer-to-peer on your local network",
+  "@syncServerActive": {
+    "placeholders": {
+      "port": {
+        "type": "int"
+      }
+    }
+  },
+  "syncDisabled": "Off",
+  "syncShowCode": "Show pairing code",
+  "syncShowCodeDesc": "Code for your other devices",
+  "syncCodeTitle": "Pairing code",
+  "syncCodeHint": "Enter this code on your other device:",
+  "syncCodeCopied": "Pairing code copied",
+  "copy": "Copy",
+  "done": "Done",
+  "syncPair": "Pair a device",
+  "syncNoPeers": "No other device connected",
+  "syncPeers": "{count, plural, =1{1 device paired} other{{count} devices paired}}",
+  "@syncPeers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncPasteCode": "Paste pairing code",
+  "syncPairAction": "Pair",
+  "syncPaired": "Paired!",
+  "syncPairFailed": "Pairing failed",
+  "syncNow": "Sync now",
+  "syncNever": "Not synced yet",
+  "syncDone": "Synced",
+  "engineTitle": "Audio engine & performance",
+  "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
+  "@engineRustDesc": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "engineUnavailable": "Not available – estimate from the waveform only",
+  "djFlowActiveDesc": "Automatic phrase & key matching",
+  "djTapToActivate": "Tap to activate",
+  "djAnalyzing": "Analysing audio…",
+  "djNoKey": "No key detected",
+  "djKeyUncertain": "uncertain",
+  "djBar": "Bar {bar}/4",
+  "@djBar": {
+    "placeholders": {
+      "bar": {
+        "type": "int"
+      }
+    }
+  },
+  "djPhraseBeat": "Phrase beat {beat}/16",
+  "@djPhraseBeat": {
+    "placeholders": {
+      "beat": {
+        "type": "int"
+      }
+    }
+  },
+  "statGrid": "Grid",
+  "statKey": "Key",
+  "statLoudness": "Loudness",
+  "statEnergy": "Energy",
+  "statSource": "Source",
+  "srcAudio": "Audio",
+  "srcWaveform": "Waveform",
+  "srcTitle": "Title",
+  "djEnergiesLive": "Audio energies (live)",
+  "djTransitionIn": "Transition in {beats} beats",
+  "@djTransitionIn": {
+    "placeholders": {
+      "beats": {
+        "type": "int"
+      }
+    }
+  },
+  "djEnergyMode": "Harmonic energy mode",
+  "djModeBuildUp": "Build up",
+  "djModeHold": "Hold",
+  "djModeWindDown": "Cool down",
+  "djHarmonic": "Harmonic",
+  "djNextBest": "Next track (best match)",
+  "djMatch": "{pct}% match",
+  "@djMatch": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "djMixNow": "Mix now",
+  "bandBass": "BASS (kick & sub)",
+  "bandMid": "MID (vocals & melody)",
+  "bandHigh": "HIGH (hi-hats & air)",
+  "planDrop": "Drop {time}",
+  "@planDrop": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "planNoDrop": "no drop",
+  "planSearching": "looking for the drop…",
+  "planText": "Entry {entry} · {drop} · {fade} s fade",
+  "@planText": {
+    "placeholders": {
+      "entry": {
+        "type": "String"
+      },
+      "drop": {
+        "type": "String"
+      },
+      "fade": {
+        "type": "String"
+      }
+    }
+  }
+}

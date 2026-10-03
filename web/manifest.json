@@ -1,0 +1,41 @@
+{
+    "id": "./",
+    "name": "Pounce",
+    "short_name": "Pounce",
+    "start_url": ".",
+    "scope": ".",
+    "display": "standalone",
+    "background_color": "#060709",
+    "theme_color": "#060709",
+    "description": "Fast SoundCloud & web radio player with a DJ mode and synced lyrics.",
+    "orientation": "any",
+    "categories": [
+        "music",
+        "entertainment"
+    ],
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

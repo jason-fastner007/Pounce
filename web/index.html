@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Pounce – fast SoundCloud & web radio player with a DJ mode and synced lyrics.">
+  <meta name="theme-color" content="#060709">
+  <meta name="color-scheme" content="dark">
+
+  <!-- iOS / PWA -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pounce">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Share preview -->
+  <meta property="og:title" content="Pounce">
+  <meta property="og:description" content="Fast SoundCloud & web radio player with a DJ mode and synced lyrics.">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:type" content="website">
+
+  <!-- Open connections early: saves one TLS handshake per host on a phone during the first load. -->
+  <link rel="preconnect" href="https://api-v2.soundcloud.com" crossorigin>
+  <link rel="preconnect" href="https://i1.sndcdn.com" crossorigin>
+  <link rel="preconnect" href="https://cf-media.sndcdn.com" crossorigin>
+  <link rel="dns-prefetch" href="https://wave.sndcdn.com">
+  <link rel="dns-prefetch" href="https://lrclib.net">
+  <!-- Otherwise Flutter only loads the fonts once main.dart.wasm is ready – before the first frame.
+       Load them in parallel up front; as="fetch" + crossorigin matches the engine's fetch() exactly (no double download). -->
+  <link rel="preload" href="assets/FontManifest.json" as="fetch" crossorigin>
+  <link rel="preload" href="assets/assets/fonts/Inter.ttf" as="fetch" crossorigin>
+  <link rel="preload" href="assets/assets/fonts/JetBrainsMono.ttf" as="fetch" crossorigin>
+  <link rel="preload" href="assets/fonts/MaterialIcons-Regular.otf" as="fetch" crossorigin>
+  <!-- Mandatory fallback of the Skwasm engine (also awaited before the first frame).
+       The URL is hard-coded in the engine (font_collection.dart); re-check after Flutter updates. -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me4GZLCzYlKw.woff2" as="fetch" crossorigin>
+
+  <title>Pounce</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #060709; overscroll-behavior: none; }
+    /* Boot screen until Flutter paints the first frame (no white flash on OLED).
+       Only transform/opacity are animated: runs on the compositor, even while the engine loads. */
+    #boot {
+      position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; align-content: center; gap: 22px;
+      background: radial-gradient(60vmax 60vmax at 50% 58%, rgba(255, 122, 0, .10), transparent 70%), #060709;
+      transition: opacity .35s ease;
+      font: 600 11px/1 ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      letter-spacing: .32em; color: rgba(233, 235, 239, .62);
+    }
+    #boot.out { opacity: 0; pointer-events: none; }
+    #boot .eq { display: flex; align-items: center; gap: 7px; height: 64px; }
+    #boot .eq i {
+      display: block; width: 9px; height: 64px; border-radius: 5px;
+      background: linear-gradient(to top, #ff5a00, #ffb347);
+      transform: scaleY(var(--s)); animation: eq 1.1s ease-in-out infinite alternate;
+    }
+    #boot .eq i:nth-child(1) { --s: .3;  animation-delay: -.2s; }
+    #boot .eq i:nth-child(2) { --s: .72; animation-delay: -.7s; }
+    #boot .eq i:nth-child(3) { --s: 1;   animation-delay: -.4s; }
+    #boot .eq i:nth-child(4) { --s: .55; animation-delay: -.9s; }
+    #boot .eq i:nth-child(5) { --s: .2;  animation-delay: -.1s; }
+    @keyframes eq { from { transform: scaleY(var(--s)); } to { transform: scaleY(calc(1.15 - var(--s) * .8)); } }
+    #boot .bar { width: 120px; height: 2px; border-radius: 1px; overflow: hidden; background: rgba(255, 255, 255, .08); }
+    #boot .bar::after {
+      content: ""; display: block; width: 40%; height: 100%; border-radius: 1px; background: #ff7a00;
+      animation: run 1.2s cubic-bezier(.45, 0, .2, 1) infinite;
+    }
+    @keyframes run { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+    @media (prefers-reduced-motion: reduce) { #boot .eq i, #boot .bar::after { animation: none; } }
+  </style>
+</head>
+<body>
+  <div id="boot" role="progressbar" aria-label="Pounce lädt">
+    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <span>POUNCE</span>
+    <div class="bar" aria-hidden="true"></div>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      // Startbild ausblenden, sobald Flutter sein erstes Frame hat.
+      var b = document.getElementById('boot');
+      if (b) {
+        b.classList.add('out');
+        setTimeout(function () { b.remove(); }, 400);
+      }
+      // Preload the analysis engine only now, when idle: it no longer competes with
+      // main.dart.wasm, the renderer and fonts for bandwidth at startup.
+      var idle = window.requestIdleCallback || function (f) { setTimeout(f, 1500); };
+      idle(function () {
+        ['analysis_worker.js', 'deckengine.wasm'].forEach(function (href) {
+          var l = document.createElement('link');
+          l.rel = 'prefetch';
+          l.href = href;
+          document.head.appendChild(l);
+        });
+      });
+    }, { once: true });
+  </script>
+  <!-- Bootstrap inlined instead of fetched: saves one network round trip before the engine starts. -->
+  <script>{{flutter_bootstrap_js}}</script>
+</body>
+</html>
