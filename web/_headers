@@ -1,0 +1,8 @@
+# HTTP-Header für Cloudflare Pages / Netlify (wird mit nach build/web kopiert).
+# Cross-Origin-Isolation schaltet Skwasm auf mehrere Threads (Rendern abseits des UI-Threads):
+# im Test während der Wiedergabe 60 statt ~22 FPS.
+# "credentialless" statt "require-corp": Cover, Audio, hls.js und Google-Schriften laden ohne CORP-Header weiter.
+# Safari kennt "credentialless" nicht und fällt still auf den Single-Thread-Modus zurück.
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless

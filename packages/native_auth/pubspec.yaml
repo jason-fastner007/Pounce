@@ -1,0 +1,26 @@
+name: native_auth
+description: "System-level login (Custom Tabs / ASWebAuthenticationSession) for Pounce."
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.4
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.kittyfork.native_auth
+        pluginClass: NativeAuthPlugin
+      ios:
+        pluginClass: NativeAuthPlugin
+        sharedDarwinSource: true
+      macos:
+        pluginClass: NativeAuthPlugin
+        sharedDarwinSource: true
