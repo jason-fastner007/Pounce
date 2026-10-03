@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.2.0-beta.1+8
 
 environment:
-  sdk: ^3.13.4
+  sdk: '>=3.11.0 <4.0.0'
 
 dependencies:
   ffi: ^2.2.0
@@ -13,7 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   http: ^1.6.0
-  intl: ^0.20.3
+  intl: ^0.20.2
   path_provider: ^2.1.6
   web: ^1.1.1
   native_player:
@@ -21,10 +21,10 @@ dependencies:
   native_auth:
     path: packages/native_auth
 
-  material_ui: ^1.5.0
-  cupertino_ui: ^1.1.1
+  material_ui: any
+  cupertino_ui: any
   crypto: ^3.0.7
-  sqlite3: ^3.7.0
+  sqlite3: ^3.5.2
   qr: ^4.0.0
   url_launcher: ^6.3.3
 dev_dependencies:
