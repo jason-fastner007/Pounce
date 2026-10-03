@@ -11,8 +11,11 @@ import 'release_provider.dart';
 export 'models/update_info.dart';
 export 'release_provider.dart';
 
-/// GitHub repository of the releases ("owner/repo"). Empty = updater off (no repo yet).
-const githubRepo = String.fromEnvironment('POUNCE_GITHUB_REPO');
+/// GitHub repository of the releases ("owner/repo").
+const githubRepo = String.fromEnvironment(
+  'POUNCE_GITHUB_REPO',
+  defaultValue: 'jason-fastner007/Pounce',
+);
 
 const _channel = MethodChannel('pounce/updates');
 

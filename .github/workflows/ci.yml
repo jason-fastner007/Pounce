@@ -48,8 +48,9 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
-          cache: true
-      - run: flutter build apk --release --flavor github --target-platform android-arm64 --split-per-abi
+      - run: |
+          flutter build apk --release --flavor github --target-platform android-arm64 --split-per-abi \
+            --dart-define=POUNCE_GITHUB_REPO=${{ github.repository }}
       - uses: actions/upload-artifact@v4
         with:
           name: pounce-apk-ci
