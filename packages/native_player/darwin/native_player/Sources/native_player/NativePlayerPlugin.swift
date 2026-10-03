@@ -107,7 +107,9 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     case "volume": player.volume = (call.arguments as? NSNumber)?.floatValue ?? 1
     case "speed":
       let r = (call.arguments as? NSNumber)?.floatValue ?? 1
-      player.defaultRate = r
+      if #available(iOS 16.0, macOS 13.0, *) {
+        player.defaultRate = r
+      }
       if player.rate > 0 { player.rate = r }
     default:
       return result(FlutterMethodNotImplemented)
