@@ -49,10 +49,51 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-      # No signing secrets on pull requests: Gradle falls back to the debug key.
       - run: flutter build apk --release --flavor github --target-platform android-arm64 --split-per-abi
       - uses: actions/upload-artifact@v4
         with:
           name: pounce-apk-ci
           path: build/app/outputs/flutter-apk/*-github-release.apk
+          retention-days: 7
+
+  ios:
+    name: Build iOS (⚠️ Untested)
+    runs-on: macos-latest
+    needs: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Display iOS untested warning
+        run: |
+          echo "::warning title=iOS Untested::This app has NOT been tested on real iOS devices! Proceed with caution."
+          echo "### ⚠️ Warning: Untested iOS Build" >> $GITHUB_STEP_SUMMARY
+          echo "Pounce is developed and tested primarily for Android." >> $GITHUB_STEP_SUMMARY
+          echo "This iOS build compiles from the same codebase, but is **NOT actively tested on iOS devices**." >> $GITHUB_STEP_SUMMARY
+          echo "Audio playback, background services, or UI components may have issues." >> $GITHUB_STEP_SUMMARY
+      - run: flutter pub get
+      - name: Build iOS (unsigned)
+        run: flutter build ios --release --no-codesign
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p dist/Payload
+          cp -r build/ios/iphoneos/Runner.app dist/Payload/
+          cat << 'EOF' > dist/README-UNTESTED-IOS.txt
+          ⚠️ WARNING: UNTESTED iOS BUILD ⚠️
+
+          This build of Pounce for iOS is experimental and has NOT been tested on physical iOS devices.
+          Pounce is primarily developed and tested on Android.
+          Some features (background audio, lock screen controls, DJ transitions, etc.) may be incomplete or unstable.
+
+          Please report issues or your testing experiences at:
+          https://github.com/jason-fastner007/Pounce/issues
+          EOF
+          (cd dist && zip -r -y pounce-ios-untested.ipa Payload README-UNTESTED-IOS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pounce-ios-untested
+          path: dist/pounce-ios-untested.ipa
           retention-days: 7

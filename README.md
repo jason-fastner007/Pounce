@@ -79,6 +79,9 @@ Pounce currently supports **arm64 Android devices** (practically every phone fro
 Builds for iOS, web, Linux, Windows and macOS compile from the same code base but are less tested –
 see [Build from source](#-build-from-source).
 
+> [!WARNING]
+> **iOS is untested:** While Pounce can be compiled for iOS (using AVPlayer for audio), it has **not been tested on real iOS devices**. Experimental builds are generated in CI for testing purposes, but unexpected bugs or audio playback issues may occur. Feedback and reports from real iOS devices are welcome!
+
 ## ✦ Features
 
 <details open>
