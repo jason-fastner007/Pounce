@@ -1,4 +1,4 @@
-package dev.kittyfork.kittyfork
+package dev.pounce.pounce
 
 import android.app.Activity
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory

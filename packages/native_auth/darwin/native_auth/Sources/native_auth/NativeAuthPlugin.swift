@@ -21,8 +21,8 @@ public class NativeAuthPlugin: NSObject, FlutterPlugin, FlutterStreamHandler,
     #endif
     let instance = NativeAuthPlugin()
     registrar.addMethodCallDelegate(
-      instance, channel: FlutterMethodChannel(name: "kittyfork/auth", binaryMessenger: messenger))
-    FlutterEventChannel(name: "kittyfork/auth/links", binaryMessenger: messenger)
+      instance, channel: FlutterMethodChannel(name: "pounce/auth", binaryMessenger: messenger))
+    FlutterEventChannel(name: "pounce/auth/links", binaryMessenger: messenger)
       .setStreamHandler(instance)
   }
 

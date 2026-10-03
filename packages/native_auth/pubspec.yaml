@@ -16,7 +16,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.kittyfork.native_auth
+        package: dev.pounce.native_auth
         pluginClass: NativeAuthPlugin
       ios:
         pluginClass: NativeAuthPlugin

@@ -1,4 +1,4 @@
-package dev.kittyfork.native_player
+package dev.pounce.native_player
 
 import androidx.annotation.OptIn
 import androidx.media3.common.C

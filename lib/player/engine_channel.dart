@@ -13,9 +13,9 @@ class ChannelEngine extends AudioEngine {
     _sub = _events.receiveBroadcastStream().listen(_onEvent);
   }
 
-  static const _ch = MethodChannel('kittyfork/player');
-  static const _events = EventChannel('kittyfork/player/events');
-  static const _featureEvents = EventChannel('kittyfork/player/features');
+  static const _ch = MethodChannel('pounce/player');
+  static const _events = EventChannel('pounce/player/events');
+  static const _featureEvents = EventChannel('pounce/player/features');
 
   final _states = StreamController<EngineState>.broadcast();
   final _commands = StreamController<RemoteCommand>.broadcast();

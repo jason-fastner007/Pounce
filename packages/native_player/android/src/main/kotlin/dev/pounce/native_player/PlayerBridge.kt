@@ -1,4 +1,4 @@
-package dev.kittyfork.native_player
+package dev.pounce.native_player
 
 import android.content.ComponentName
 import android.content.Context
@@ -20,7 +20,7 @@ import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-/** Connects Flutter (kittyfork/player) with the PlaybackService via MediaController and direct deck faders. */
+/** Connects Flutter (pounce/player) with the PlaybackService via MediaController and direct deck faders. */
 class PlayerBridge(private val context: Context, messenger: BinaryMessenger) :
     MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
 
@@ -34,9 +34,9 @@ class PlayerBridge(private val context: Context, messenger: BinaryMessenger) :
     }
 
     private val main = Handler(Looper.getMainLooper())
-    private val methods = MethodChannel(messenger, "kittyfork/player")
-    private val events = EventChannel(messenger, "kittyfork/player/events")
-    private val featureEvents = EventChannel(messenger, "kittyfork/player/features")
+    private val methods = MethodChannel(messenger, "pounce/player")
+    private val events = EventChannel(messenger, "pounce/player/events")
+    private val featureEvents = EventChannel(messenger, "pounce/player/features")
     private var sink: EventChannel.EventSink? = null
     private var featureSink: EventChannel.EventSink? = null
     private var controller: MediaController? = null

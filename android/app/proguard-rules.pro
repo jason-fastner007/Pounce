@@ -5,7 +5,7 @@
 
 # Own plugins: classes are loaded by name from GeneratedPluginRegistrant and by the system
 # (MediaSessionService from the manifest); MethodChannel handlers are named as in the Dart code.
--keep class dev.kittyfork.** { *; }
+-keep class dev.pounce.** { *; }
 
 # package:jni (libdartjni.so) calls Java methods by name via JNI.
 -keep class com.github.dart_lang.jni.** { *; }

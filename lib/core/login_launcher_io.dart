@@ -10,8 +10,8 @@ LoginLauncher createLauncher() => Platform.isLinux || Platform.isWindows ? _Desk
 
 /// Android (Custom Tabs + intent) and iOS/macOS (ASWebAuthenticationSession).
 class _ChannelLauncher implements LoginLauncher {
-  static const _ch = MethodChannel('kittyfork/auth');
-  static const _links = EventChannel('kittyfork/auth/links');
+  static const _ch = MethodChannel('pounce/auth');
+  static const _links = EventChannel('pounce/auth/links');
 
   @override
   late final Stream<String> callbacks = _links.receiveBroadcastStream().cast<String>();

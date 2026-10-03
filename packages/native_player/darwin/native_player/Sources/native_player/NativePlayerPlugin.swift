@@ -28,9 +28,9 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     let messenger = registrar.messenger
     #endif
     let instance = NativePlayerPlugin()
-    let methods = FlutterMethodChannel(name: "kittyfork/player", binaryMessenger: messenger)
+    let methods = FlutterMethodChannel(name: "pounce/player", binaryMessenger: messenger)
     registrar.addMethodCallDelegate(instance, channel: methods)
-    FlutterEventChannel(name: "kittyfork/player/events", binaryMessenger: messenger)
+    FlutterEventChannel(name: "pounce/player/events", binaryMessenger: messenger)
       .setStreamHandler(instance)
     instance.setUp()
   }

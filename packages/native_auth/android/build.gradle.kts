@@ -1,4 +1,4 @@
-group = "dev.kittyfork.native_auth"
+group = "dev.pounce.native_auth"
 version = "1.0-SNAPSHOT"
 
 buildscript {
@@ -26,7 +26,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.kittyfork.native_auth"
+    namespace = "dev.pounce.native_auth"
 
     compileSdk = 36
 

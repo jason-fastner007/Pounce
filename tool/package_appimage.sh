@@ -26,7 +26,7 @@ Icon=pounce
 Type=Application
 Categories=AudioVideo;Audio;Player;
 Terminal=false
-StartupWMClass=dev.kittyfork.kittyfork
+StartupWMClass=dev.pounce.pounce
 EOF
 cp "$APPDIR/pounce.desktop" "$APPDIR/usr/share/applications/"
 

@@ -5,7 +5,7 @@ import 'package:web/web.dart' as web;
 
 import 'db.dart';
 
-const _name = 'kittyfork';
+const _name = 'pounce';
 const _legacyKey = 'kittyfork';
 
 Future<Db> open() async {

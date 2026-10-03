@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = Kittyfork
+PRODUCT_NAME = Pounce
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = dev.kittyfork.kittyfork
+PRODUCT_BUNDLE_IDENTIFIER = dev.pounce.pounce
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 dev.kittyfork. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 dev.pounce. All rights reserved.

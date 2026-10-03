@@ -1,4 +1,4 @@
-group = "dev.kittyfork.native_player"
+group = "dev.pounce.native_player"
 version = "1.0-SNAPSHOT"
 
 buildscript {
@@ -26,7 +26,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.kittyfork.native_player"
+    namespace = "dev.pounce.native_player"
 
     compileSdk = 36
 

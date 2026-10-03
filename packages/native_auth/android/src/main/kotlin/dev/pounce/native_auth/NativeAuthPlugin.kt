@@ -1,4 +1,4 @@
-package dev.kittyfork.native_auth
+package dev.pounce.native_auth
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -26,8 +26,8 @@ class NativeAuthPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodCallH
     private val pending = mutableListOf<String>()
 
     override fun onAttachedToEngine(b: FlutterPlugin.FlutterPluginBinding) {
-        methods = MethodChannel(b.binaryMessenger, "kittyfork/auth").also { it.setMethodCallHandler(this) }
-        events = EventChannel(b.binaryMessenger, "kittyfork/auth/links").also { it.setStreamHandler(this) }
+        methods = MethodChannel(b.binaryMessenger, "pounce/auth").also { it.setMethodCallHandler(this) }
+        events = EventChannel(b.binaryMessenger, "pounce/auth/links").also { it.setStreamHandler(this) }
     }
 
     override fun onDetachedFromEngine(b: FlutterPlugin.FlutterPluginBinding) {

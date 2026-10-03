@@ -1,4 +1,4 @@
-package dev.kittyfork.native_player
+package dev.pounce.native_player
 
 import android.app.PendingIntent
 import android.content.Context

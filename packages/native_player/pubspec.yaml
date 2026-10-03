@@ -16,7 +16,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.kittyfork.native_player
+        package: dev.pounce.native_player
         pluginClass: NativePlayerPlugin
       ios:
         pluginClass: NativePlayerPlugin

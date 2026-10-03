@@ -17,7 +17,7 @@ fun signingValue(prop: String, env: String): String? = keyProps.getProperty(prop
 val releaseStore = signingValue("storeFile", "POUNCE_KEYSTORE")
 
 android {
-    namespace = "dev.kittyfork.kittyfork"
+    namespace = "dev.pounce.pounce"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -27,8 +27,7 @@ android {
     }
 
     defaultConfig {
-        // Kept from the Kittyfork era so data and login survive (decide before the first Play upload!).
-        applicationId = "dev.kittyfork.kittyfork"
+        applicationId = "dev.pounce.pounce"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

@@ -11,7 +11,7 @@ void main() {
   setUp(() async => dir = await Directory.systemTemp.createTemp('kfdb'));
   tearDown(() => dir.delete(recursive: true));
 
-  Db open() => SqliteDb(sql.sqlite3.open('${dir.path}/kittyfork.db'), dir.path);
+  Db open() => SqliteDb(sql.sqlite3.open('${dir.path}/pounce.db'), dir.path);
 
   test('SQLite: write, read, delete, trim oldest rows', () async {
     final db = open();
