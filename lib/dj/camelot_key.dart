@@ -47,6 +47,25 @@ enum CamelotKey {
 
   bool get isMajor => !isMinor;
 
+  /// O(1) map lookup table for [fromCode] to avoid repeated iteration over [values].
+  static final Map<String, CamelotKey> _byCode = {
+    for (final k in values) k.code: k,
+  };
+
+  /// O(1) lookup tables indexed by pitch class (0..11) for [fromPitchClass].
+  static final List<CamelotKey?> _minorByPitchClass = _buildPitchClassLookup(isMinor: true);
+  static final List<CamelotKey?> _majorByPitchClass = _buildPitchClassLookup(isMinor: false);
+
+  static List<CamelotKey?> _buildPitchClassLookup({required bool isMinor}) {
+    final list = List<CamelotKey?>.filled(12, null);
+    for (final k in values) {
+      if (k.isMinor == isMinor) {
+        list[k.pitchClass] = k;
+      }
+    }
+    return list;
+  }
+
   /// Circular difference on the 12-hour Camelot wheel (0..6).
   int wheelDiff(CamelotKey other) {
     final diff = (number - other.number).abs();
@@ -84,19 +103,14 @@ enum CamelotKey {
     };
   }
 
+  /// Fast O(1) lookup by Camelot code (e.g. "8A", "11B").
   static CamelotKey? fromCode(String code) {
-    final clean = code.trim().toUpperCase();
-    for (final k in values) {
-      if (k.code == clean) return k;
-    }
-    return null;
+    return _byCode[code.trim().toUpperCase()];
   }
 
+  /// Fast O(1) lookup by pitch class (0..11) and major/minor flag.
   static CamelotKey? fromPitchClass(int pitchClass, bool isMinor) {
     final pc = (pitchClass % 12 + 12) % 12;
-    for (final k in values) {
-      if (k.pitchClass == pc && k.isMinor == isMinor) return k;
-    }
-    return null;
+    return isMinor ? _minorByPitchClass[pc] : _majorByPitchClass[pc];
   }
 }
