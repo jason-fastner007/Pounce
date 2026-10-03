@@ -14,7 +14,7 @@
   <br>
   <img src="https://img.shields.io/badge/Android-7%2B-fff?style=for-the-badge&labelColor=000&logo=android&logoColor=fff" alt="Android 7+">
   <img src="https://img.shields.io/badge/Flutter-3.47-fff?style=for-the-badge&labelColor=000&logo=flutter&logoColor=fff" alt="Flutter 3.47">
-  <img src="https://img.shields.io/badge/engine-Rust-fff?style=for-the-badge&labelColor=000&logo=rust&logoColor=fff" alt="Rust audio engine">
+  <a href="https://github.com/jason-fastner007/deckengine"><img src="https://img.shields.io/badge/engine-deckengine%20(Rust)-fff?style=for-the-badge&labelColor=000&logo=rust&logoColor=fff" alt="Rust audio engine (deckengine)"></a>
   <img src="https://img.shields.io/badge/tracking-none-fff?style=for-the-badge&labelColor=000" alt="No tracking">
 </p>
 
@@ -56,7 +56,7 @@
 | 🧠 **Learns from skips** | Skip early and that song leaves your mixes. Skips and full listens shift the weights for artist, style, tempo and energy. |
 | 📻 **Web radio built in** | 30,000+ stations from [radio-browser.info](https://www.radio-browser.info), favourites, and live "now playing" titles. One search for everything. |
 | 🔒 **Private by default** | No account needed, no analytics, no ads, no device IDs. Every network feature beyond playback is opt-in. |
-| 🦀 **Rust under the hood** | Beat grid, key (chroma), loudness, cue and drop detection run in a native Rust engine (`deckengine`) via `dart:ffi`. |
+| 🦀 **Rust under the hood** | Beat grid, key (chroma), loudness, cue and drop detection run in a native Rust engine ([`deckengine`](https://github.com/jason-fastner007/deckengine)) via `dart:ffi`. |
 
 ## ✦ Install
 
@@ -239,6 +239,6 @@ Pounce is not affiliated with SoundCloud. All trademarks belong to their owners.
 
 Pounce is licensed under the [GPL-3.0](LICENSE) © Pounce contributors.
 
-The bundled audio-analysis engine [deckengine](https://github.com/jason-fastner007/deckengine) is licensed separately under
+The bundled audio-analysis engine [deckengine](https://github.com/jason-fastner007/deckengine) is maintained in its own repository and licensed separately under
 the AGPL-3.0-or-later (commercial licenses available from its author); GPL-3.0 and AGPL-3.0 code may be combined
 under section 13 of both licenses.
