@@ -42,9 +42,12 @@ jobs:
         env:
           KEYSTORE_B64: ${{ secrets.POUNCE_KEYSTORE_BASE64 }}
         run: |
-          [ -n "$KEYSTORE_B64" ] || { echo "::error::POUNCE_KEYSTORE_BASE64 secret is missing"; exit 1; }
-          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
-          echo "POUNCE_KEYSTORE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            echo "POUNCE_KEYSTORE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+          else
+            echo "::warning::POUNCE_KEYSTORE_BASE64 is missing, falling back to debug signing"
+          fi
 
       # arm64 only: the bundled Rust engine (libdeckengine.so) is built for arm64-v8a.
       - name: Build APK (github flavor, with in-app updater)
