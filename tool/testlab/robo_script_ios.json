@@ -1,0 +1,229 @@
+[
+  {
+    "id": 2000,
+    "description": "Pounce iOS: Gast-Setup, DJ-Mix ~10 min; danach crawlt Robo weiter",
+    "crawlStage": "crawl",
+    "contextDescriptor": {
+      "condition": "app_under_test_shown"
+    },
+    "maxNumberOfRuns": 1,
+    "actions": [
+      {
+        "eventType": "WAIT",
+        "delayTime": 6000,
+        "description": "App startet"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "01_welcome"
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: Willkommen",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Let.s go.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 1500
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: Quellen",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Next.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 1500
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "02_account_guest"
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: Konto - Gastmodus",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Next.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 1500
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: DJ-Kategorie Techno",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Techno.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 800
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: DJ",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Next.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 1500
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Setup: fertig",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Start listening.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 3000
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Benachrichtigungen erlauben",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Allow.*"
+          }
+        ]
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "03_home"
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "Tab DJ",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i)^DJ\\b.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 2000
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "optional": true,
+        "description": "DJ-Mix starten",
+        "elementDescriptors": [
+          {
+            "contentDescriptionRegex": "(?i).*Start mix.*"
+          }
+        ]
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 40000,
+        "description": "Mix bauen + erster Track"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "04_dj_playing"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 1)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_01"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 2)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_02"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 3)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_03"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 4)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_04"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 5)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_05"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 6)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_06"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 7)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_07"
+      },
+      {
+        "eventType": "WAIT",
+        "delayTime": 60000,
+        "description": "Musik laeuft (Minute 8)"
+      },
+      {
+        "eventType": "TAKE_SCREENSHOT",
+        "screenshotName": "05_minute_08"
+      }
+    ]
+  }
+]
