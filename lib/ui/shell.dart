@@ -489,6 +489,8 @@ class _RailItem extends StatelessWidget {
         child: SizedBox(
           height: 44,
           child: Stack(
+            // Expand so the highlight fills the row and lines up with the centred marker.
+            fit: StackFit.expand,
             children: [
               // Active marker: accent bar at the edge
               AnimatedPositionedDirectional(

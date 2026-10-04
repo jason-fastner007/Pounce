@@ -146,7 +146,14 @@ class SpectrumBus extends ChangeNotifier {
         final e = _env[(p * (_env.length - 1)).clamp(0, _env.length - 1).round()];
         if (b == 0) rawBass = e;
         final tilt = 1 - b / bands * .55;
-        final wobble = .55 + .45 * math.sin(t * (2.1 + b * .31) + b * 1.7);
+        // Slow waves across the bands: neighbours move together like a real spectrum
+        // (a large per-band phase step made adjacent bars alternate high/low).
+        final wobble =
+            .6 +
+            .4 *
+                (.5 * math.sin(t * 1.7 + b * .23) +
+                    .3 * math.sin(t * 2.9 - b * .41 + 1.3) +
+                    .2 * math.sin(t * 4.3 + b * .67 + 2.1));
         target = (e * tilt * wobble).clamp(0, 1);
       } else {
         target = 0;
