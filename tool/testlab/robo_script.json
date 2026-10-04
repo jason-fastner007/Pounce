@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1000,
+    "description": "Pounce: Einrichtung als Gast (ohne SoundCloud-Login), DJ-Mix starten, Musik muss laufen",
+    "crawlStage": "crawl",
+    "contextDescriptor": { "condition": "app_under_test_shown" },
+    "maxNumberOfRuns": 1,
+    "actions": [
+      { "eventType": "WAIT", "delayTime": 5000, "description": "App startet" },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "01_welcome" },
+
+      { "eventType": "VIEW_CLICKED", "visionText": "Let's go", "optional": true, "description": "Setup: Willkommen" },
+      { "eventType": "WAIT", "delayTime": 1500 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Next", "optional": true, "description": "Setup: Quellen (Standard)" },
+      { "eventType": "WAIT", "delayTime": 1500 },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "02_account_guest" },
+      { "eventType": "VIEW_CLICKED", "visionText": "Next", "optional": true, "description": "Setup: Konto – NICHT anmelden = Gastmodus" },
+      { "eventType": "WAIT", "delayTime": 1500 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Techno", "optional": true, "description": "Setup: DJ-Kategorie Techno waehlen" },
+      { "eventType": "WAIT", "delayTime": 800 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Next", "optional": true, "description": "Setup: DJ" },
+      { "eventType": "WAIT", "delayTime": 1500 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Start listening", "optional": true, "description": "Setup: Datenschutz -> fertig" },
+      { "eventType": "WAIT", "delayTime": 3000 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Allow", "optional": true, "description": "Benachrichtigungen erlauben (Android 13+)" },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "03_home" },
+
+      { "eventType": "VIEW_CLICKED", "visionText": "Search", "optional": true, "description": "Tab Suche" },
+      { "eventType": "WAIT", "delayTime": 1500 },
+      {
+        "eventType": "ENTER_TEXT",
+        "replacementText": "techno",
+        "optional": true,
+        "elementDescriptors": [{ "className": "android.widget.EditText" }],
+        "description": "Suchbegriff eingeben"
+      },
+      {
+        "eventType": "PRESSED_EDITOR_ACTION",
+        "optional": true,
+        "elementDescriptors": [{ "className": "android.widget.EditText" }],
+        "description": "Suche abschicken"
+      },
+      { "eventType": "WAIT", "delayTime": 6000 },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "04_search" },
+      { "eventType": "DISABLE_KEYBOARD", "optional": true },
+
+      { "eventType": "VIEW_CLICKED", "visionText": "DJ", "description": "Tab DJ" },
+      { "eventType": "WAIT", "delayTime": 2000 },
+      { "eventType": "VIEW_CLICKED", "visionText": "Start mix", "description": "DJ-Mix starten (Techno ist aus dem Setup gewaehlt)" },
+      { "eventType": "WAIT", "delayTime": 40000, "description": "Mix bauen + erster Track spielt" },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "05_dj_playing" },
+      {
+        "eventType": "ADB_SHELL_COMMAND",
+        "command": "dumpsys media_session",
+        "expectedOutputRegex": "(?s).*state=(3|PLAYING).*",
+        "description": "Pruefung: Media-Session meldet PLAYING – es laeuft wirklich Musik"
+      },
+      { "eventType": "WAIT", "delayTime": 30000, "description": "Weiter Musik laufen lassen" },
+      { "eventType": "TAKE_SCREENSHOT", "screenshotName": "06_still_playing" },
+      {
+        "eventType": "ADB_SHELL_COMMAND",
+        "command": "dumpsys media_session",
+        "expectedOutputRegex": "(?s).*state=(3|PLAYING).*",
+        "description": "Pruefung: Musik laeuft nach 70 s immer noch"
+      }
+    ]
+  }
+]
