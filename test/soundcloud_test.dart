@@ -156,6 +156,159 @@ void main() {
       expect(sug, ['suggestion 1', 'suggestion 2']);
     });
 
+    test('me, myLikes, myPlaylists, feed and selections', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/me') {
+          return http.Response(jsonEncode({'id': 50, 'username': 'Me'}), 200);
+        } else if (path == '/users/50/track_likes') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'track': {
+                    'id': 111,
+                    'title': 'Liked Track',
+                    'duration': 120000,
+                    'user': {'id': 1, 'username': 'Artist'},
+                  }
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/50/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 222,
+                  'title': 'My Playlist',
+                  'user': {'id': 1, 'username': 'Artist'},
+                  'tracks': [],
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/50/playlist_likes') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'playlist': {
+                    'id': 223,
+                    'title': 'Liked Playlist',
+                    'user': {'id': 1, 'username': 'Artist'},
+                    'tracks': [],
+                  }
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/stream') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'track': {
+                    'id': 333,
+                    'title': 'Feed Track',
+                    'duration': 150000,
+                    'user': {'id': 1, 'username': 'Artist'},
+                  }
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/mixed-selections') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'title': 'Charts',
+                  'items': {
+                    'collection': [
+                      {
+                        'kind': 'playlist',
+                        'id': 444,
+                        'title': 'Top 50',
+                        'user': {'id': 1, 'username': 'SC'},
+                        'tracks': [],
+                      }
+                    ]
+                  }
+                }
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final userMe = await sc.me();
+      expect(userMe.id, 50);
+      expect(userMe.username, 'Me');
+
+      final likes = await sc.myLikes(50);
+      expect(likes.length, 1);
+      expect(likes.first.title, 'Liked Track');
+
+      final playlists = await sc.myPlaylists(50);
+      expect(playlists.length, 2);
+
+      final feed = await sc.feed();
+      expect(feed.first.title, 'Feed Track');
+
+      final selections = await sc.selections();
+      expect(selections.length, 1);
+      expect(selections.first.title, 'Charts');
+      expect(selections.first.playlists.first.title, 'Top 50');
+    });
+
+    test('progressiveMp3 stream selection', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path == '/transcodings/prog') {
+          return http.Response(jsonEncode({'url': 'https://cdn/audio.mp3'}), 200);
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final track = Track.fromJson({
+        'id': 777,
+        'title': 'Prog Track',
+        'duration': 120000,
+        'user': {'id': 1, 'username': 'Artist'},
+        'track_authorization': 'auth',
+        'media': {
+          'transcodings': [
+            {
+              'url': 'https://api-v2.soundcloud.com/transcodings/prog',
+              'preset': 'mp3_128k',
+              'snipped': false,
+              'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+            }
+          ]
+        }
+      });
+
+      final progUrl = await sc.progressiveMp3(track);
+      expect(progUrl, 'https://cdn/audio.mp3');
+    });
+
     test('tracks handles batching (>50 tracks)', () async {
       store.set('sc.cid', 'testcid123456789012345678901234');
       store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
