@@ -1,7 +1,7 @@
 name: pounce
 description: "Pounce – a fast, open-source SoundCloud & web radio player with a DJ mode. Inspired by KittyTune (GPL-3.0)."
 publish_to: 'none'
-version: 0.2.0-beta.2+9
+version: 0.2.0-beta.3+10
 
 environment:
   sdk: ^3.13.4
