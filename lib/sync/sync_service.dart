@@ -154,8 +154,10 @@ class SyncService extends ChangeNotifier {
       }
     }
 
-    // Pull & push require auth
-    if (auth != pairingSecret && !_peers.any((p) => p.secret == auth)) {
+    // Pull & push require auth (constant-time comparison prevents timing side-channel attacks)
+    final isAuthorized = _constantTimeEquals(auth, pairingSecret) ||
+        _peers.any((p) => _constantTimeEquals(p.secret, auth));
+    if (!isAuthorized) {
       req.response.statusCode = HttpStatus.unauthorized;
       req.response.close();
       return;
@@ -344,6 +346,20 @@ class SyncService extends ChangeNotifier {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     final rand = Random.secure();
     return List.generate(24, (_) => chars[rand.nextInt(chars.length)]).join();
+  }
+
+  /// Secure constant-time string comparison to prevent timing side-channel attacks.
+  static bool _constantTimeEquals(String? a, String? b) {
+    if (a == null || b == null) return a == b;
+    final aBytes = utf8.encode(a);
+    final bBytes = utf8.encode(b);
+
+    var result = aBytes.length ^ bBytes.length;
+    final length = aBytes.length < bBytes.length ? aBytes.length : bBytes.length;
+    for (var i = 0; i < length; i++) {
+      result |= aBytes[i] ^ bBytes[i];
+    }
+    return result == 0;
   }
 
   @override
