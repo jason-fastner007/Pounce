@@ -384,7 +384,7 @@ class _Rail extends StatelessWidget {
                     AnimatedOpacity(
                       opacity: expanded ? 1 : 0,
                       duration: Motion.short,
-                      child: Mono('POUNCE', size: 12, color: Studio.text, weight: 700),
+                      child: const Mono('POUNCE', size: 12, color: Studio.text, weight: 700),
                     ),
                   ],
                 ),

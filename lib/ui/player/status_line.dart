@@ -36,7 +36,7 @@ class StatusLine extends StatelessWidget {
             child: Row(
               children: [
                 if (track.isLive)
-                  _Badge('LIVE', color: Studio.clip)
+                  const _Badge('LIVE', color: Studio.clip)
                 else if (track.isPreview)
                   _Badge(context.l10n.previewBadge.toUpperCase(), color: const Color(0xFFFFB020))
                 else

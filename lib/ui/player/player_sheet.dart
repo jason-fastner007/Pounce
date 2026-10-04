@@ -36,8 +36,6 @@ class PlayerSheetController extends ChangeNotifier {
     final c = _state?._c;
     return c != null && c.value >= 1 && !c.isAnimating;
   }
-
-  void _changed() => notifyListeners();
 }
 
 /// Mini player that expands into the full-screen player by swipe/tap.
@@ -79,7 +77,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
     if (_player.current != null) _enter.value = 1;
     _c.addStatusListener((s) {
       if (s.isCompleted || s.isDismissed) _measureSoon();
-      widget.controller._changed();
+      widget.controller.notifyListeners();
     });
   }
 
@@ -102,7 +100,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
     _measure();
     final spring = SpringDescription.withDampingRatio(mass: 1, stiffness: 420, ratio: .9);
     _c.animateWith(SpringSimulation(spring, _c.value, v, velocity));
-    widget.controller._changed();
+    widget.controller.notifyListeners();
   }
 
   void _measureSoon() => WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
