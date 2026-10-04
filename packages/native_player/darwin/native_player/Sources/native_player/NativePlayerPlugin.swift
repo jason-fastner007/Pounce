@@ -11,8 +11,18 @@ import AVFoundation
 import MediaPlayer
 
 /// AVPlayer + Now Playing / remote commands (lock screen, Control Center, AirPods, Touch Bar).
+///
+/// Crossfade like on Android: the new track starts on a second AVPlayer, both are blended with
+/// an equal-power curve and the new player takes over the observers (it becomes [player]).
 public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
-  private let player = AVPlayer()
+  private var player = NativePlayerPlugin.makePlayer()
+  /// Old deck during a crossfade (silent towards Dart, stopped at the end).
+  private var fading: AVPlayer?
+  private var fadeTimer: Timer?
+  private var tempoTimer: Timer?
+  private var volume: Float = 1
+  /// Speed chosen by the user; DJ tempo matching deviates from it only temporarily.
+  private var masterRate: Float = 1
   private var sink: FlutterEventSink?
   private var timeObserver: Any?
   private var observations: [NSKeyValueObservation] = []
@@ -42,15 +52,7 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
       self, selector: #selector(onInterruption(_:)),
       name: AVAudioSession.interruptionNotification, object: nil)
     #endif
-    player.automaticallyWaitsToMinimizeStalling = true
-
-    timeObserver = player.addPeriodicTimeObserver(
-      forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: .main
-    ) { [weak self] _ in self?.emit() }
-
-    observations.append(player.observe(\.timeControlStatus, options: [.new]) { [weak self] _, _ in
-      DispatchQueue.main.async { self?.emit(); self?.updateNowPlayingRate() }
-    })
+    attach(player)
 
     NotificationCenter.default.addObserver(
       self, selector: #selector(onEnd(_:)),
@@ -73,6 +75,30 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     }
   }
 
+  private static func makePlayer() -> AVPlayer {
+    let p = AVPlayer()
+    p.automaticallyWaitsToMinimizeStalling = true
+    return p
+  }
+
+  /// Position/status observers on the player that reports to Dart.
+  private func attach(_ p: AVPlayer) {
+    timeObserver = p.addPeriodicTimeObserver(
+      forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: .main
+    ) { [weak self] _ in self?.emit() }
+
+    observations = [p.observe(\.timeControlStatus, options: [.new]) { [weak self] _, _ in
+      DispatchQueue.main.async { self?.emit(); self?.updateNowPlayingRate() }
+    }]
+  }
+
+  private func detach(_ p: AVPlayer) {
+    if let o = timeObserver { p.removeTimeObserver(o) }
+    timeObserver = nil
+    observations.forEach { $0.invalidate() }
+    observations = []
+  }
+
   // MARK: Channels
 
   public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
@@ -93,20 +119,36 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
             let s = a["url"] as? String, let url = URL(string: s) else {
         return result(FlutterError(code: "args", message: "url fehlt", details: nil))
       }
+      finishFade()
+      resetTempo()
       load(url: url, args: a)
+    case "crossfade":
+      guard let a = call.arguments as? [String: Any],
+            let s = a["url"] as? String, let url = URL(string: s) else {
+        return result(FlutterError(code: "args", message: "url fehlt", details: nil))
+      }
+      crossfade(url: url, args: a)
     case "play":
       activateSession()
       if ended { player.seek(to: .zero); ended = false }
       player.play()
-    case "pause": player.pause()
+    case "pause":
+      finishFade()
+      player.pause()
     case "seek": seek(ms: (call.arguments as? NSNumber)?.intValue ?? 0)
     case "stop":
+      finishFade()
       player.pause()
       player.replaceCurrentItem(with: nil)
       MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
-    case "volume": player.volume = (call.arguments as? NSNumber)?.floatValue ?? 1
+    case "volume":
+      volume = (call.arguments as? NSNumber)?.floatValue ?? 1
+      if fadeTimer == nil { player.volume = volume }
     case "speed":
       let r = (call.arguments as? NSNumber)?.floatValue ?? 1
+      masterRate = r
+      tempoTimer?.invalidate()
+      tempoTimer = nil
       if #available(iOS 16.0, macOS 13.0, *) {
         player.defaultRate = r
       }
@@ -143,6 +185,88 @@ public class NativePlayerPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
       activateSession()
       player.play()
     }
+  }
+
+  /// Equal-power crossfade into [url]. "tempo" matches the new track's tempo to the old one
+  /// (0.9–1.1); afterwards it glides back to the user's speed.
+  private func crossfade(url: URL, args: [String: Any]) {
+    let seconds = Double((args["durationMs"] as? NSNumber)?.intValue ?? 3000) / 1000
+    // Nothing audible to fade out: a plain load is the same.
+    guard player.timeControlStatus == .playing, seconds > 0 else {
+      finishFade()
+      resetTempo()
+      return load(url: url, args: args)
+    }
+    finishFade()
+    tempoTimer?.invalidate()
+    tempoTimer = nil
+
+    let old = player
+    detach(old)
+    let next = NativePlayerPlugin.makePlayer()
+    next.volume = 0
+    player = next
+    fading = old
+    attach(next)
+
+    let tempo = (args["tempo"] as? NSNumber)?.floatValue ?? 1
+    let matched = masterRate * min(max(tempo, 0.9), 1.1)
+    if #available(iOS 16.0, macOS 13.0, *) { next.defaultRate = matched }
+    load(url: url, args: args)
+    next.rate = matched
+
+    // The clock only runs once the new deck actually plays, so a slow start doesn't eat the fade.
+    let step = 0.03
+    var t = 0.0
+    fadeTimer = Timer.scheduledTimer(withTimeInterval: step, repeats: true) { [weak self] timer in
+      guard let self else { return timer.invalidate() }
+      guard next.timeControlStatus == .playing else { return }
+      t += step / seconds
+      if t >= 1 {
+        self.finishFade()
+        if matched != self.masterRate { self.tempoBack(next, from: matched) }
+        return
+      }
+      next.volume = self.volume * Float(sin(t * .pi / 2))
+      old.volume = self.volume * Float(cos(t * .pi / 2))
+    }
+    emit()
+  }
+
+  /// Ends a running crossfade at once: the old deck stops, the new one plays at full volume.
+  private func finishFade() {
+    fadeTimer?.invalidate()
+    fadeTimer = nil
+    if let f = fading {
+      f.pause()
+      f.replaceCurrentItem(with: nil)
+    }
+    fading = nil
+    player.volume = volume
+  }
+
+  /// After the transition, inaudibly (8 s) bring the tempo back to the user's speed.
+  private func tempoBack(_ p: AVPlayer, from: Float) {
+    var k: Float = 0
+    tempoTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
+      guard let self else { return timer.invalidate() }
+      k = min(1, k + 1 / 80)
+      let r = from + (self.masterRate - from) * k
+      if #available(iOS 16.0, macOS 13.0, *) { p.defaultRate = r }
+      if p.rate > 0 { p.rate = r }
+      if k >= 1 {
+        timer.invalidate()
+        self.tempoTimer = nil
+      }
+    }
+  }
+
+  /// A new track plays at the user's speed (a running tempo ramp is dropped).
+  private func resetTempo() {
+    guard tempoTimer != nil else { return }
+    tempoTimer?.invalidate()
+    tempoTimer = nil
+    if #available(iOS 16.0, macOS 13.0, *) { player.defaultRate = masterRate }
   }
 
   private func seek(ms: Int) {
