@@ -58,11 +58,18 @@ class GitHubReleaseProvider implements ReleaseProvider {
   @override
   Future<UpdateInfo?> checkForUpdate({required String currentVersion}) async {
     try {
+      // "/releases/latest" skips pre-releases, so beta builds look at the newest release of any kind.
+      final beta = currentVersion.split('+').first.contains('-');
+      final path = beta ? '/repos/$repo/releases' : '/repos/$repo/releases/latest';
       final res = await client
-          .get(Uri.https('api.github.com', '/repos/$repo/releases/latest'), headers: _headers)
+          .get(Uri.https('api.github.com', path, beta ? {'per_page': '10'} : null), headers: _headers)
           .timeout(const Duration(seconds: 10));
       if (res.statusCode != 200) return null;
-      final j = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      final body = jsonDecode(utf8.decode(res.bodyBytes));
+      final j = beta
+          ? [for (final r in body as List) r as Map<String, dynamic>].where((r) => r['draft'] != true).firstOrNull
+          : body as Map<String, dynamic>;
+      if (j == null) return null;
       final tag = (j['tag_name'] as String? ?? '').replaceFirst(RegExp(r'^[vV]'), '');
       if (tag.isEmpty || !isNewer(tag, currentVersion)) return null;
       final assets = [for (final a in (j['assets'] as List? ?? const [])) a as Map<String, dynamic>];

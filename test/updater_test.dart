@@ -32,7 +32,12 @@ Map<String, Object?> release({String tag = 'v0.3.0', bool digest = true}) => {
   'html_url': 'https://github.com/x/pounce/releases/tag/$tag',
   'published_at': '2026-10-03T18:00:00Z',
   'assets': [
-    {'name': 'pounce-armeabi-v7a-github.apk', 'size': 9, 'browser_download_url': 'https://dl/v7.apk', 'digest': 'sha256:${'0' * 64}'},
+    {
+      'name': 'pounce-armeabi-v7a-github.apk',
+      'size': 9,
+      'browser_download_url': 'https://dl/v7.apk',
+      'digest': 'sha256:${'0' * 64}',
+    },
     {
       'name': 'pounce-arm64-v8a-github.apk',
       'size': apkBytes.length,
@@ -78,6 +83,23 @@ void main() {
     expect(seen.single.headers.keys.map((k) => k.toLowerCase()), isNot(contains('authorization')));
   });
 
+  test('beta build also sees pre-releases (not served by /releases/latest)', () async {
+    final seen = <http.BaseRequest>[];
+    final c = MockClient((r) async {
+      seen.add(r);
+      return http.Response(
+        jsonEncode([
+          {...release(tag: 'v0.3.0-beta.1'), 'draft': true},
+          {...release(tag: 'v0.2.0-beta.2'), 'prerelease': true},
+        ]),
+        200,
+      );
+    });
+    final u = await provider(c, FakeInstaller(), Directory.systemTemp).checkForUpdate(currentVersion: '0.2.0-beta.1+8');
+    expect(u!.version, '0.2.0-beta.2');
+    expect(seen.single.url.toString(), 'https://api.github.com/repos/x/pounce/releases?per_page=10');
+  });
+
   test('same version or network error: no update', () async {
     final same = MockClient((_) async => http.Response(jsonEncode(release(tag: 'v0.2.0')), 200));
     expect(await provider(same, FakeInstaller(), Directory.systemTemp).checkForUpdate(currentVersion: '0.2.0'), isNull);
@@ -86,9 +108,11 @@ void main() {
   });
 
   test('without "digest": checksum from SHA256SUMS', () async {
-    final c = MockClient((r) async => r.url.path.endsWith('SHA256SUMS')
-        ? http.Response('$apkHash  pounce-arm64-v8a-github.apk\n${'1' * 64}  other.apk\n', 200)
-        : http.Response(jsonEncode(release(digest: false)), 200));
+    final c = MockClient(
+      (r) async => r.url.path.endsWith('SHA256SUMS')
+          ? http.Response('$apkHash  pounce-arm64-v8a-github.apk\n${'1' * 64}  other.apk\n', 200)
+          : http.Response(jsonEncode(release(digest: false)), 200),
+    );
     final u = await provider(c, FakeInstaller(), Directory.systemTemp).checkForUpdate(currentVersion: '0.2.0');
     expect(u!.sha256, apkHash);
   });
@@ -114,7 +138,10 @@ void main() {
     inst.installed = null;
     expect(await p.install(u), InstallResult.checksumMismatch);
     expect(inst.installed, isNull);
-    expect(dir.listSync().where((f) => f.path.endsWith('.apk') && File(f.path).readAsStringSync() == 'manipuliert'), isEmpty);
+    expect(
+      dir.listSync().where((f) => f.path.endsWith('.apk') && File(f.path).readAsStringSync() == 'manipuliert'),
+      isEmpty,
+    );
   });
 
   test('without install permission: open the setting instead of downloading', () async {
