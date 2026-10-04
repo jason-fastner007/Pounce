@@ -36,11 +36,14 @@ extension type _ActionDetails._(JSObject _) implements JSObject {
 ///   audio → source ─┬→ normGain → limiter → master → analyserOut → output
 ///                   └→ K-filter (shelf + high-pass) → analyserK   (measurement only)
 ///
+/// Two elements (decks) each feed the graph through their own gain, so [crossfade] can
+/// blend the new track in while the old one fades out (equal power, like Android).
+///
 /// DRM tracks (cenc, Widevine/PlayReady) run through hls.js with EME on a separate
 /// element without a graph: browsers don't pass decrypted audio on to Web Audio.
 class WebEngine extends AudioEngine {
   WebEngine() {
-    _listen(_audio);
+    _decks.forEach(_listen);
     final session = _session;
     if (session == null) return;
     void on(String action, RemoteCommand cmd) =>
@@ -84,9 +87,21 @@ class WebEngine extends AudioEngine {
   }
 
   // Analysis needs CORS; all SoundCloud CDNs send Access-Control-Allow-Origin: *.
-  final _audio = web.HTMLAudioElement()
-    ..preload = 'auto'
-    ..crossOrigin = 'anonymous';
+  final _decks = [
+    for (var i = 0; i < 2; i++)
+      web.HTMLAudioElement()
+        ..preload = 'auto'
+        ..crossOrigin = 'anonymous',
+  ];
+  var _cur = 0;
+
+  /// Deck of the current (non-DRM) track.
+  web.HTMLAudioElement get _audio => _decks[_cur];
+
+  /// Running crossfade: the fading-out deck's hls.js instance and the end/tempo timers.
+  _Hls? _outHls;
+  Timer? _fadeDone, _tempo;
+  double _speed = 1;
 
   /// Element of the current DRM track; new per track (Firefox doesn't reliably switch
   /// MediaKeys on one element). null = normal track via [_audio].
@@ -131,7 +146,7 @@ class WebEngine extends AudioEngine {
   DateTime _clipUntil = DateTime(0);
 
   /// Build the graph only when needed (AudioContext needs a user gesture).
-  _Graph _ensureGraph() => _graph ??= _Graph(_audio)
+  _Graph _ensureGraph() => _graph ??= _Graph(_decks)
     ..master.gain.value = _volume
     ..applyMode(_mode);
 
@@ -263,6 +278,94 @@ class WebEngine extends AudioEngine {
 
   @override
   Future<void> load(StreamInfo stream, MediaMeta meta, {bool play = true, Duration start = Duration.zero}) async {
+    _endFade();
+    _tempo?.cancel();
+    _audio.defaultPlaybackRate = _speed;
+    await _loadInto(stream, meta, play: play, start: start);
+  }
+
+  /// Silences the fading-out deck and puts both deck gains back to full.
+  void _endFade() {
+    _fadeDone?.cancel();
+    _fadeDone = null;
+    final old = _decks[1 - _cur];
+    if (old.src.isNotEmpty || _outHls != null) {
+      old
+        ..pause()
+        ..removeAttribute('src')
+        ..load();
+    }
+    _outHls?.destroy();
+    _outHls = null;
+    final g = _graph;
+    if (g == null) return;
+    for (final d in g.decks) {
+      d.gain
+        ..cancelScheduledValues(0)
+        ..value = 1;
+    }
+  }
+
+  @override
+  Future<void> crossfade(
+    StreamInfo stream,
+    MediaMeta meta, {
+    Duration start = Duration.zero,
+    Duration duration = const Duration(milliseconds: 3000),
+    double tempoRatio = 1,
+  }) async {
+    final g = _graph;
+    // DRM runs outside the graph, and with nothing audible a fade has nothing to blend.
+    if (g == null || stream.drm || _drmAudio != null || _audio.paused || duration <= Duration.zero) {
+      return load(stream, meta, start: start);
+    }
+    _endFade();
+    _tempo?.cancel();
+    final out = _cur;
+    _outHls = _hls;
+    _hls = null;
+    _cur = 1 - _cur;
+    final into = _cur;
+    g.decks[into].gain
+      ..cancelScheduledValues(0)
+      ..value = 0;
+    final matched = _speed * tempoRatio.clamp(.9, 1.1);
+    _audio.defaultPlaybackRate = matched;
+    await _loadInto(stream, meta, play: true, start: start);
+    if (_cur != into) return; // superseded meanwhile
+
+    // Equal power: in = sin, out = cos – the sum stays equally loud.
+    const n = 64;
+    final secs = duration.inMilliseconds / 1000;
+    final now = g.ctx.currentTime;
+    JSArray<JSNumber> curve(double Function(double) f) => [for (var i = 0; i < n; i++) f(i / (n - 1)).toJS].toJS;
+    g.decks[into].gain
+      ..cancelScheduledValues(0)
+      ..setValueCurveAtTime(curve((x) => math.sin(x * math.pi / 2)), now, secs);
+    g.decks[out].gain
+      ..cancelScheduledValues(0)
+      ..setValueCurveAtTime(curve((x) => math.cos(x * math.pi / 2)), now, secs);
+    _fadeDone = Timer(duration + const Duration(milliseconds: 100), () {
+      if (_cur != into) return;
+      _endFade();
+      if (matched != _speed) _tempoBack(_audio, matched);
+    });
+  }
+
+  /// After the transition, inaudibly (8 s) bring the tempo back to the user's speed.
+  void _tempoBack(web.HTMLAudioElement el, double from) {
+    var p = 0.0;
+    _tempo = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      p = math.min(1, p + 1 / 80);
+      el.playbackRate = from + (_speed - from) * p;
+      if (p >= 1) {
+        timer.cancel();
+        el.defaultPlaybackRate = _speed;
+      }
+    });
+  }
+
+  Future<void> _loadInto(StreamInfo stream, MediaMeta meta, {required bool play, required Duration start}) async {
     _hls?.destroy();
     _hls = null;
     _releaseDrm();
@@ -383,15 +486,6 @@ class WebEngine extends AudioEngine {
   }) async {}
 
   @override
-  Future<void> crossfade(
-    StreamInfo stream,
-    MediaMeta meta, {
-    Duration start = Duration.zero,
-    Duration duration = const Duration(milliseconds: 3000),
-    double tempoRatio = 1,
-  }) => load(stream, meta, play: true, start: start);
-
-  @override
   Future<void> play() async {
     try {
       final g = _ensureGraph();
@@ -404,13 +498,18 @@ class WebEngine extends AudioEngine {
   }
 
   @override
-  Future<void> pause() async => _el.pause();
+  Future<void> pause() async {
+    _endFade();
+    _el.pause();
+  }
 
   @override
   Future<void> seek(Duration p) async => _el.currentTime = p.inMilliseconds / 1000;
 
   @override
   Future<void> stop() async {
+    _endFade();
+    _tempo?.cancel();
     _audio.pause();
     _hls?.destroy();
     _hls = null;
@@ -432,11 +531,21 @@ class WebEngine extends AudioEngine {
   }
 
   @override
-  Future<void> setSpeed(double s) async => _el.playbackRate = s;
+  Future<void> setSpeed(double s) async {
+    _speed = s;
+    _tempo?.cancel();
+    for (final el in [..._decks, ?_drmAudio]) {
+      el
+        ..defaultPlaybackRate = s
+        ..playbackRate = s;
+    }
+  }
 
   @override
   void dispose() {
     _meter?.cancel();
+    _fadeDone?.cancel();
+    _tempo?.cancel();
     stop();
     _graph?.ctx.close();
     _states.close();
@@ -445,10 +554,20 @@ class WebEngine extends AudioEngine {
 }
 
 class _Graph {
-  _Graph(web.HTMLAudioElement audio) : ctx = web.AudioContext() {
-    // The graph takes over the volume; the element stays at 1.
-    audio.volume = 1;
-    final source = ctx.createMediaElementSource(audio);
+  _Graph(List<web.HTMLAudioElement> elements) : ctx = web.AudioContext() {
+    // Every deck feeds the same chain through its own crossfade gain.
+    final source = ctx.createGain();
+    decks = [
+      for (final _ in elements)
+        ctx.createGain()
+          ..gain.value = 1
+          ..connect(source),
+    ];
+    for (final (i, el) in elements.indexed) {
+      // The graph takes over the volume; the element stays at 1.
+      el.volume = 1;
+      ctx.createMediaElementSource(el).connect(decks[i]);
+    }
     norm = ctx.createGain();
     limiter = ctx.createDynamicsCompressor();
     master = ctx.createGain();
@@ -494,6 +613,7 @@ class _Graph {
   }
 
   final web.AudioContext ctx;
+  late final List<web.GainNode> decks;
   late final web.GainNode norm, master;
   late final web.DynamicsCompressorNode limiter;
   late final web.AnalyserNode analyserOut, analyserK, analyserBass;
