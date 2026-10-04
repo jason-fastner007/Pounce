@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
@@ -105,44 +106,67 @@ class _Mpv {
   }
 }
 
+/// One mpv instance with its own playback state (two of them make the crossfade decks).
+class _Deck {
+  _Deck(this.h);
+
+  final _Handle h;
+  var status = EngineStatus.idle;
+  var paused = true;
+  var buffering = false;
+  var pos = Duration.zero, dur = Duration.zero, buf = Duration.zero;
+  Duration? pendingStart;
+
+  /// Crossfade gain 0..1, multiplied with the user volume.
+  double gain = 1;
+}
+
 /// Linux/Windows: libmpv (system library) via dart:ffi.
+///
+/// Two decks like on Android: [crossfade] starts the new track on the free deck and blends
+/// both with an equal-power curve; only the active deck reports state.
 class MpvEngine extends AudioEngine {
   MpvEngine() {
     try {
       if (Platform.isLinux) _numericLocaleC();
       _mpv = _Mpv(_Mpv.open());
-      _h = _mpv!.create();
-      if (_h == nullptr) throw StateError('mpv_create fehlgeschlagen');
-      for (final (k, v) in const [
-        ('vid', 'no'),
-        ('video', 'no'),
-        ('terminal', 'no'),
-        ('ytdl', 'no'),
-        ('idle', 'yes'),
-        ('audio-client-name', 'Pounce'),
-        ('cache', 'yes'),
-      ]) {
-        _str2(_mpv!.setOption, k, v);
-      }
-      _str2(_mpv!.setOption, 'af', _filters(_mode));
-      _mpv!.initialize(_h);
-      _meter = Timer.periodic(const Duration(milliseconds: 250), (_) => _readMeter());
-      for (final (i, name, fmt) in const [
-        (1, 'time-pos', _fmtDouble),
-        (2, 'duration', _fmtDouble),
-        (3, 'pause', _fmtFlag),
-        (4, 'paused-for-cache', _fmtFlag),
-        (5, 'demuxer-cache-time', _fmtDouble),
-      ]) {
-        using((a) => _mpv!.observe(_h, i, name.toNativeUtf8(allocator: a), fmt));
-      }
       // The wakeup comes from the mpv thread -> the listener forwards it into our isolate.
       _wakeup = NativeCallable<Void Function(Pointer<Void>)>.listener((Pointer<Void> _) => _drain());
-      _mpv!.setWakeup(_h, _wakeup!.nativeFunction, nullptr);
+      _decks = [_createDeck(), _createDeck()];
+      _meter = Timer.periodic(const Duration(milliseconds: 250), (_) => _readMeter());
     } catch (e) {
       _initError = '$e';
       _mpv = null;
     }
+  }
+
+  _Deck _createDeck() {
+    final h = _mpv!.create();
+    if (h == nullptr) throw StateError('mpv_create fehlgeschlagen');
+    for (final (k, v) in const [
+      ('vid', 'no'),
+      ('video', 'no'),
+      ('terminal', 'no'),
+      ('ytdl', 'no'),
+      ('idle', 'yes'),
+      ('audio-client-name', 'Pounce'),
+      ('cache', 'yes'),
+    ]) {
+      _str2(h, _mpv!.setOption, k, v);
+    }
+    _str2(h, _mpv!.setOption, 'af', _filters(_mode));
+    _mpv!.initialize(h);
+    for (final (i, name, fmt) in const [
+      (1, 'time-pos', _fmtDouble),
+      (2, 'duration', _fmtDouble),
+      (3, 'pause', _fmtFlag),
+      (4, 'paused-for-cache', _fmtFlag),
+      (5, 'demuxer-cache-time', _fmtDouble),
+    ]) {
+      using((a) => _mpv!.observe(h, i, name.toNativeUtf8(allocator: a), fmt));
+    }
+    _mpv!.setWakeup(h, _wakeup!.nativeFunction, nullptr);
+    return _Deck(h);
   }
 
   /// libmpv refuses to start with a non-C LC_NUMERIC (decimal comma).
@@ -156,19 +180,24 @@ class MpvEngine extends AudioEngine {
   }
 
   _Mpv? _mpv;
-  _Handle _h = nullptr;
+  List<_Deck> _decks = const [];
+  var _active = 0;
   NativeCallable<Void Function(Pointer<Void>)>? _wakeup;
   String? _initError;
+
+  /// The deck that plays the current track and reports its state.
+  _Deck get _d => _decks[_active];
+  _Deck get _other => _decks[1 - _active];
 
   final _states = StreamController<EngineState>.broadcast();
   final _commands = StreamController<RemoteCommand>.broadcast();
 
-  var _status = EngineStatus.idle;
-  var _paused = true;
-  var _buffering = false;
-  var _pos = Duration.zero, _dur = Duration.zero, _buf = Duration.zero;
-  Duration? _pendingStart;
   DateTime _lastEmit = DateTime(0);
+  double _volume = 1;
+
+  /// Playback speed chosen by the user; DJ tempo matching deviates from it only temporarily.
+  double _speed = 1;
+  Timer? _fade, _tempo;
 
   // ---------- Laut/Leise (FFmpeg-Filter in mpv) ----------
 
@@ -192,12 +221,15 @@ class MpvEngine extends AudioEngine {
   @override
   Future<void> setLoudMode(LoudMode mode) async {
     _mode = mode;
-    if (_mpv != null) _str2(_mpv!.setProperty, 'af', _filters(mode));
+    if (_mpv == null) return;
+    for (final d in _decks) {
+      _str2(d.h, _mpv!.setProperty, 'af', _filters(mode));
+    }
   }
 
   void _readMeter() {
-    if (_mpv == null || _paused) return;
-    final raw = using((a) => _mpv!.getString(_h, 'af-metadata/kfmeter'.toNativeUtf8(allocator: a)));
+    if (_mpv == null || _d.paused) return;
+    final raw = using((a) => _mpv!.getString(_d.h, 'af-metadata/kfmeter'.toNativeUtf8(allocator: a)));
     if (raw == nullptr) return;
     final json = raw.toDartString();
     _mpv!.free(raw.cast());
@@ -222,59 +254,65 @@ class MpvEngine extends AudioEngine {
   @override
   Stream<RemoteCommand> get commands => _commands.stream;
 
-  void _str2(int Function(_Handle, Pointer<Utf8>, Pointer<Utf8>) fn, String k, String v) =>
-      using((a) => fn(_h, k.toNativeUtf8(allocator: a), v.toNativeUtf8(allocator: a)));
+  void _str2(_Handle h, int Function(_Handle, Pointer<Utf8>, Pointer<Utf8>) fn, String k, String v) =>
+      using((a) => fn(h, k.toNativeUtf8(allocator: a), v.toNativeUtf8(allocator: a)));
 
-  void _cmd(List<String> args) => using((a) {
+  void _set(_Deck d, String k, String v) => _str2(d.h, _mpv!.setProperty, k, v);
+
+  void _cmd(_Deck d, List<String> args) => using((a) {
     final arr = a<Pointer<Utf8>>(args.length + 1);
     for (var i = 0; i < args.length; i++) {
       arr[i] = args[i].toNativeUtf8(allocator: a);
     }
     arr[args.length] = nullptr;
-    _mpv!.command(_h, arr);
+    _mpv!.command(d.h, arr);
   });
 
   void _drain() {
     if (_mpv == null) return;
-    while (true) {
-      final ev = _mpv!.waitEvent(_h, 0).ref;
-      if (ev.id == 0) break;
-      switch (ev.id) {
-        case _evStartFile:
-          _status = EngineStatus.loading;
-        case _evFileLoaded:
-          _status = EngineStatus.ready;
-          if (_pendingStart case final s?) {
-            seek(s);
-            _pendingStart = null;
-          }
-        case _evEndFile:
-          final r = ev.data.cast<_EventEndFile>().ref.reason;
-          if (r == _endEof) _status = EngineStatus.ended;
-          if (r == _endError) _status = EngineStatus.error;
-        case _evProperty:
-          _onProperty(ev.data.cast<_EventProperty>().ref);
+    for (final d in _decks) {
+      while (true) {
+        final ev = _mpv!.waitEvent(d.h, 0).ref;
+        if (ev.id == 0) break;
+        switch (ev.id) {
+          case _evStartFile:
+            d.status = EngineStatus.loading;
+          case _evFileLoaded:
+            d.status = EngineStatus.ready;
+            if (d.pendingStart case final s?) {
+              _seekDeck(d, s);
+              d.pendingStart = null;
+            }
+          case _evEndFile:
+            final r = ev.data.cast<_EventEndFile>().ref.reason;
+            if (r == _endEof) d.status = EngineStatus.ended;
+            if (r == _endError) d.status = EngineStatus.error;
+          case _evProperty:
+            _onProperty(d, ev.data.cast<_EventProperty>().ref);
+        }
+        // The fading-out deck stays silent towards the app.
+        if (identical(d, _d)) _emit(force: ev.id != _evProperty);
       }
-      _emit(force: ev.id != _evProperty);
     }
   }
 
-  void _onProperty(_EventProperty p) {
+  void _onProperty(_Deck d, _EventProperty p) {
     if (p.data == nullptr) return;
-    Duration d() => Duration(microseconds: (p.data.cast<Double>().value * 1e6).round());
+    Duration v() => Duration(microseconds: (p.data.cast<Double>().value * 1e6).round());
+    final active = identical(d, _d);
     switch (p.name.toDartString()) {
       case 'time-pos':
-        _pos = d();
+        d.pos = v();
       case 'duration':
-        _dur = d();
+        d.dur = v();
       case 'demuxer-cache-time':
-        _buf = d();
+        d.buf = v();
       case 'pause':
-        _paused = p.data.cast<Int32>().value != 0;
-        _emit(force: true);
+        d.paused = p.data.cast<Int32>().value != 0;
+        if (active) _emit(force: true);
       case 'paused-for-cache':
-        _buffering = p.data.cast<Int32>().value != 0;
-        _emit(force: true);
+        d.buffering = p.data.cast<Int32>().value != 0;
+        if (active) _emit(force: true);
     }
   }
 
@@ -283,16 +321,48 @@ class MpvEngine extends AudioEngine {
     final now = DateTime.now();
     if (!force && now.difference(_lastEmit).inMilliseconds < 250) return;
     _lastEmit = now;
-    final status = _buffering && _status == EngineStatus.ready ? EngineStatus.loading : _status;
+    final d = _d;
+    final status = d.buffering && d.status == EngineStatus.ready ? EngineStatus.loading : d.status;
     _states.add(
       EngineState(
         status: status,
-        playing: !_paused && _status == EngineStatus.ready,
-        position: _pos,
-        duration: _dur,
-        buffered: _buf > Duration.zero ? _pos + _buf : Duration.zero,
+        playing: !d.paused && d.status == EngineStatus.ready,
+        position: d.pos,
+        duration: d.dur,
+        buffered: d.buf > Duration.zero ? d.pos + d.buf : Duration.zero,
       ),
     );
+  }
+
+  void _applyVolume(_Deck d) => _set(d, 'volume', '${(_volume * d.gain * 100).round()}');
+
+  /// Starts [stream] on deck [d] (state reset, title, pause flag, gain).
+  void _start(_Deck d, StreamInfo stream, MediaMeta meta, {required bool play, required Duration start}) {
+    d
+      ..status = EngineStatus.loading
+      ..pos = Duration.zero
+      ..dur = meta.duration
+      ..buf = Duration.zero
+      ..pendingStart = start > Duration.zero ? start : null;
+    _set(d, 'force-media-title', '${meta.artist} – ${meta.title}');
+    _set(d, 'pause', play ? 'no' : 'yes');
+    _applyVolume(d);
+    _cmd(d, ['loadfile', stream.url, 'replace']);
+  }
+
+  /// Ends a running crossfade at once: the old deck is stopped, the new one at full gain.
+  void _finishFade() {
+    _fade?.cancel();
+    _fade = null;
+    final old = _other;
+    if (old.status != EngineStatus.idle) {
+      _cmd(old, ['stop']);
+      old.status = EngineStatus.idle;
+    }
+    if (_d.gain != 1) {
+      _d.gain = 1;
+      _applyVolume(_d);
+    }
   }
 
   @override
@@ -301,12 +371,11 @@ class MpvEngine extends AudioEngine {
       _states.add(EngineState(status: EngineStatus.error, error: _initError));
       return;
     }
-    _pos = Duration.zero;
-    _dur = meta.duration;
-    _pendingStart = start > Duration.zero ? start : null;
-    _str2(_mpv!.setProperty, 'force-media-title', '${meta.artist} – ${meta.title}');
-    _str2(_mpv!.setProperty, 'pause', play ? 'no' : 'yes');
-    _cmd(['loadfile', stream.url, 'replace']);
+    _finishFade();
+    _tempo?.cancel();
+    _tempo = null;
+    _set(_d, 'speed', '$_speed');
+    _start(_d, stream, meta, play: play, start: start);
   }
 
   @override
@@ -324,51 +393,118 @@ class MpvEngine extends AudioEngine {
     Duration start = Duration.zero,
     Duration duration = const Duration(milliseconds: 3000),
     double tempoRatio = 1,
-  }) => load(stream, meta, play: true, start: start);
+  }) async {
+    if (_mpv == null) return load(stream, meta, start: start);
+    // Nothing audible to fade out (paused, ended, idle): a plain load is the same.
+    if (_d.paused || _d.status != EngineStatus.ready || duration <= Duration.zero) {
+      return load(stream, meta, start: start);
+    }
+    _finishFade();
+    _tempo?.cancel();
+    _tempo = null;
+    final out = _d;
+    _active = 1 - _active;
+    final into = _d..gain = 0;
+    final matched = _speed * tempoRatio.clamp(.9, 1.1);
+    _set(into, 'speed', '$matched');
+    _start(into, stream, meta, play: true, start: start);
+    _emit(force: true);
+
+    // Equal-power blend; the clock only runs once the new deck actually plays, so a slow
+    // stream start doesn't eat the fade.
+    var t = 0.0;
+    const step = Duration(milliseconds: 30);
+    _fade = Timer.periodic(step, (timer) {
+      if (into.status != EngineStatus.ready || into.buffering) return;
+      t += step.inMicroseconds / duration.inMicroseconds;
+      if (t >= 1) {
+        _finishFade();
+        if (matched != _speed) _tempoBack(into, matched);
+        return;
+      }
+      into.gain = math.sin(t * math.pi / 2);
+      out.gain = math.cos(t * math.pi / 2);
+      _applyVolume(into);
+      _applyVolume(out);
+    });
+  }
+
+  /// After the transition, inaudibly (8 s) bring the tempo back to the user's speed.
+  void _tempoBack(_Deck d, double from) {
+    var p = 0.0;
+    _tempo = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      p = math.min(1, p + 1 / 80);
+      _set(d, 'speed', '${from + (_speed - from) * p}');
+      if (p >= 1) {
+        timer.cancel();
+        _tempo = null;
+      }
+    });
+  }
 
   @override
   Future<void> play() async {
     if (_mpv == null) return;
-    if (_status == EngineStatus.ended) seek(Duration.zero);
-    _str2(_mpv!.setProperty, 'pause', 'no');
+    if (_d.status == EngineStatus.ended) seek(Duration.zero);
+    _set(_d, 'pause', 'no');
   }
 
   @override
   Future<void> pause() async {
-    if (_mpv != null) _str2(_mpv!.setProperty, 'pause', 'yes');
+    if (_mpv == null) return;
+    _finishFade();
+    _set(_d, 'pause', 'yes');
   }
+
+  void _seekDeck(_Deck d, Duration p) => _cmd(d, ['seek', (p.inMilliseconds / 1000).toStringAsFixed(3), 'absolute']);
 
   @override
   Future<void> seek(Duration p) async {
     if (_mpv == null) return;
-    if (_status == EngineStatus.ended) _status = EngineStatus.ready;
-    _cmd(['seek', (p.inMilliseconds / 1000).toStringAsFixed(3), 'absolute']);
-    _pos = p;
+    if (_d.status == EngineStatus.ended) _d.status = EngineStatus.ready;
+    _seekDeck(_d, p);
+    _d.pos = p;
     _emit(force: true);
   }
 
   @override
   Future<void> stop() async {
-    if (_mpv != null) _cmd(['stop']);
-    _status = EngineStatus.idle;
+    if (_mpv == null) return;
+    _finishFade();
+    _cmd(_d, ['stop']);
+    _d.status = EngineStatus.idle;
   }
 
   @override
   Future<void> setVolume(double v) async {
-    if (_mpv != null) _str2(_mpv!.setProperty, 'volume', '${(v * 100).round()}');
+    _volume = v;
+    if (_mpv == null) return;
+    for (final d in _decks) {
+      _applyVolume(d);
+    }
   }
 
   @override
   Future<void> setSpeed(double s) async {
-    if (_mpv != null) _str2(_mpv!.setProperty, 'speed', '$s');
+    _speed = s;
+    _tempo?.cancel();
+    _tempo = null;
+    if (_mpv == null) return;
+    for (final d in _decks) {
+      _set(d, 'speed', '$s');
+    }
   }
 
   @override
   void dispose() {
     _meter?.cancel();
+    _fade?.cancel();
+    _tempo?.cancel();
     if (_mpv != null) {
-      _mpv!.setWakeup(_h, nullptr, nullptr);
-      _mpv!.destroy(_h);
+      for (final d in _decks) {
+        _mpv!.setWakeup(d.h, nullptr, nullptr);
+        _mpv!.destroy(d.h);
+      }
     }
     _wakeup?.close();
     _states.close();
