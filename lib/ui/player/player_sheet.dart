@@ -586,7 +586,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 24, 24),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 24),
                     child: _SidePanel(track: track),
                   ),
                 ),
@@ -704,7 +704,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
@@ -828,7 +828,7 @@ class _BottomActions extends StatelessWidget {
       icon: Icon(i),
     );
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -901,15 +901,19 @@ class _BottomActions extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('${c.l10n.speed} · ${player.speed.toStringAsFixed(2)}×', style: Theme.of(c).textTheme.titleLarge),
-                Slider(
-                  value: player.speed,
-                  min: .5,
-                  max: 2,
-                  divisions: 30,
-                  onChanged: (v) {
-                    player.setSpeed(double.parse(v.toStringAsFixed(2)));
-                    set(() {});
-                  },
+                Semantics(
+                  label: c.l10n.speed,
+                  value: '${player.speed.toStringAsFixed(2)}×',
+                  child: Slider(
+                    value: player.speed,
+                    min: .5,
+                    max: 2,
+                    divisions: 30,
+                    onChanged: (v) {
+                      player.setSpeed(double.parse(v.toStringAsFixed(2)));
+                      set(() {});
+                    },
+                  ),
                 ),
                 Wrap(
                   spacing: 8,
