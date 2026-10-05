@@ -334,4 +334,21 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('jumpTo sets index', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    await player.jumpTo(1);
+    expect(player.index, 1);
+  });
+
+  test('empty queue play and next calls do not crash', () async {
+    await player.playQueue([]);
+    expect(player.current, isNull);
+
+    await player.next();
+    expect(player.current, isNull);
+
+    await player.previous();
+    expect(player.current, isNull);
+  });
 }

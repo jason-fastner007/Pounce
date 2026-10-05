@@ -554,5 +554,109 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('user, userTracks, userTopTracks and userPlaylists', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/42') {
+          return http.Response(jsonEncode({'id': 42, 'username': 'Artist 42'}), 200);
+        } else if (path == '/users/42/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 1001,
+                  'title': 'User Track 1',
+                  'duration': 200000,
+                  'user': {'id': 42, 'username': 'Artist 42'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 1002,
+                  'title': 'Top Track 1',
+                  'duration': 180000,
+                  'user': {'id': 42, 'username': 'Artist 42'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 2001,
+                  'title': 'User Playlist 1',
+                  'user': {'id': 42, 'username': 'Artist 42'},
+                  'tracks': [],
+                }
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final u = await sc.user(42);
+      expect(u.id, 42);
+      expect(u.username, 'Artist 42');
+
+      final trs = await sc.userTracks(42);
+      expect(trs.items.single.title, 'User Track 1');
+
+      final topTrs = await sc.userTopTracks(42);
+      expect(topTrs.items.single.title, 'Top Track 1');
+
+      final pls = await sc.userPlaylists(42);
+      expect(pls.items.single.title, 'User Playlist 1');
+    });
+
+    test('setLiked mobile API fallback (without logged in auth throws 401)', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        return http.Response('Unauthorized', 401);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Track 888',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      expect(() => sc.setLiked(track, true), throwsA(isA<ScException>()));
+    });
+
+    test('HTTP error codes like 451 (blocked) throwing ScException', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path == '/tracks/9999') {
+          return http.Response('Blocked content', 451);
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      expect(() => sc.track(9999), throwsA(isA<ScException>()));
+    });
   });
 }
