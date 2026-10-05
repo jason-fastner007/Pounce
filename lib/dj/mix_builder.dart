@@ -122,12 +122,16 @@ class MixBuilder extends ChangeNotifier {
     notifyListeners();
     try {
       final tracks = await build(cats);
-      if (tracks.isEmpty) return 0;
+      if (tracks.isEmpty) {
+        _log('nothing to play for ${cats.map((c) => c.id).join(',')} (discovery ${discovery.toStringAsFixed(1)})');
+        return 0;
+      }
       if (!dj.state.isActive) dj.toggleDjFlow();
       await player.playQueue(tracks);
       return tracks.length;
     } catch (e) {
       error = '$e';
+      _log('build failed: $e');
       return 0;
     } finally {
       building = false;
@@ -158,19 +162,35 @@ class MixBuilder extends ChangeNotifier {
       for (final c in cats) sc.searchTracks(c.search).then((p) => p.items).catchError((Object _) => <Track>[]),
     ]);
     final liked = {for (final t in library.likes) t.id};
-    final fresh = <int, Track>{};
+    final fresh = <int, Track>{}, played = <int, Track>{};
     for (final list in results) {
       for (final t in list) {
-        if (ok(t) && !liked.contains(t.id) && !recent.contains(t.id)) fresh[t.id] = t;
+        if (!ok(t) || liked.contains(t.id)) continue;
+        (recent.contains(t.id) ? played : fresh)[t.id] = t;
       }
     }
+    var favs = favorites.where((t) => !recent.contains(t.id)).toList();
+    // Rather repeat recently played songs than build no mix at all (e.g. a guest without likes
+    // who started several mixes in a row: the search keeps returning the same songs).
+    if (favs.isEmpty && fresh.isEmpty) {
+      favs = favorites;
+      fresh.addAll(played);
+    }
+    _log(
+      'build ${cats.map((c) => c.id).join(',')}: likes ${library.likes.length}, favourites ${favs.length}, '
+      'seeds ${seeds.length}, results ${results.fold(0, (n, l) => n + l.length)}, '
+      'fresh ${fresh.length}, recently played ${played.length}',
+    );
     // New songs of the category first; similar ones without a matching tag only if there are too few.
     final freshList = fresh.values.toList();
     double rank(Track t) => (fits(t) ? 1 : 0) + pref(t);
     freshList.sort((a, b) => rank(b).compareTo(rank(a)));
 
-    return mix(favorites.where((t) => !recent.contains(t.id)).toList(), freshList, discovery, size);
+    return mix(favs, freshList, discovery, size);
   }
+
+  // Shows up in logcat / the iOS syslog (also in release builds), e.g. in Firebase Test Lab runs.
+  static void _log(String message) => debugPrint('[pounce.dj] $message');
 
   /// Usable for a DJ mix: complete songs (1:30–6:00), no previews, no mixes.
   static bool usable(Track t) =>

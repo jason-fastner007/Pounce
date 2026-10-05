@@ -564,6 +564,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get djNothing => 'Nichts Passendes gefunden – probier eine andere Kategorie.';
 
   @override
+  String get djFailed => 'Mix konnte nicht erstellt werden – prüf deine Verbindung und versuch es nochmal.';
+
+  @override
   String get djPickCategory => 'Wähle mindestens eine Kategorie';
 
   @override

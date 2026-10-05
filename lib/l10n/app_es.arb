@@ -170,6 +170,7 @@
   "djStart": "Iniciar mezcla",
   "djBuilding": "Creando tu mezcla…",
   "djNothing": "No se encontró nada adecuado: prueba otra categoría.",
+  "djFailed": "No se pudo crear la mezcla: revisa tu conexión e inténtalo de nuevo.",
   "djPickCategory": "Elige al menos una categoría",
   "djAnalyzed": "{done} de {total} canciones analizadas",
   "djMixStarted": "Mezcla con {count} canciones iniciada",

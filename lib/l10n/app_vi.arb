@@ -170,6 +170,7 @@
   "djStart": "Bắt đầu mix",
   "djBuilding": "Đang tạo mix…",
   "djNothing": "Không tìm thấy bài phù hợp – thử thể loại khác.",
+  "djFailed": "Không tạo được mix – kiểm tra kết nối rồi thử lại.",
   "djPickCategory": "Chọn ít nhất một thể loại",
   "djAnalyzed": "Đã phân tích {done}/{total} bài",
   "djMixStarted": "Đã bắt đầu mix {count} bài",

@@ -170,6 +170,7 @@
   "djStart": "Mix starten",
   "djBuilding": "Mix wird gebaut…",
   "djNothing": "Nichts Passendes gefunden – probier eine andere Kategorie.",
+  "djFailed": "Mix konnte nicht erstellt werden – prüf deine Verbindung und versuch es nochmal.",
   "djPickCategory": "Wähle mindestens eine Kategorie",
   "djAnalyzed": "{done} von {total} Songs analysiert",
   "djMixStarted": "Mix mit {count} Songs gestartet",

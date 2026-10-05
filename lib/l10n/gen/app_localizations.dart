@@ -1127,6 +1127,12 @@ abstract class AppLocalizations {
   /// **'Nothing suitable found – try another category.'**
   String get djNothing;
 
+  /// No description provided for @djFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t build the mix – check your connection and try again.'**
+  String get djFailed;
+
   /// No description provided for @djPickCategory.
   ///
   /// In en, this message translates to:

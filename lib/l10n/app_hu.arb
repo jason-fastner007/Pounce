@@ -170,6 +170,7 @@
   "djStart": "Mix indítása",
   "djBuilding": "Mix készül…",
   "djNothing": "Nincs találat – próbálj másik kategóriát.",
+  "djFailed": "Nem sikerült összeállítani a mixet – ellenőrizd a kapcsolatot, és próbáld újra.",
   "djPickCategory": "Válassz legalább egy kategóriát",
   "djAnalyzed": "{total} számból {done} elemezve",
   "djMixStarted": "{count} számos mix elindult",
