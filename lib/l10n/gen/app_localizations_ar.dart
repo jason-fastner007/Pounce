@@ -569,6 +569,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get djNothing => 'لم يُعثر على شيء مناسب – جرّب فئة أخرى.';
 
   @override
+  String get djFailed => 'تعذّر إنشاء المزيج – تحقّق من اتصالك وحاول مجددًا.';
+
+  @override
   String get djPickCategory => 'اختر فئة واحدة على الأقل';
 
   @override

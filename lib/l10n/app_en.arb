@@ -257,6 +257,7 @@
   "djStart": "Start mix",
   "djBuilding": "Building your mix…",
   "djNothing": "Nothing suitable found – try another category.",
+  "djFailed": "Couldn't build the mix – check your connection and try again.",
   "djPickCategory": "Pick at least one category",
   "djAnalyzed": "{done} of {total} songs analysed",
   "@djAnalyzed": {

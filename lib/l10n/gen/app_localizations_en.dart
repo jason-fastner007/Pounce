@@ -562,6 +562,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get djNothing => 'Nothing suitable found – try another category.';
 
   @override
+  String get djFailed => 'Couldn\'t build the mix – check your connection and try again.';
+
+  @override
   String get djPickCategory => 'Pick at least one category';
 
   @override

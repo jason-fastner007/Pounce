@@ -566,6 +566,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get djNothing => 'Ничего не найдено – попробуй другую категорию.';
 
   @override
+  String get djFailed => 'Не удалось собрать микс – проверь подключение и попробуй ещё раз.';
+
+  @override
   String get djPickCategory => 'Выбери хотя бы одну категорию';
 
   @override

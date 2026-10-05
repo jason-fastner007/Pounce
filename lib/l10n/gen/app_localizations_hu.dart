@@ -555,6 +555,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get djNothing => 'Nincs találat – próbálj másik kategóriát.';
 
   @override
+  String get djFailed => 'Nem sikerült összeállítani a mixet – ellenőrizd a kapcsolatot, és próbáld újra.';
+
+  @override
   String get djPickCategory => 'Válassz legalább egy kategóriát';
 
   @override

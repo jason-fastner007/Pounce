@@ -555,6 +555,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get djNothing => 'Không tìm thấy bài phù hợp – thử thể loại khác.';
 
   @override
+  String get djFailed => 'Không tạo được mix – kiểm tra kết nối rồi thử lại.';
+
+  @override
   String get djPickCategory => 'Chọn ít nhất một thể loại';
 
   @override

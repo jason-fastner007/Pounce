@@ -69,7 +69,7 @@
         "description": "Setup: DJ-Kategorie Techno",
         "elementDescriptors": [
           {
-            "contentDescriptionRegex": "(?i).*Techno.*"
+            "contentDescriptionRegex": "(?i)^Techno\\b.*"
           }
         ]
       },
@@ -121,7 +121,7 @@
       },
       {
         "eventType": "VIEW_CLICKED",
-        "optional": true,
+        "optional": false,
         "description": "Tab DJ",
         "elementDescriptors": [
           {
@@ -135,7 +135,7 @@
       },
       {
         "eventType": "VIEW_CLICKED",
-        "optional": true,
+        "optional": false,
         "description": "DJ-Mix starten",
         "elementDescriptors": [
           {
