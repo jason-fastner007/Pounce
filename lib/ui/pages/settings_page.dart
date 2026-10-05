@@ -27,6 +27,7 @@ const _languageNames = {
   'hu': 'Magyar',
   'vi': 'Tiếng Việt',
   'ar': 'العربية',
+  'es': 'Español',
 };
 
 class SettingsPage extends StatelessWidget {
