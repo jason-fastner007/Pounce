@@ -116,7 +116,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyPlaylist => 'This playlist is empty';
 
   @override
-  String get emptyPlaylists => 'Create playlists and add tracks via the ⋮ menu.';
+  String get emptyPlaylists =>
+      'Create playlists and add tracks via the ⋮ menu.';
 
   @override
   String tracksCount(int count) {
@@ -248,10 +249,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get protected => 'Protected';
 
   @override
-  String get protectedHint => 'This track is DRM-protected and can’t be played in Pounce yet – even when signed in';
+  String get protectedHint =>
+      'This track is DRM-protected and can’t be played in Pounce yet – even when signed in';
 
   @override
-  String get protectedPlayable => 'DRM-protected – decrypted by your browser’s DRM module';
+  String get protectedPlayable =>
+      'DRM-protected – decrypted by your browser’s DRM module';
 
   @override
   String get account => 'Account';
@@ -266,7 +269,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signup => 'Create account';
 
   @override
-  String get loginPrivacy => 'You sign in on SoundCloud’s own page. Pounce never sees your password.';
+  String get loginPrivacy =>
+      'You sign in on SoundCloud’s own page. Pounce never sees your password.';
 
   @override
   String get loginWaiting => 'Finish signing in in the browser…';
@@ -329,7 +333,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loudTitle => 'Loudness mode';
 
   @override
-  String get loudDesc => 'Evens out loud and quiet tracks (ITU-R BS.1770) with a built-in limiter against clipping.';
+  String get loudDesc =>
+      'Evens out loud and quiet tracks (ITU-R BS.1770) with a built-in limiter against clipping.';
 
   @override
   String get loudOff => 'Off';
@@ -488,7 +493,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proxy => 'CORS proxy';
 
   @override
-  String get proxyDesc => 'Required in the browser, because SoundCloud only allows its own website.';
+  String get proxyDesc =>
+      'Required in the browser, because SoundCloud only allows its own website.';
 
   @override
   String get about => 'About';
@@ -504,7 +510,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewBadge => 'Preview (30s)';
 
   @override
-  String get previewHint => 'SoundCloud only offers a 30-second preview of this track.';
+  String get previewHint =>
+      'SoundCloud only offers a 30-second preview of this track.';
 
   @override
   String get openInYtMusic => 'Open in YouTube Music';
@@ -513,7 +520,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skipPreviews => 'Skip previews';
 
   @override
-  String get skipPreviewsDesc => 'Skip 30-second previews when the queue moves on';
+  String get skipPreviewsDesc =>
+      'Skip 30-second previews when the queue moves on';
 
   @override
   String get fastStart => 'Fast start';
@@ -602,7 +610,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get radioSource => 'Web radio';
 
   @override
-  String get radioSourceDesc => 'Tens of thousands of stations from radio-browser.info. Off: no requests at all.';
+  String get radioSourceDesc =>
+      'Tens of thousands of stations from radio-browser.info. Off: no requests at all.';
 
   @override
   String get live => 'LIVE';
@@ -646,10 +655,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateReleasePage => 'Release page';
 
   @override
-  String get updateChecksumFailed => 'Checksum mismatch – the download was discarded.';
+  String get updateChecksumFailed =>
+      'Checksum mismatch – the download was discarded.';
 
   @override
-  String get updateNeedsPermission => 'Allow Pounce to install apps, then tap again.';
+  String get updateNeedsPermission =>
+      'Allow Pounce to install apps, then tap again.';
 
   @override
   String get updateFailed => 'Update failed – please try again later.';
@@ -658,13 +669,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beta => 'Beta';
 
   @override
-  String get betaNote => 'Pounce is in beta. Things may change or break – feedback on GitHub is very welcome.';
+  String get betaNote =>
+      'Pounce is in beta. Things may change or break – feedback on GitHub is very welcome.';
 
   @override
   String get setupWelcome => 'Welcome to Pounce';
 
   @override
-  String get setupTagline => 'Fast music from SoundCloud and web radio – with a DJ that mixes for you.';
+  String get setupTagline =>
+      'Fast music from SoundCloud and web radio – with a DJ that mixes for you.';
 
   @override
   String get setupStart => 'Let\'s go';
@@ -685,10 +698,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupSourcesTitle => 'Where should music come from?';
 
   @override
-  String get setupSoundcloudDesc => 'Millions of tracks, mixes and remixes. Always on.';
+  String get setupSoundcloudDesc =>
+      'Millions of tracks, mixes and remixes. Always on.';
 
   @override
-  String get setupRadioDesc => '30,000+ stations via radio-browser.info. Off = no requests at all.';
+  String get setupRadioDesc =>
+      '30,000+ stations via radio-browser.info. Off = no requests at all.';
 
   @override
   String get setupAccountTitle => 'Bring your likes along?';
@@ -704,13 +719,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupDjTitle => 'What does your DJ play?';
 
   @override
-  String get setupDjDesc => 'Pick a few styles. You can change them any time in the DJ tab.';
+  String get setupDjDesc =>
+      'Pick a few styles. You can change them any time in the DJ tab.';
 
   @override
   String get setupPrivacyTitle => 'Your privacy';
 
   @override
-  String get setupPrivacyDesc => 'No tracking, no ads, no device IDs. Everything below is off unless you turn it on.';
+  String get setupPrivacyDesc =>
+      'No tracking, no ads, no device IDs. Everything below is off unless you turn it on.';
 
   @override
   String get setupRecognition => 'Song recognition (Echolot)';
@@ -814,7 +831,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable => 'Not available – estimate from the waveform only';
+  String get engineUnavailable =>
+      'Not available – estimate from the waveform only';
 
   @override
   String get djFlowActiveDesc => 'Automatic phrase & key matching';
