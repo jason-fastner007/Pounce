@@ -43,4 +43,13 @@ void main() {
     expect(hard.matches(t(3, title: 'Unbekannt'), bpm: 155), isTrue);
     expect(hard.matches(t(4, title: 'Unbekannt'), bpm: 124), isFalse);
   });
+
+  test('mix handles candidate pool with null/missing tags and fewer candidates than requested', () {
+    final trackNoTags = t(1, genre: null);
+    final trackEmptyGenre = t(2, genre: '');
+    final mixed = MixBuilder.mix([trackNoTags], [trackEmptyGenre], .5, 10);
+
+    expect(mixed.length, 2);
+    expect(mixed, containsAll([trackNoTags, trackEmptyGenre]));
+  });
 }

@@ -315,6 +315,48 @@ void main() {
     expect(player.sleepAt, isNull);
   });
 
+  test('setSleepTimer(null) cancels running timer', () async {
+    await player.playQueue([_t(1)]);
+    await player.play();
+
+    player.setSleepTimer(const Duration(milliseconds: 200));
+    expect(player.sleepAt, isNotNull);
+
+    player.setSleepTimer(null);
+    expect(player.sleepAt, isNull);
+
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    expect(engine.paused, false);
+  });
+
+  test('next and previous on empty queue or single track queue', () async {
+    // Empty queue
+    expect(player.queue, isEmpty);
+    await player.next();
+    expect(player.current, null);
+    await player.previous();
+    expect(player.current, null);
+
+    // Single track queue
+    await player.playQueue([_t(1)]);
+    expect(player.current!.id, 1);
+    await player.next();
+    expect(player.current!.id, 1);
+    await player.previous();
+    expect(player.current!.id, 1);
+  });
+
+  test('next skips when all remaining tracks in queue are rejected by allow predicate', () async {
+    player.allow = (t) => t.id == 1; // reject all tracks except track 1
+
+    await player.playQueue([_t(1), _t(2), _t(3)]);
+    expect(player.current!.id, 1);
+
+    await player.next();
+    // Tracks 2 and 3 rejected -> stays on track 1 (or reaches end)
+    expect(player.current!.id, 1);
+  });
+
   test('Player state persistence and restoration', () async {
     await player.playQueue([_t(10), _t(11)], 1);
     await player.seek(const Duration(milliseconds: 500));
