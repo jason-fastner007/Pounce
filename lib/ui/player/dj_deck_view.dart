@@ -235,7 +235,7 @@ class DjDeckView extends StatelessWidget {
                       children: [
                         Text(
                           l10n.djEnergiesLive,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: Studio.sans,
                             fontSize: 13.5,
                             fontWeight: FontWeight.w600,
@@ -276,7 +276,7 @@ class DjDeckView extends StatelessWidget {
                   children: [
                     Text(
                       l10n.djEnergyMode,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: Studio.sans,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w600,
@@ -323,7 +323,7 @@ class DjDeckView extends StatelessWidget {
                         children: [
                           Text(
                             l10n.djNextBest,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: Studio.sans,
                               fontSize: 13.5,
                               fontWeight: FontWeight.w600,
@@ -390,7 +390,7 @@ class DjDeckView extends StatelessWidget {
                             ),
                             onPressed: () => dj.triggerMixNow(),
                             icon: const Icon(Icons.flash_on_rounded, size: 16),
-                            label: Text(l10n.djMixNow, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                            label: Text(l10n.djMixNow, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
                           ),
                         ],
                       ),
