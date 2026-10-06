@@ -57,4 +57,14 @@ void main() {
     expect(await s.db.get(Table.kv, 'a'), isNull);
     expect(await s.db.get(Table.kv, 'b'), '{"x":true}');
   });
+
+  test('Store.get handles type mismatch and invalid JSON gracefully', () async {
+    final s = Store.memory()..set('str_key', 'hello');
+    expect(s.get<int>('str_key'), isNull);
+
+    // Set invalid type
+    s.set('num_key', 123);
+    expect(s.get<String>('num_key'), isNull);
+    expect(s.get<int>('num_key'), 123);
+  });
 }

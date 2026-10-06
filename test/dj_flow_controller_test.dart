@@ -155,4 +155,16 @@ void main() {
     expect(controller.lookahead, 30);
     expect(store.get<int>('dj_lookahead'), 30);
   });
+
+  test('triggerMixNow on empty queue or when inactive does not crash', () async {
+    expect(player.queue, isEmpty);
+    // When inactive
+    controller.triggerMixNow();
+    expect(player.current, null);
+
+    // When active but empty queue
+    controller.toggleDjFlow();
+    controller.triggerMixNow();
+    expect(player.current, null);
+  });
 }

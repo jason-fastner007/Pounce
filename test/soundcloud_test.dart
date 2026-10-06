@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,80 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('range throws ScException on HTTP 4xx/5xx status codes', () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('Forbidden', 403);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      expect(() => sc.range('https://cdn.com/audio.mp3', 0, 10), throwsA(isA<ScException>()));
+    });
+
+    test('setLiked handles web auth vs mobile auth', () async {
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Track to Like',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      // 1. Mobile flow
+      var mobileLikeCalled = false;
+      final mobileClient = MockClient((request) async {
+        if (request.url.host == 'api-mobile.soundcloud.com') {
+          mobileLikeCalled = true;
+          return http.Response('', 200);
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final scMobile = SoundCloud(store, settings, client: mobileClient);
+      final mockAuthMobile = ScAuth(store, mobileClient, scMobile.wrap);
+      store.set('auth.access', 'mobile_token');
+      scMobile.auth = mockAuthMobile;
+
+      await scMobile.setLiked(track, true);
+      expect(mobileLikeCalled, isTrue);
+
+      // 2. Web flow
+      var webLikeCalled = false;
+      final webClient = MockClient((request) async {
+        if (request.url.path.contains('/users/50/track_likes/888')) {
+          webLikeCalled = true;
+          return http.Response('', 200);
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final scWeb = SoundCloud(store, settings, client: webClient);
+      final mockAuthWeb = ScAuth(store, webClient, scWeb.wrap);
+      store.set('auth.access', 'web_token');
+      store.set('auth.client', 'web_client_id');
+      mockAuthWeb.setMe(ScUser.fromJson({'id': 50, 'username': 'Me'}));
+      scWeb.auth = mockAuthWeb;
+
+      await scWeb.setLiked(track, true);
+      expect(webLikeCalled, isTrue);
+    });
+
+    test('setLiked throws ScException on HTTP error response', () async {
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Track to Like',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      final errorClient = MockClient((request) async {
+        return http.Response('Server Error', 500);
+      });
+
+      final sc = SoundCloud(store, settings, client: errorClient);
+      final mockAuth = ScAuth(store, errorClient, sc.wrap);
+      store.set('auth.access', 'token');
+      sc.auth = mockAuth;
+
+      expect(() => sc.setLiked(track, true), throwsA(isA<ScException>()));
     });
   });
 }

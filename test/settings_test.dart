@@ -82,6 +82,26 @@ void main() {
       expect(notified, isTrue);
     });
 
+    test('Settings volume persists value to Store', () {
+      settings.volume = 0.5;
+      expect(settings.volume, 0.5);
+      expect(store.get<num>('volume'), 0.5);
+    });
+
+    test('Settings boolean toggle setters persist correctly', () {
+      settings.autoplay = false;
+      expect(settings.autoplay, isFalse);
+      expect(store.get<bool>('autoplay'), isFalse);
+
+      settings.autoCheckUpdates = true;
+      expect(settings.autoCheckUpdates, isTrue);
+      expect(store.get<bool>('autoCheckUpdates'), isTrue);
+
+      settings.setupDone = true;
+      expect(settings.setupDone, isTrue);
+      expect(store.get<bool>('setupDone'), isTrue);
+    });
+
     test('BeatLevel intensity values', () {
       expect(BeatLevel.off.intensity, 0.0);
       expect(BeatLevel.light.intensity, 0.35);
