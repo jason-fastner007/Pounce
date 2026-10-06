@@ -43,45 +43,50 @@ class _MorphPlayButtonState extends State<MorphPlayButton> with SingleTickerProv
     final s = widget.size;
     final accent = Theme.of(context).colorScheme.primary;
     final on = Theme.of(context).colorScheme.onPrimary;
-    return Tooltip(
-      message: p.playing ? context.l10n.pause : context.l10n.play,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTapDown: (_) => setState(() => _down = true),
-          onTapCancel: () => setState(() => _down = false),
-          onTapUp: (_) => setState(() => _down = false),
-          onTap: p.toggle,
-          child: AnimatedScale(
-            scale: _down ? .88 : 1,
-            duration: _down ? Motion.micro : Motion.medium,
-            curve: _down ? Curves.easeOut : Motion.spring,
-            child: AnimatedContainer(
-              duration: Motion.long,
-              curve: Motion.spring,
-              width: s,
-              height: s,
-              decoration: BoxDecoration(
-                color: accent,
-                borderRadius: BorderRadius.circular(s / 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: accent.withValues(alpha: p.playing ? .40 : .25),
-                    blurRadius: s * .45,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnimatedIcon(icon: AnimatedIcons.play_pause, progress: _icon, size: s * .5, color: on),
-                  if (p.loading)
-                    SizedBox.square(
-                      dimension: s * .8,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: on),
+    final label = p.playing ? context.l10n.pause : context.l10n.play;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Tooltip(
+        message: label,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTapDown: (_) => setState(() => _down = true),
+            onTapCancel: () => setState(() => _down = false),
+            onTapUp: (_) => setState(() => _down = false),
+            onTap: p.toggle,
+            child: AnimatedScale(
+              scale: _down ? .88 : 1,
+              duration: _down ? Motion.micro : Motion.medium,
+              curve: _down ? Curves.easeOut : Motion.spring,
+              child: AnimatedContainer(
+                duration: Motion.long,
+                curve: Motion.spring,
+                width: s,
+                height: s,
+                decoration: BoxDecoration(
+                  color: accent,
+                  borderRadius: BorderRadius.circular(s / 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: accent.withValues(alpha: p.playing ? .40 : .25),
+                      blurRadius: s * .45,
+                      offset: const Offset(0, 3),
                     ),
-                ],
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AnimatedIcon(icon: AnimatedIcons.play_pause, progress: _icon, size: s * .5, color: on),
+                    if (p.loading)
+                      SizedBox.square(
+                        dimension: s * .8,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: on),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -106,12 +111,17 @@ class Transport extends StatelessWidget {
       builder: (context, _) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          StudioIcon(
-            Icons.shuffle_rounded,
-            tooltip: l.shuffle,
-            active: p.shuffle,
-            onTap: p.toggleShuffle,
-            size: iconSize,
+          Semantics(
+            button: true,
+            toggled: p.shuffle,
+            label: l.shuffle,
+            child: StudioIcon(
+              Icons.shuffle_rounded,
+              tooltip: l.shuffle,
+              active: p.shuffle,
+              onTap: p.toggleShuffle,
+              size: iconSize,
+            ),
           ),
           const SizedBox(width: Studio.s1),
           StudioIcon(Icons.skip_previous_rounded, tooltip: l.previous, onTap: p.previous, size: iconSize + 4),
@@ -120,16 +130,25 @@ class Transport extends StatelessWidget {
           const SizedBox(width: Studio.s2),
           StudioIcon(Icons.skip_next_rounded, tooltip: l.next, onTap: p.next, size: iconSize + 4),
           const SizedBox(width: Studio.s1),
-          StudioIcon(
-            p.repeat == LoopMode.one ? Icons.repeat_one_rounded : Icons.repeat_rounded,
-            tooltip: switch (p.repeat) {
+          Semantics(
+            button: true,
+            toggled: p.repeat != LoopMode.off,
+            label: switch (p.repeat) {
               LoopMode.off => l.repeatOff,
               LoopMode.all => l.repeatAll,
               LoopMode.one => l.repeatOne,
             },
-            active: p.repeat != LoopMode.off,
-            onTap: p.cycleRepeat,
-            size: iconSize,
+            child: StudioIcon(
+              p.repeat == LoopMode.one ? Icons.repeat_one_rounded : Icons.repeat_rounded,
+              tooltip: switch (p.repeat) {
+                LoopMode.off => l.repeatOff,
+                LoopMode.all => l.repeatAll,
+                LoopMode.one => l.repeatOne,
+              },
+              active: p.repeat != LoopMode.off,
+              onTap: p.cycleRepeat,
+              size: iconSize,
+            ),
           ),
         ],
       ),
@@ -181,25 +200,30 @@ class _VolumeAttenuatorState extends State<VolumeAttenuator> {
                 }
               },
             ),
-            Tooltip(
-              message: '${context.l10n.volume} · ${_db(gain)}',
-              child: Listener(
-                // Mouse wheel = fine steps (1 dB)
-                onPointerSignal: (e) {
-                  if (e is PointerScrollEvent) setPos(pos + (e.scrollDelta.dy < 0 ? 1 : -1) / _range);
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  onEnter: (_) => setState(() => _show = true),
-                  onExit: (_) => setState(() => _show = false),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTapDown: (d) => setPos(d.localPosition.dx / widget.width),
-                    onHorizontalDragUpdate: (d) => setPos(d.localPosition.dx / widget.width),
-                    child: SizedBox(
-                      width: widget.width,
-                      height: 24,
-                      child: CustomPaint(painter: _FaderPainter(pos, accent, _show)),
+            Semantics(
+              slider: true,
+              label: context.l10n.volume,
+              value: _db(gain),
+              child: Tooltip(
+                message: '${context.l10n.volume} · ${_db(gain)}',
+                child: Listener(
+                  // Mouse wheel = fine steps (1 dB)
+                  onPointerSignal: (e) {
+                    if (e is PointerScrollEvent) setPos(pos + (e.scrollDelta.dy < 0 ? 1 : -1) / _range);
+                  },
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    onEnter: (_) => setState(() => _show = true),
+                    onExit: (_) => setState(() => _show = false),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTapDown: (d) => setPos(d.localPosition.dx / widget.width),
+                      onHorizontalDragUpdate: (d) => setPos(d.localPosition.dx / widget.width),
+                      child: SizedBox(
+                        width: widget.width,
+                        height: 24,
+                        child: CustomPaint(painter: _FaderPainter(pos, accent, _show)),
+                      ),
                     ),
                   ),
                 ),
