@@ -460,7 +460,7 @@ class _AsciiSignatureState extends State<AsciiSignature> {
     final cat = [r'  /\_/\   ', _wink ? ' ( ^.^ )  ' : ' ( o.o )  ', r'  > ^ <   ', '          '];
     final mono = Studio.monoStyle(size: 13, color: Studio.text2, weight: 600).copyWith(height: 1.05);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(Studio.s4, Studio.s6 + Studio.s4, Studio.s4, Studio.s6),
+      padding: const EdgeInsetsDirectional.fromSTEB(Studio.s4, Studio.s6 + Studio.s4, Studio.s4, Studio.s6),
       child: Center(
         child: MouseRegion(
           onEnter: (_) => setState(() => _wink = true),
