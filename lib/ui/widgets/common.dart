@@ -36,7 +36,7 @@ class Artwork extends StatelessWidget {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final placeholder = DecoratedBox(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: AlignmentDirectional.topStart,
           end: AlignmentDirectional.bottomEnd,
           colors: [Studio.surfaceHi, Studio.surface],
