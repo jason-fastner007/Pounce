@@ -116,11 +116,17 @@ class AppLocalizationsHu extends AppLocalizations {
   String get emptyPlaylist => 'Ez a lista üres';
 
   @override
-  String get emptyPlaylists => 'Hozz létre listákat, és adj hozzá számokat a ⋮ menüvel.';
+  String get emptyPlaylists =>
+      'Hozz létre listákat, és adj hozzá számokat a ⋮ menüvel.';
 
   @override
   String tracksCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count szám', zero: 'Nincs szám');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count szám',
+      zero: 'Nincs szám',
+    );
     return '$_temp0';
   }
 
@@ -242,10 +248,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get protected => 'Védett';
 
   @override
-  String get protectedHint => 'Ez a szám DRM-védett, és a Pounce még nem tudja lejátszani – bejelentkezve sem';
+  String get protectedHint =>
+      'Ez a szám DRM-védett, és a Pounce még nem tudja lejátszani – bejelentkezve sem';
 
   @override
-  String get protectedPlayable => 'DRM-védett – a böngésző DRM-modulja oldja fel';
+  String get protectedPlayable =>
+      'DRM-védett – a böngésző DRM-modulja oldja fel';
 
   @override
   String get account => 'Fiók';
@@ -254,13 +262,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get login => 'Bejelentkezés SoundClouddal';
 
   @override
-  String get loginSubtitle => 'Kedvelések, listák és a hírfolyam szinkronizálása';
+  String get loginSubtitle =>
+      'Kedvelések, listák és a hírfolyam szinkronizálása';
 
   @override
   String get signup => 'Fiók létrehozása';
 
   @override
-  String get loginPrivacy => 'A bejelentkezés a SoundCloud oldalán történik. A Pounce sosem látja a jelszavadat.';
+  String get loginPrivacy =>
+      'A bejelentkezés a SoundCloud oldalán történik. A Pounce sosem látja a jelszavadat.';
 
   @override
   String get loginWaiting => 'Fejezd be a bejelentkezést a böngészőben…';
@@ -294,7 +304,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get logout => 'Kijelentkezés';
 
   @override
-  String get logoutConfirm => 'Kijelentkezel? A kedveléseid megmaradnak ezen az eszközön.';
+  String get logoutConfirm =>
+      'Kijelentkezel? A kedveléseid megmaradnak ezen az eszközön.';
 
   @override
   String get homeStream => 'Hírfolyamod';
@@ -407,7 +418,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get beatBg => 'Háttér az ütemre';
 
   @override
-  String get beatBgDesc => 'A színek minden észlelt ütemre lüktetnek és váltanak';
+  String get beatBgDesc =>
+      'A színek minden észlelt ütemre lüktetnek és váltanak';
 
   @override
   String get beatLight => 'Enyhe';
@@ -482,13 +494,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get proxy => 'CORS-proxy';
 
   @override
-  String get proxyDesc => 'Böngészőben szükséges, mert a SoundCloud csak a saját oldalát engedi.';
+  String get proxyDesc =>
+      'Böngészőben szükséges, mert a SoundCloud csak a saját oldalát engedi.';
 
   @override
   String get about => 'Névjegy';
 
   @override
-  String get aboutText => 'A KittyTune (alan7383) ihlette, Flutterben az alapoktól megírva. Szabad szoftver, GPL-3.0.';
+  String get aboutText =>
+      'A KittyTune (alan7383) ihlette, Flutterben az alapoktól megírva. Szabad szoftver, GPL-3.0.';
 
   @override
   String get licenses => 'Nyílt forráskódú licencek';
@@ -497,7 +511,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get previewBadge => 'Előnézet (30 mp)';
 
   @override
-  String get previewHint => 'A SoundCloud ebből a számból csak 30 másodperces előnézetet kínál.';
+  String get previewHint =>
+      'A SoundCloud ebből a számból csak 30 másodperces előnézetet kínál.';
 
   @override
   String get openInYtMusic => 'Megnyitás a YouTube Musicban';
@@ -506,7 +521,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get skipPreviews => 'Előnézetek kihagyása';
 
   @override
-  String get skipPreviewsDesc => 'A 30 másodperces előnézetek kihagyása a lejátszási sor léptetésekor';
+  String get skipPreviewsDesc =>
+      'A 30 másodperces előnézetek kihagyása a lejátszási sor léptetésekor';
 
   @override
   String get fastStart => 'Gyorsindítás';
@@ -595,7 +611,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get radioSource => 'Webrádió';
 
   @override
-  String get radioSourceDesc => 'Több tízezer adó a radio-browser.info-ról. Kikapcsolva: egyetlen kérés sem.';
+  String get radioSourceDesc =>
+      'Több tízezer adó a radio-browser.info-ról. Kikapcsolva: egyetlen kérés sem.';
 
   @override
   String get live => 'ÉLŐ';
@@ -639,10 +656,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get updateReleasePage => 'Kiadás oldala';
 
   @override
-  String get updateChecksumFailed => 'Hibás ellenőrzőösszeg – a letöltés törölve.';
+  String get updateChecksumFailed =>
+      'Hibás ellenőrzőösszeg – a letöltés törölve.';
 
   @override
-  String get updateNeedsPermission => 'Engedélyezd a Pounce-nak az alkalmazások telepítését, majd koppints újra.';
+  String get updateNeedsPermission =>
+      'Engedélyezd a Pounce-nak az alkalmazások telepítését, majd koppints újra.';
 
   @override
   String get updateFailed => 'A frissítés sikertelen – próbáld később.';
@@ -658,7 +677,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get setupWelcome => 'Üdv a Pounce-ban';
 
   @override
-  String get setupTagline => 'Gyors zene SoundCloudról és webrádióból – egy DJ-vel, aki neked keverget.';
+  String get setupTagline =>
+      'Gyors zene SoundCloudról és webrádióból – egy DJ-vel, aki neked keverget.';
 
   @override
   String get setupStart => 'Kezdjük';
@@ -679,10 +699,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get setupSourcesTitle => 'Honnan jöjjön a zene?';
 
   @override
-  String get setupSoundcloudDesc => 'Milliónyi szám, mix és remix. Mindig be van kapcsolva.';
+  String get setupSoundcloudDesc =>
+      'Milliónyi szám, mix és remix. Mindig be van kapcsolva.';
 
   @override
-  String get setupRadioDesc => 'Több mint 30 000 állomás a radio-browser.info-n keresztül. Ki = egyetlen kérés sem.';
+  String get setupRadioDesc =>
+      'Több mint 30 000 állomás a radio-browser.info-n keresztül. Ki = egyetlen kérés sem.';
 
   @override
   String get setupAccountTitle => 'Hozod a kedvenceidet?';
@@ -698,7 +720,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get setupDjTitle => 'Mit játsszon a DJ-d?';
 
   @override
-  String get setupDjDesc => 'Válassz néhány stílust. A DJ fülön bármikor módosíthatod.';
+  String get setupDjDesc =>
+      'Válassz néhány stílust. A DJ fülön bármikor módosíthatod.';
 
   @override
   String get setupPrivacyTitle => 'Az adataid';
@@ -770,7 +793,11 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String syncPeers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count eszköz párosítva');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eszköz párosítva',
+    );
     return '$_temp0';
   }
 
@@ -804,7 +831,8 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable => 'Nem elérhető – csak becslés a hullámformából';
+  String get engineUnavailable =>
+      'Nem elérhető – csak becslés a hullámformából';
 
   @override
   String get djFlowActiveDesc => 'Automatikus frázis- és hangnemillesztés';

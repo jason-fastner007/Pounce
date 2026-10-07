@@ -10,5 +10,17 @@ analyzer:
     - macos/**
     - linux/**
 
-formatter:
-  page_width: 120
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - unnecessary_const
+    - avoid_unnecessary_containers
+    - prefer_final_locals
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - prefer_iterable_whereType
+    - unnecessary_string_interpolations
+    - unnecessary_nullable_for_final_variable_declarations
