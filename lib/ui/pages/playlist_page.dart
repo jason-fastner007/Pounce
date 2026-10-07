@@ -163,7 +163,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   )
                 : Artwork(art, size: artSize, radius: 16),
           ),
-          SizedBox(width: 24, height: 16),
+          const SizedBox(width: 24, height: 16),
           Flexible(
             child: Column(
               crossAxisAlignment: wide ? CrossAxisAlignment.start : CrossAxisAlignment.center,

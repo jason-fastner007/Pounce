@@ -114,10 +114,10 @@ void main() {
     });
 
     test('live streams return null without attempting analysis', () async {
-      final liveTrack = Track(
+      const liveTrack = Track(
         id: 99,
         title: 'Live Radio',
-        user: const ScUser(id: 1, username: 'radio'),
+        user: ScUser(id: 1, username: 'radio'),
         durationMs: 0,
         streamUrl: 'https://radio.stream/live',
       );
