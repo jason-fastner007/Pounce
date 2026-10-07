@@ -6,6 +6,7 @@ import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
 import 'package:pounce/dj/beat_analyzer.dart';
+import 'package:pounce/dj/camelot_key.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -58,6 +59,45 @@ void main() {
     test('returns null if no hint found', () {
       final plain = _track(id: 7, title: 'Normal Pop Song');
       expect(BeatAnalyzer.extractBpmHint(plain), isNull);
+    });
+
+    test('extracts bpm from various title regex formats', () {
+      final t1 = _track(id: 8, title: 'Fast Track 175bpm');
+      expect(BeatAnalyzer.extractBpmHint(t1), 175.0);
+
+      final t2 = _track(id: 9, title: 'Techno 140.5 bpm');
+      expect(BeatAnalyzer.extractBpmHint(t2), 140.5);
+
+      final t3 = _track(id: 10, title: 'House Track 124 BPM');
+      expect(BeatAnalyzer.extractBpmHint(t3), 124.0);
+    });
+  });
+
+  group('BeatInfo serialization', () {
+    test('BeatInfo toJson and fromJson roundtrip', () {
+      const info = BeatInfo(
+        bpm: 128.0,
+        firstBeatOffsetMs: 250,
+        confidence: 0.95,
+        phraseOffsetMs: 500,
+        downbeatOffsetMs: 250,
+        cueMs: 4000,
+        dropMs: 32000,
+        key: CamelotKey.key8A,
+        source: BeatSource.pcm,
+      );
+
+      final json = info.toJson();
+      final restored = BeatInfo.fromJson(json);
+
+      expect(restored, isNotNull);
+      expect(restored!.bpm, 128.0);
+      expect(restored.firstBeatOffsetMs, 250);
+      expect(restored.confidence, 0.95);
+      expect(restored.cueMs, 4000);
+      expect(restored.dropMs, 32000);
+      expect(restored.key, CamelotKey.key8A);
+      expect(restored.source, BeatSource.pcm);
     });
   });
 

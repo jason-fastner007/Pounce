@@ -313,6 +313,44 @@ void main() {
     await Future<void>.delayed(const Duration(milliseconds: 100));
     expect(engine.paused, true);
     expect(player.sleepAt, isNull);
+
+    // setSleepTimer(null) cancels sleep timer
+    player.setSleepTimer(const Duration(hours: 1));
+    expect(player.sleepAt, isNotNull);
+    player.setSleepTimer(null);
+    expect(player.sleepAt, isNull);
+  });
+
+  test('Live track properties, seek guard, and toggle play/pause', () async {
+    final liveTrack = _t(100, isLive: true);
+    await player.playQueue([liveTrack]);
+
+    expect(player.isLive, isTrue);
+    expect(player.duration, Duration.zero);
+
+    // Seek on live stream does not invoke engine seek
+    await player.seek(const Duration(seconds: 10));
+    expect(engine.seekedTo, isNull);
+
+    // Toggle play/pause
+    await player.toggle();
+    expect(engine.played, isTrue);
+  });
+
+  test('LoudMode enum lufs values', () {
+    expect(LoudMode.off.lufs, isNull);
+    expect(LoudMode.quiet.lufs, -19);
+    expect(LoudMode.normal.lufs, -14);
+    expect(LoudMode.loud.lufs, -11);
+  });
+
+  test('removeAt current index returns early without removing', () async {
+    await player.playQueue([_t(1), _t(2), _t(3)], 1);
+    expect(player.index, 1);
+
+    player.removeAt(1); // removing current track index
+    expect(player.queue.length, 3);
+    expect(player.index, 1);
   });
 
   test('Player state persistence and restoration', () async {

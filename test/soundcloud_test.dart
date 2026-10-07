@@ -554,5 +554,127 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('ScException toString and HTTP error response handling', () async {
+      final exc = ScException('Not found', 404);
+      expect(exc.toString(), 'ScException(404): Not found');
+
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path == '/tracks/999999') {
+          return http.Response('Internal Error', 500);
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      expect(() => sc.track(999999), throwsA(isA<ScException>()));
+    });
+
+    test('blocked track throws 451 ScException on stream resolution', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final sc = SoundCloud(store, settings, client: MockClient((_) async => http.Response('OK', 200)));
+
+      final blockedTrack = Track.fromJson({
+        'id': 888,
+        'title': 'Blocked Track',
+        'policy': 'BLOCK',
+        'track_authorization': 'auth_123',
+        'user': {'id': 1, 'username': 'Artist'},
+        'media': {
+          'transcodings': [
+            {
+              'url': 'https://api-v2.soundcloud.com/transcodings/hls',
+              'preset': 'mp3_128k',
+              'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+            }
+          ]
+        }
+      });
+
+      expect(() => sc.stream(blockedTrack), throwsA(isA<ScException>()));
+    });
+
+    test('userTracks, userTopTracks and userPlaylists endpoints', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/10/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 1,
+                  'title': 'User Track',
+                  'duration': 100000,
+                  'user': {'id': 10, 'username': 'Artist'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/10/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 2,
+                  'title': 'Top Track',
+                  'duration': 120000,
+                  'user': {'id': 10, 'username': 'Artist'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/10/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 3,
+                  'title': 'User Playlist',
+                  'user': {'id': 10, 'username': 'Artist'},
+                  'tracks': [],
+                }
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final userTracksPage = await sc.userTracks(10);
+      expect(userTracksPage.items.first.title, 'User Track');
+
+      final topTracksPage = await sc.userTopTracks(10);
+      expect(topTracksPage.items.first.title, 'Top Track');
+
+      final userPlaylistsPage = await sc.userPlaylists(10);
+      expect(userPlaylistsPage.items.first.title, 'User Playlist');
+    });
+
+    test('StreamInfo.label formats codecs and presets correctly', () {
+      const infoLive = StreamInfo('http://live', hls: true, live: true);
+      expect(infoLive.label, 'LIVE · HLS');
+
+      const infoMp3 = StreamInfo('http://mp3', hls: false, mime: 'audio/mpeg', preset: 'mp3_128k');
+      expect(infoMp3.label, 'MP3 · 128k · PROG');
+
+      const infoAac = StreamInfo('http://aac', hls: true, mime: 'audio/mp4', preset: 'aac_160k', licenseToken: 'jwt');
+      expect(infoAac.label, 'AAC · 160k · HLS · DRM');
+
+      const infoOpus = StreamInfo('http://opus', hls: false, mime: 'audio/ogg', preset: 'opus_160k');
+      expect(infoOpus.label, 'OPUS · 160k · PROG');
+    });
   });
 }
