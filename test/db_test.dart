@@ -6,9 +6,18 @@ import 'package:pounce/core/db_io.dart';
 import 'package:pounce/core/store.dart';
 import 'package:sqlite3/sqlite3.dart' as sql;
 
+import 'package:flutter/services.dart';
+
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late Directory dir;
-  setUp(() async => dir = await Directory.systemTemp.createTemp('kfdb'));
+  setUp(() async {
+    dir = await Directory.systemTemp.createTemp('kfdb');
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/path_provider'),
+      (MethodCall methodCall) async => dir.path,
+    );
+  });
   tearDown(() => dir.delete(recursive: true));
 
   Db open() => SqliteDb(sql.sqlite3.open('${dir.path}/pounce.db'), dir.path);
@@ -56,5 +65,30 @@ void main() {
     expect(s.get<int>('a'), isNull);
     expect(await s.db.get(Table.kv, 'a'), isNull);
     expect(await s.db.get(Table.kv, 'b'), '{"x":true}');
+  });
+
+  test('Store: handles type mismatch and invalid raw JSON gracefully', () async {
+    final db = open();
+    await db.write(Table.kv, {
+      'badJson': '{invalid_json}',
+      'strVal': '"hello"',
+      'numVal': '123',
+    });
+    final s = await Store.open();
+    // Invalid JSON returns null
+    expect(s.get<Map>('badJson'), isNull);
+    // Type mismatch returns null
+    expect(s.get<int>('strVal'), isNull);
+    // Correct type returns value
+    expect(s.get<String>('strVal'), 'hello');
+    expect(s.get<int>('numVal'), 123);
+  });
+
+  test('Store: handles legacy migration corrupted json', () async {
+    final db = open();
+    await db.write(Table.kv, {});
+    File('${dir.path}/kittyfork.json').writeAsStringSync('{corrupted json format');
+    final s = await Store.open();
+    expect(s.get<String>('anything'), isNull);
   });
 }

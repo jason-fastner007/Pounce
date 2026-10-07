@@ -145,6 +145,41 @@ void main() {
       expect(buildMatch.score, greaterThan(80.0));
       expect(windMatch.score, greaterThan(80.0));
     });
+
+    test('scoreCandidate applies energy level deltas and missing BPM fallbacks', () {
+      final tr = mockTrack(4);
+      final matchNoBpm = HarmonicMixer.scoreCandidate(
+        currentBpm: 0,
+        currentKey: null,
+        candidateTrack: tr,
+        candidateBpm: 0,
+        candidateKey: null,
+      );
+
+      expect(matchNoBpm.score, closeTo(50.0, 1.0));
+      expect(matchNoBpm.matchDescription, 'Candidate');
+
+      // Energy shifts
+      final buildWithEnergy = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 126.0,
+        candidateKey: CamelotKey.key8A,
+        mode: EnergyMode.buildUp,
+        currentEnergy: 5,
+        candidateEnergy: 8,
+      );
+      expect(buildWithEnergy.score, greaterThan(90.0));
+    });
+
+    test('TransitionStyle properties are populated', () {
+      for (final style in TransitionStyle.values) {
+        expect(style.title, isNotEmpty);
+        expect(style.description, isNotEmpty);
+        expect(style.defaultPhraseBeats, greaterThan(0));
+      }
+    });
   });
 
   group('DjFlowController components & mixEntry tests', () {
