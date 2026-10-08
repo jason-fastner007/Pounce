@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,93 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('range throws ScException on HTTP status error', () async {
+      final mockClient = MockClient((request) async {
+        return http.Response('Error', 500);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      expect(() => sc.range('https://cdn.com/audio.mp3', 0, 10), throwsA(isA<ScException>()));
+    });
+
+    test('next() pagination fetches next page', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        expect(request.url.path, '/search/tracks');
+        expect(request.url.queryParameters['offset'], '30');
+        return http.Response(
+          jsonEncode({
+            'collection': [
+              {
+                'id': 102,
+                'title': 'Track Page 2',
+                'duration': 180000,
+                'user': {'id': 1, 'username': 'Artist 1'},
+              }
+            ],
+            'next_href': null,
+          }),
+          200,
+        );
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final page = await sc.next('https://api-v2.soundcloud.com/search/tracks?offset=30', Track.fromJson);
+      expect(page.items.length, 1);
+      expect(page.items.first.title, 'Track Page 2');
+      expect(page.next, isNull);
+    });
+
+    test('setLiked handles mobile endpoint and web client endpoint', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      bool mobileCalled = false;
+      bool webCalled = false;
+
+      final mockClient = MockClient((request) async {
+        if (request.url.host == 'api-mobile.soundcloud.com') {
+          mobileCalled = true;
+          expect(request.url.path, '/likes/tracks/create');
+          return http.Response('', 200);
+        } else if (request.url.path.contains('/track_likes/')) {
+          webCalled = true;
+          expect(request.method, 'PUT');
+          return http.Response('', 200);
+        }
+        return http.Response('OK', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final auth = ScAuth(store, mockClient, sc.wrap);
+      sc.auth = auth;
+
+      final testTrack = Track.fromJson({
+        'id': 55,
+        'title': 'Test',
+        'user': {'id': 1, 'username': 'U'},
+      });
+
+      // 1. Mobile like (when auth.usesWebClient is false)
+      store.set('auth.access', 'token123');
+      await sc.setLiked(testTrack, true);
+      expect(mobileCalled, isTrue);
+
+      // 2. Web like (when auth.usesWebClient is true and me is set)
+      store.set('auth.client', 'WEBCLIENT');
+      auth.setMe(const ScUser(id: 99, username: 'webuser'));
+
+      await sc.setLiked(testTrack, true);
+      expect(webCalled, isTrue);
+    });
+
+    test('ScException toString includes status and message', () {
+      final ex = ScException('Not found', 404);
+      expect(ex.toString(), 'ScException(404): Not found');
     });
   });
 }
