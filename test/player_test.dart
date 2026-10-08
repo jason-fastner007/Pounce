@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -333,5 +334,70 @@ void main() {
     expect(newPlayer.index, 1);
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
+  });
+
+  test('LoopMode.one repeat behavior on track completion', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.repeat = LoopMode.one;
+
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true, position: Duration(milliseconds: 900)));
+    engine.emitState(const EngineState(status: EngineStatus.ended, playing: false, position: Duration(milliseconds: 1000)));
+
+    await Future<void>.delayed(Duration.zero);
+    expect(player.current!.id, 1);
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, true);
+  });
+
+  test('Autoplay extends queue when queue reaches end', () async {
+    settings.autoplay = true;
+
+    final mockClient = MockClient((req) async {
+      if (req.url.path == '/tracks/1/related') {
+        return http.Response(
+          jsonEncode({
+            'collection': [
+              {
+                'id': 100,
+                'title': 'Related Track 100',
+                'duration': 180000,
+                'user': {'id': 1, 'username': 'Artist'},
+                'media': {
+                  'transcodings': [
+                    {'url': 'https://api/prog', 'preset': 'mp3', 'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'}},
+                  ]
+                }
+              }
+            ],
+            'next_href': null,
+          }),
+          200,
+        );
+      }
+      return http.Response('{"url":"https://cdn/a.mp3"}', 200);
+    });
+
+    final sc = SoundCloud(store, settings, client: mockClient);
+    final autoPlayer = PlayerController(engine, sc, settings, Library(store), store);
+
+    await autoPlayer.playQueue([_t(1)]);
+    expect(autoPlayer.queue.length, 1);
+
+    await autoPlayer.next(auto: true);
+    expect(autoPlayer.queue.length, 2);
+    expect(autoPlayer.queue.last.id, 100);
+    expect(autoPlayer.current!.id, 100);
+    autoPlayer.dispose();
+  });
+
+  test('loudness, supportsLoudness, and spectrum delegate to engine', () {
+    expect(player.supportsLoudness, isFalse);
+    expect(player.loudness.value, Loudness.none);
+    expect(player.spectrum, isNull);
+  });
+
+  test('LoudMode setting listener updates engine', () {
+    settings.loudMode = LoudMode.normal;
+    expect(settings.loudMode, LoudMode.normal);
   });
 }

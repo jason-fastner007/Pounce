@@ -116,4 +116,44 @@ void main() {
     expect(auth.usesWebClient, isTrue);
     expect((await sc.me()).username, 'web');
   });
+
+  test('complete throws AuthException on invalid callback or no pending login', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    // Invalid callback
+    expect(() => auth.complete('sc://auth?error=access_denied'), throwsA(isA<AuthException>()));
+
+    // Valid code but no verifier in store
+    expect(() => auth.complete('sc://auth?code=CODE123'), throwsA(isA<AuthException>()));
+  });
+
+  test('logout clears store keys and sets me to null', () {
+    final store = Store.memory();
+    store.set('auth.access', 'acc');
+    store.set('auth.refresh', 'ref');
+    store.set('auth.me', {'id': 10, 'username': 'test'});
+
+    final auth = ScAuth(store, http.Client(), (u) => u);
+    expect(auth.loggedIn, isTrue);
+    expect(auth.me?.id, 10);
+
+    auth.logout();
+
+    expect(auth.loggedIn, isFalse);
+    expect(auth.me, isNull);
+    expect(store.get<String>('auth.access'), isNull);
+    expect(store.get<String>('auth.refresh'), isNull);
+  });
+
+  test('deviceId returns persistent random string', () {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    final id1 = auth.deviceId;
+    expect(id1.length, 32);
+
+    final id2 = auth.deviceId;
+    expect(id1, id2);
+  });
 }
