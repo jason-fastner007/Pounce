@@ -294,103 +294,108 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
 
   Widget _mini(BuildContext context, Track track, double travel) {
     final l = context.l10n;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () => _animateTo(1),
-      onVerticalDragStart: (_) => _measure(),
-      onVerticalDragUpdate: (d) => _dragUpdate(d, travel),
-      onVerticalDragEnd: (d) => _dragEnd(d, travel),
-      // Swipe sideways = next/previous track.
-      onHorizontalDragEnd: (d) {
-        final v = d.primaryVelocity ?? 0;
-        if (v.abs() < 300) return;
-        final forward = (v < 0) != (Directionality.of(context) == TextDirection.rtl);
-        forward ? _skip(context) : _player.previous();
-      },
-      child: Stack(
-        children: [
-          // Live spectrum behind title and buttons: shows what's audible right now. Fixed area,
-          // so no layout shift; IgnorePointer so tap/swipe stay unchanged.
-          const PositionedDirectional(
-            start: 10 + _miniArt + 6,
-            end: 12,
-            top: 10,
-            bottom: 6,
-            child: IgnorePointer(child: SpectrumBars(height: 52, bars: 40, opacity: .22)),
-          ),
-          Row(
-            children: [
-              const SizedBox(width: 10 + _miniArt + 12),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: Motion.medium,
-                  layoutBuilder: (cur, prev) =>
-                      Stack(alignment: AlignmentDirectional.centerStart, children: [...prev, ?cur]),
-                  transitionBuilder: (child, a) => FadeTransition(
-                    opacity: a,
-                    child: SlideTransition(
-                      position: Tween(
-                        begin: const Offset(0, .4),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(parent: a, curve: Motion.decelerate)),
-                      child: child,
+    return Semantics(
+      button: true,
+      label: '${track.title}, ${track.user.username}',
+      hint: l.nowPlaying,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _animateTo(1),
+        onVerticalDragStart: (_) => _measure(),
+        onVerticalDragUpdate: (d) => _dragUpdate(d, travel),
+        onVerticalDragEnd: (d) => _dragEnd(d, travel),
+        // Swipe sideways = next/previous track.
+        onHorizontalDragEnd: (d) {
+          final v = d.primaryVelocity ?? 0;
+          if (v.abs() < 300) return;
+          final forward = (v < 0) != (Directionality.of(context) == TextDirection.rtl);
+          forward ? _skip(context) : _player.previous();
+        },
+        child: Stack(
+          children: [
+            // Live spectrum behind title and buttons: shows what's audible right now. Fixed area,
+            // so no layout shift; IgnorePointer so tap/swipe stay unchanged.
+            const PositionedDirectional(
+              start: 10 + _miniArt + 6,
+              end: 12,
+              top: 10,
+              bottom: 6,
+              child: IgnorePointer(child: SpectrumBars(height: 52, bars: 40, opacity: .22)),
+            ),
+            Row(
+              children: [
+                const SizedBox(width: 10 + _miniArt + 12),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: Motion.medium,
+                    layoutBuilder: (cur, prev) =>
+                        Stack(alignment: AlignmentDirectional.centerStart, children: [...prev, ?cur]),
+                    transitionBuilder: (child, a) => FadeTransition(
+                      opacity: a,
+                      child: SlideTransition(
+                        position: Tween(
+                          begin: const Offset(0, .4),
+                          end: Offset.zero,
+                        ).animate(CurvedAnimation(parent: a, curve: Motion.decelerate)),
+                        child: child,
+                      ),
+                    ),
+                    child: Column(
+                      key: ValueKey(track.id),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          track.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: Studio.sans,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w600,
+                            color: Studio.text,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        NowArtist(
+                          track: track,
+                          style: const TextStyle(
+                            fontFamily: Studio.sans,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Studio.text2,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    key: ValueKey(track.id),
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        track.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: Studio.sans,
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w600,
-                          color: Studio.text,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      NowArtist(
-                        track: track,
-                        style: const TextStyle(
-                          fontFamily: Studio.sans,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Studio.text2,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-              _PlayPauseIcon(player: _player, tooltipPlay: l.play, tooltipPause: l.pause),
-              IconButton(tooltip: l.next, onPressed: () => _skip(context), icon: const Icon(Icons.skip_next_rounded)),
-              const SizedBox(width: 4),
-            ],
-          ),
-          // Thin progress line.
-          PositionedDirectional(
-            start: 16,
-            end: 16,
-            bottom: 0,
-            height: 3,
-            child: ValueListenableBuilder<Duration>(
-              valueListenable: _player.position,
-              builder: (_, pos, _) {
-                final total = _player.duration.inMilliseconds;
-                return LinearProgressIndicator(
-                  value: total == 0 ? 0 : (pos.inMilliseconds / total).clamp(0, 1),
-                  minHeight: 3,
-                  borderRadius: BorderRadius.circular(2),
-                  backgroundColor: Colors.transparent,
-                );
-              },
+                _PlayPauseIcon(player: _player, tooltipPlay: l.play, tooltipPause: l.pause),
+                IconButton(tooltip: l.next, onPressed: () => _skip(context), icon: const Icon(Icons.skip_next_rounded)),
+                const SizedBox(width: 4),
+              ],
             ),
-          ),
-        ],
+            // Thin progress line.
+            PositionedDirectional(
+              start: 16,
+              end: 16,
+              bottom: 0,
+              height: 3,
+              child: ValueListenableBuilder<Duration>(
+                valueListenable: _player.position,
+                builder: (_, pos, _) {
+                  final total = _player.duration.inMilliseconds;
+                  return LinearProgressIndicator(
+                    value: total == 0 ? 0 : (pos.inMilliseconds / total).clamp(0, 1),
+                    minHeight: 3,
+                    borderRadius: BorderRadius.circular(2),
+                    backgroundColor: Colors.transparent,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -501,43 +506,47 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
             if (!state.isActive || _pane == _Pane.dj) return const SizedBox(height: 16);
             return Padding(
               padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
-              child: GestureDetector(
-                onTap: () => _setPane(_Pane.dj),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: .12),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary.withValues(alpha: .3),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _BeatPulseDot(
-                        player: context.deps.player,
-                        bpm: state.currentBpm > 0 ? state.currentBpm : 125.0,
-                        firstBeatOffsetMs:
-                            dj.currentBeatInfo?.downbeatOffsetMs ?? dj.currentBeatInfo?.firstBeatOffsetMs ?? 0,
-                        color: Theme.of(context).colorScheme.primary,
+              child: Semantics(
+                button: true,
+                label: 'DJ Flow Deck',
+                child: GestureDetector(
+                  onTap: () => _setPane(_Pane.dj),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary.withValues(alpha: .12),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary.withValues(alpha: .3),
                       ),
-                      const SizedBox(width: 8),
-                      ValueListenableBuilder<BeatClock>(
-                        valueListenable: dj.beat,
-                        builder: (context, b, _) => Text(
-                          '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
-                          style: TextStyle(
-                            fontFamily: Studio.mono,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _BeatPulseDot(
+                          player: context.deps.player,
+                          bpm: state.currentBpm > 0 ? state.currentBpm : 125.0,
+                          firstBeatOffsetMs:
+                              dj.currentBeatInfo?.downbeatOffsetMs ?? dj.currentBeatInfo?.firstBeatOffsetMs ?? 0,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        ValueListenableBuilder<BeatClock>(
+                          valueListenable: dj.beat,
+                          builder: (context, b, _) => Text(
+                            '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
+                            style: TextStyle(
+                              fontFamily: Studio.mono,
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 6),
-                      const Icon(Icons.chevron_right_rounded, size: 16, color: Studio.text3),
-                    ],
+                        const SizedBox(width: 6),
+                        const Icon(Icons.chevron_right_rounded, size: 16, color: Studio.text3),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -586,7 +595,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 24, 24),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 24),
                     child: _SidePanel(track: track),
                   ),
                 ),
@@ -704,7 +713,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
@@ -901,15 +910,20 @@ class _BottomActions extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('${c.l10n.speed} · ${player.speed.toStringAsFixed(2)}×', style: Theme.of(c).textTheme.titleLarge),
-                Slider(
-                  value: player.speed,
-                  min: .5,
-                  max: 2,
-                  divisions: 30,
-                  onChanged: (v) {
-                    player.setSpeed(double.parse(v.toStringAsFixed(2)));
-                    set(() {});
-                  },
+                Semantics(
+                  slider: true,
+                  label: c.l10n.speed,
+                  value: '${player.speed.toStringAsFixed(2)}x',
+                  child: Slider(
+                    value: player.speed,
+                    min: .5,
+                    max: 2,
+                    divisions: 30,
+                    onChanged: (v) {
+                      player.setSpeed(double.parse(v.toStringAsFixed(2)));
+                      set(() {});
+                    },
+                  ),
                 ),
                 Wrap(
                   spacing: 8,

@@ -52,7 +52,7 @@ class _SetupPageState extends State<SetupPage> {
               children: [
                 // Progress + skip
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 8, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 8, 0),
                   child: Row(
                     children: [
                       for (var i = 0; i < _count; i++)

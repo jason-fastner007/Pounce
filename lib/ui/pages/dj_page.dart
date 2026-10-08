@@ -81,7 +81,12 @@ class DjPage extends StatelessWidget {
                 child: _Panel(
                   child: Column(
                     children: [
-                      Slider(value: mix.discovery, divisions: 10, onChanged: (v) => mix.discovery = v),
+                      Semantics(
+                        slider: true,
+                        label: '${l.djFavorites} / ${l.djDiscover}',
+                        value: '${((1 - mix.discovery) * 100).round()}% / ${(mix.discovery * 100).round()}%',
+                        child: Slider(value: mix.discovery, divisions: 10, onChanged: (v) => mix.discovery = v),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(

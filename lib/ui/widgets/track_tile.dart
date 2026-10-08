@@ -44,20 +44,23 @@ class TrackTile extends StatelessWidget {
           cursor: SystemMouseCursors.click,
           builder: (context, hover) => WarmOnTouch(
             track: track,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              // Only check on tap: DRM detection may finish after the build.
-              onTap: () => track.playable
-                  ? onTap()
-                  : (ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(SnackBar(content: Text(l.protectedHint)))),
-              onLongPress: () {
-                d.player.cool(track);
-                showTrackActions(context, track, playlist: playlist);
-              },
-              onSecondaryTap: () => showTrackActions(context, track, playlist: playlist),
-              child: AnimatedContainer(
+            child: Semantics(
+              button: true,
+              label: '${track.title}, ${track.user.username}',
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                // Only check on tap: DRM detection may finish after the build.
+                onTap: () => track.playable
+                    ? onTap()
+                    : (ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(content: Text(l.protectedHint)))),
+                onLongPress: () {
+                  d.player.cool(track);
+                  showTrackActions(context, track, playlist: playlist);
+                },
+                onSecondaryTap: () => showTrackActions(context, track, playlist: playlist),
+                child: AnimatedContainer(
                 duration: Motion.short,
                 height: Studio.row,
                 margin: const EdgeInsets.symmetric(horizontal: Studio.s2, vertical: 1),
@@ -208,6 +211,7 @@ class TrackTile extends StatelessWidget {
               ),
             ),
           ),
+        ),
         );
       },
     );

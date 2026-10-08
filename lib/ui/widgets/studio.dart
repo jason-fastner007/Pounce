@@ -260,15 +260,19 @@ class Segments<T> extends StatelessWidget {
                 children: [
                   for (final v in values)
                     Expanded(
-                      child: _MaybeTooltip(
-                        message: tooltip?.call(v),
-                        child: MouseRegion(
-                          cursor: onChanged == null ? SystemMouseCursors.basic : SystemMouseCursors.click,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: onChanged == null ? null : () => onChanged!(v),
-                            child: Center(
-                              child: AnimatedDefaultTextStyle(
+                      child: Semantics(
+                        button: true,
+                        selected: v == selected,
+                        label: tooltip?.call(v) ?? label(v),
+                        child: _MaybeTooltip(
+                          message: tooltip?.call(v),
+                          child: MouseRegion(
+                            cursor: onChanged == null ? SystemMouseCursors.basic : SystemMouseCursors.click,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: onChanged == null ? null : () => onChanged!(v),
+                              child: Center(
+                                child: AnimatedDefaultTextStyle(
                                 duration: Motion.short,
                                 style: TextStyle(
                                   fontFamily: Studio.sans,
@@ -283,6 +287,7 @@ class Segments<T> extends StatelessWidget {
                                     fit: BoxFit.scaleDown,
                                     child: Text(label(v), maxLines: 1, softWrap: false),
                                   ),
+                                ),
                                 ),
                               ),
                             ),
