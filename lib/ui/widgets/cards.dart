@@ -26,20 +26,23 @@ class _PressableCardState extends State<PressableCard> {
   bool _hover = false;
 
   @override
-  Widget build(BuildContext context) => MouseRegion(
-    cursor: SystemMouseCursors.click,
-    onEnter: (_) => setState(() => _hover = true),
-    onExit: (_) => setState(() => _hover = false),
-    child: GestureDetector(
-      onTapDown: (_) => setState(() => _down = true),
-      onTapCancel: () => setState(() => _down = false),
-      onTapUp: (_) => setState(() => _down = false),
-      onTap: widget.onTap,
-      child: AnimatedScale(
-        scale: _down ? .96 : (_hover ? 1.02 : 1),
-        duration: _down ? Motion.micro : Motion.medium,
-        curve: _down ? Curves.easeOut : Motion.spring,
-        child: widget.child,
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    child: MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _down = true),
+        onTapCancel: () => setState(() => _down = false),
+        onTapUp: (_) => setState(() => _down = false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _down ? .96 : (_hover ? 1.02 : 1),
+          duration: _down ? Motion.micro : Motion.medium,
+          curve: _down ? Curves.easeOut : Motion.spring,
+          child: widget.child,
+        ),
       ),
     ),
   );
@@ -194,24 +197,30 @@ class _CardRowState extends State<CardRow> {
       child: AnimatedOpacity(
         opacity: visible ? 1 : 0,
         duration: Motion.short,
-        child: Hover(
-          cursor: SystemMouseCursors.click,
-          builder: (context, hover) => GestureDetector(
-            onTap: () => _page(forward ? 1 : -1),
-            child: AnimatedContainer(
-              duration: Motion.short,
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: hover ? Studio.surfaceHi : Studio.surfaceTop,
-                border: Border.all(color: Studio.lineStrong),
-                boxShadow: const [BoxShadow(color: Color(0x99000000), blurRadius: 14, offset: Offset(0, 4))],
-              ),
-              child: Icon(
-                forward ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
-                color: hover ? Studio.text : Studio.text2,
-                size: 26,
+        child: Semantics(
+          button: true,
+          label: forward
+              ? MaterialLocalizations.of(context).nextPageTooltip
+              : MaterialLocalizations.of(context).previousPageTooltip,
+          child: Hover(
+            cursor: SystemMouseCursors.click,
+            builder: (context, hover) => GestureDetector(
+              onTap: () => _page(forward ? 1 : -1),
+              child: AnimatedContainer(
+                duration: Motion.short,
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: hover ? Studio.surfaceHi : Studio.surfaceTop,
+                  border: Border.all(color: Studio.lineStrong),
+                  boxShadow: const [BoxShadow(color: Color(0x99000000), blurRadius: 14, offset: Offset(0, 4))],
+                ),
+                child: Icon(
+                  forward ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
+                  color: hover ? Studio.text : Studio.text2,
+                  size: 26,
+                ),
               ),
             ),
           ),
