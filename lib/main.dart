@@ -5,12 +5,13 @@ import 'app.dart';
 import 'core/deps.dart';
 import 'core/settings.dart';
 import 'core/store.dart';
-import 'core/login_launcher.dart';
 import 'dj/beat_analyzer.dart';
 import 'dj/dj_flow_controller.dart';
 import 'dj/mix_builder.dart';
 import 'dj/taste.dart';
-import 'library/account.dart';
+import 'core/proxy.dart';
+import 'modules/bundled.dart';
+import 'modules/registry.dart';
 import 'modules/updater/updater.dart';
 import 'library/library.dart';
 import 'lyrics/lyrics_service.dart';
@@ -19,9 +20,6 @@ import 'player/drm_support.dart';
 import 'player/player_controller.dart';
 import 'radio/radio_browser.dart';
 import 'radio/radio_service.dart';
-import 'sc/auth.dart';
-import 'sc/models.dart';
-import 'sc/soundcloud.dart';
 import 'sync/sync_log.dart';
 import 'sync/sync_service.dart';
 
@@ -32,14 +30,13 @@ Future<void> main() async {
   final store = await Store.open();
   final client = http.Client();
   final settings = Settings(store);
-  final sc = SoundCloud(store, settings, client: client);
   final library = Library(store);
-  final account = Account(ScAuth(store, client, sc.wrap), sc, library, LoginLauncher.create());
-  final player = PlayerController(AudioEngine.create(), sc, settings, library, store);
-  final analyzer = BeatAnalyzer(sc, store);
+  final modules = ModuleRegistry(store, sources: bundledSources(store, settings, client, library), client: client);
+  final player = PlayerController(AudioEngine.create(), modules, settings, library, store);
+  final analyzer = BeatAnalyzer(modules, store);
   final dj = DjFlowController(player: player, analyzer: analyzer, store: store);
   final taste = TasteModel(store);
-  final mix = MixBuilder(sc: sc, library: library, player: player, dj: dj, store: store, taste: taste);
+  final mix = MixBuilder(sources: modules, library: library, player: player, dj: dj, store: store, taste: taste);
   // DJ learning: how was a song left? Leaving early = disliked (won't appear in mixes again).
   player.djExclude = taste.isBanned;
   dj.taste = taste;
@@ -65,11 +62,10 @@ Future<void> main() async {
   runApp(
     Deps(
       settings: settings,
-      sc: sc,
-      lyrics: LyricsService(client, wrap: sc.wrap),
+      modules: modules,
+      lyrics: LyricsService(client, wrap: corsProxy(settings)),
       library: library,
       player: player,
-      account: account,
       dj: dj,
       mix: mix,
       taste: taste,

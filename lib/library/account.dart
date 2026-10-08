@@ -14,7 +14,6 @@ enum LoginState { idle, waiting, busy, error }
 class Account extends ChangeNotifier {
   Account(this.auth, this._sc, this._library, this._launcher) {
     _sc.auth = auth;
-    _library.onLikeChanged = _pushLike;
     _launcher.callbacks.listen(complete);
     auth.addListener(notifyListeners);
     if (auth.loggedIn) unawaited(refresh());
@@ -31,6 +30,13 @@ class Account extends ChangeNotifier {
 
   /// Local likes that don't exist in the account yet (offer to transfer them).
   List<Track> localOnly = [];
+
+  /// Mirror likes to the account – called when the SoundCloud module is switched on.
+  void attach() => _library.onLikeChanged = _pushLike;
+
+  void detach() {
+    if (_library.onLikeChanged == _pushLike) _library.onLikeChanged = null;
+  }
 
   bool get loggedIn => auth.loggedIn;
   ScUser? get me => auth.me;
@@ -68,8 +74,10 @@ class Account extends ChangeNotifier {
       auth.setMe(user);
       final r = await (_sc.myLikes(user.id), _sc.myPlaylists(user.id)).wait;
       final remote = r.$1;
-      localOnly = _library.likes.where((t) => !remote.contains(t)).toList();
-      _library.replaceLikes([...remote, ...localOnly]);
+      // Likes from radio and other modules stay local; only SoundCloud tracks can be transferred.
+      final keep = _library.likes.where((t) => !remote.contains(t)).toList();
+      localOnly = keep.where((t) => t.source == Track.soundcloud && !t.isLive).toList();
+      _library.replaceLikes([...remote, ...keep]);
       playlists = r.$2;
       notifyListeners();
     } catch (e) {
@@ -93,7 +101,7 @@ class Account extends ChangeNotifier {
   }
 
   Future<void> _pushLike(Track t, bool liked) async {
-    if (!loggedIn) return;
+    if (!loggedIn || t.source != Track.soundcloud || t.isLive) return;
     try {
       await _sc.setLiked(t, liked);
     } catch (e) {

@@ -288,7 +288,7 @@ Future<void> showTrackActions(BuildContext context, Track track, {LocalPlaylist?
                   l.removeFromPlaylist,
                   () => d.library.removeFromPlaylist(playlist, track),
                 ),
-              if (track.user.id != 0)
+              if (track.user.id != 0 && track.source == Track.soundcloud && d.soundcloud != null)
                 item(Icons.person_rounded, l.goToArtist, () => pushPage(context, ArtistPage(user: track.user))),
               if (track.permalinkUrl != null)
                 item(Icons.link_rounded, l.copyLink, () {

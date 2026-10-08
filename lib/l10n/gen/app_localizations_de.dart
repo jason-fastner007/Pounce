@@ -927,4 +927,76 @@ class AppLocalizationsDe extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Einstieg $entry · $drop · $fade s Blende';
   }
+
+  @override
+  String get modules => 'Module';
+
+  @override
+  String get modulesDesc => 'Quellen und Designs – ein-, ausschalten oder neue hinzufügen';
+
+  @override
+  String get modulesSources => 'Quellen in dieser Version';
+
+  @override
+  String get modulesNoSources =>
+      'Diese Version enthält keine Quell-Module – Webradio und deine Bibliothek funktionieren weiterhin.';
+
+  @override
+  String get modulesThemes => 'Designs';
+
+  @override
+  String get themeDefault => 'Standard';
+
+  @override
+  String get themeDefaultDesc => 'Akzentfarbe aus den Einstellungen';
+
+  @override
+  String themeActive(String name) {
+    return 'Design „$name“ ist aktiv – wähle eine Farbe, um zurückzuwechseln';
+  }
+
+  @override
+  String get modulesCatalog => 'Katalog';
+
+  @override
+  String get modulesBrowse => 'Module durchstöbern';
+
+  @override
+  String get modulesBrowseDesc => 'Lädt den Katalog von GitHub – eine Anfrage, es wird nichts über dich gesendet';
+
+  @override
+  String get moduleInstall => 'Installieren';
+
+  @override
+  String get moduleRemove => 'Entfernen';
+
+  @override
+  String get moduleIncluded => 'ENTHALTEN';
+
+  @override
+  String get moduleNotInBuild => 'NICHT IN DIESER VERSION';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · von $author';
+  }
+
+  @override
+  String get modulesDevelop => 'Für Entwickler';
+
+  @override
+  String get modulesDevelopTitle => 'Eigenes Modul bauen';
+
+  @override
+  String get modulesDevelopDesc => 'Designs, Musikquellen und wie sie in den Katalog kommen';
+
+  @override
+  String get moduleUnavailable => 'Das Modul für diesen Inhalt ist ausgeschaltet oder nicht Teil dieser Version';
+
+  @override
+  String get homeNoSources =>
+      'Webradio-Sender findest du in der Suche – weitere Quellen gibt es als Module (Einstellungen → Module).';
+
+  @override
+  String get djNoSources => 'DJ-Mixe brauchen ein Musikquellen-Modul, das sie unterstützt (Einstellungen → Module).';
 }

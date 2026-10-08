@@ -34,8 +34,17 @@ class DjPage extends StatelessWidget {
     final accent = Theme.of(context).colorScheme.primary;
     return Scaffold(
       body: ListenableBuilder(
-        listenable: Listenable.merge([d.mix, d.dj]),
+        listenable: Listenable.merge([d.mix, d.dj, d.modules]),
         builder: (context, _) {
+          // DJ mixes need a source module with related tracks and analysable streams.
+          if (!d.modules.sources.any((m) => m.supportsDj)) {
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: StudioHeader(title: l.djHeadline)),
+                SliverToBoxAdapter(child: MessageView(icon: Icons.extension_rounded, text: l.djNoSources)),
+              ],
+            );
+          }
           final mix = d.mix;
           final selected = mix.selected;
           final wide = MediaQuery.sizeOf(context).width > 700;

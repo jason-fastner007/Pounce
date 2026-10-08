@@ -4,10 +4,14 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 import '../core/platform.dart';
+import '../core/proxy.dart';
 import '../core/settings.dart';
 import '../core/store.dart';
 import 'auth.dart';
+import '../player/stream_info.dart';
 import 'models.dart';
+
+export '../player/stream_info.dart';
 
 class ScException implements Exception {
   ScException(this.message, [this.status]);
@@ -48,12 +52,7 @@ class SoundCloud {
   // ---------- Transport ----------
 
   /// Web: route the request through the CORS proxy.
-  Uri wrap(Uri uri) {
-    final proxy = _settings.proxy;
-    if (!Platform.isWeb || proxy.isEmpty) return uri;
-    // Relative proxy (e.g. /proxy?url=) = same server as the app.
-    return Uri.base.resolve('$proxy${Uri.encodeComponent(uri.toString())}');
-  }
+  Uri wrap(Uri uri) => corsProxy(_settings)(uri);
 
   Map<String, String> get _headers => {
     'Accept': 'application/json',
@@ -433,35 +432,5 @@ class SoundCloud {
       StreamQuality.high => aac160 ? 0 : (mp3Prog ? 1 : (aac ? 2 : 3)),
       StreamQuality.saver => t.preset.startsWith('aac_96') ? 0 : (mp3Prog ? 1 : 2),
     };
-  }
-}
-
-class StreamInfo {
-  const StreamInfo(
-    this.url, {
-    required this.hls,
-    this.mime = '',
-    this.preset = '',
-    this.live = false,
-    this.licenseToken,
-  });
-  final String url;
-  final bool hls;
-  final String mime;
-  final String preset;
-
-  /// Endless live stream (radio): no duration, no seeking, possibly without CORS.
-  final bool live;
-
-  /// JWT for the SoundCloud license server; set = DRM stream (decrypted in the browser's CDM).
-  final String? licenseToken;
-  bool get drm => licenseToken != null;
-
-  /// e.g. "AAC 160k · HLS" for telemetry.
-  String get label {
-    if (live) return ['LIVE', if (hls) 'HLS'].join(' · ');
-    final codec = mime.contains('mp4') ? 'AAC' : (mime.contains('ogg') || mime.contains('opus') ? 'OPUS' : 'MP3');
-    final rate = RegExp(r'(\d+)k').firstMatch(preset)?.group(0) ?? (codec == 'MP3' ? '128k' : '');
-    return [codec, if (rate.isNotEmpty) rate, if (hls) 'HLS' else 'PROG', if (drm) 'DRM'].join(' · ');
   }
 }

@@ -929,4 +929,74 @@ class AppLocalizationsRu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Вход $entry · $drop · переход $fade с';
   }
+
+  @override
+  String get modules => 'Модули';
+
+  @override
+  String get modulesDesc => 'Источники и оформления – включайте, выключайте, добавляйте';
+
+  @override
+  String get modulesSources => 'Источники в этой версии';
+
+  @override
+  String get modulesNoSources => 'В этой версии нет модулей-источников – веб-радио и медиатека работают как обычно.';
+
+  @override
+  String get modulesThemes => 'Оформления';
+
+  @override
+  String get themeDefault => 'По умолчанию';
+
+  @override
+  String get themeDefaultDesc => 'Акцентный цвет из настроек';
+
+  @override
+  String themeActive(String name) {
+    return 'Активно оформление «$name» – выберите цвет, чтобы вернуться';
+  }
+
+  @override
+  String get modulesCatalog => 'Каталог';
+
+  @override
+  String get modulesBrowse => 'Обзор модулей';
+
+  @override
+  String get modulesBrowseDesc => 'Загружает каталог с GitHub – один запрос, данные о вас не передаются';
+
+  @override
+  String get moduleInstall => 'Установить';
+
+  @override
+  String get moduleRemove => 'Удалить';
+
+  @override
+  String get moduleIncluded => 'ВКЛЮЧЁН';
+
+  @override
+  String get moduleNotInBuild => 'НЕТ В ЭТОЙ ВЕРСИИ';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · автор: $author';
+  }
+
+  @override
+  String get modulesDevelop => 'Для разработчиков';
+
+  @override
+  String get modulesDevelopTitle => 'Создать свой модуль';
+
+  @override
+  String get modulesDevelopDesc => 'Оформления, источники музыки и как попасть в каталог';
+
+  @override
+  String get moduleUnavailable => 'Модуль для этого контента выключен или отсутствует в этой версии';
+
+  @override
+  String get homeNoSources => 'Ищите веб-радио в поиске – другие источники доступны как модули (Настройки → Модули).';
+
+  @override
+  String get djNoSources => 'Для DJ-миксов нужен модуль-источник музыки с их поддержкой (Настройки → Модули).';
 }

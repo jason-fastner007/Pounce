@@ -923,4 +923,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Entry $entry · $drop · $fade s fade';
   }
+
+  @override
+  String get modules => 'Modules';
+
+  @override
+  String get modulesDesc => 'Sources and designs – switch on, off or add more';
+
+  @override
+  String get modulesSources => 'Sources in this version';
+
+  @override
+  String get modulesNoSources => 'This version has no source modules – web radio and your library still work.';
+
+  @override
+  String get modulesThemes => 'Designs';
+
+  @override
+  String get themeDefault => 'Default';
+
+  @override
+  String get themeDefaultDesc => 'Accent colour from the settings';
+
+  @override
+  String themeActive(String name) {
+    return 'Design “$name” is active – pick a colour to switch back';
+  }
+
+  @override
+  String get modulesCatalog => 'Catalog';
+
+  @override
+  String get modulesBrowse => 'Browse modules';
+
+  @override
+  String get modulesBrowseDesc => 'Loads the catalog from GitHub – one request, nothing about you is sent';
+
+  @override
+  String get moduleInstall => 'Install';
+
+  @override
+  String get moduleRemove => 'Remove';
+
+  @override
+  String get moduleIncluded => 'INCLUDED';
+
+  @override
+  String get moduleNotInBuild => 'NOT IN THIS VERSION';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · by $author';
+  }
+
+  @override
+  String get modulesDevelop => 'For developers';
+
+  @override
+  String get modulesDevelopTitle => 'Build your own module';
+
+  @override
+  String get modulesDevelopDesc => 'Designs, music sources and how to get them into the catalog';
+
+  @override
+  String get moduleUnavailable => 'The module for this content is switched off or not part of this version';
+
+  @override
+  String get homeNoSources => 'Find web radio stations in Search – more sources come as modules (Settings → Modules).';
+
+  @override
+  String get djNoSources => 'DJ mixes need a music source module that supports them (Settings → Modules).';
 }

@@ -3,6 +3,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/deps.dart';
 import '../theme.dart';
+import '../../library/account.dart';
+import '../../modules/source_module.dart';
 import '../../sc/models.dart';
 import '../widgets/cards.dart';
 import '../widgets/common.dart';
@@ -16,37 +18,65 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<_HomeData> _data = _load();
-  late final _account = context.deps.account;
-  late bool _wasLoggedIn = _account.loggedIn;
+  late final _modules = context.deps.modules;
+  late String _active;
+  Account? _account;
+  bool _wasLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
-    _account.addListener(_onAccount);
+    _active = _activeIds;
+    _modules.addListener(_onModules);
+    _bindAccount();
   }
 
   @override
   void dispose() {
-    _account.removeListener(_onAccount);
+    _modules.removeListener(_onModules);
+    _account?.removeListener(_onAccount);
     super.dispose();
   }
 
+  String get _activeIds => _modules.sources.map((m) => m.id).join(',');
+
+  /// A source module was switched on or off: other rows, maybe another account.
+  void _onModules() {
+    if (_activeIds == _active) return;
+    _active = _activeIds;
+    _bindAccount();
+    _refresh();
+  }
+
+  void _bindAccount() {
+    _account?.removeListener(_onAccount);
+    _account = context.deps.soundcloud?.account?..addListener(_onAccount);
+    _wasLoggedIn = _account?.loggedIn ?? false;
+  }
+
   void _onAccount() {
-    if (_account.loggedIn != _wasLoggedIn) {
-      _wasLoggedIn = _account.loggedIn;
+    final loggedIn = _account?.loggedIn ?? false;
+    if (loggedIn != _wasLoggedIn) {
+      _wasLoggedIn = loggedIn;
       _refresh();
     }
   }
 
   Future<_HomeData> _load() async {
     final d = context.deps;
-    final seed = d.library.history.firstOrNull ?? d.library.likes.firstOrNull;
+    final sc = d.soundcloud;
+    final seed = d.library.history.where((t) => !t.isLive).firstOrNull ?? d.library.likes.where((t) => !t.isLive).firstOrNull;
     final r = await (
-      d.sc.selections(),
-      seed == null ? Future.value(<Track>[]) : d.sc.related(seed.id, limit: 12).catchError((_) => <Track>[]),
-      d.account.loggedIn ? d.sc.feed().catchError((_) => <Track>[]) : Future.value(<Track>[]),
+      sc?.sc.selections() ?? Future.value(<Selection>[]),
+      seed == null ? Future.value(<Track>[]) : d.modules.related(seed, limit: 12).catchError((_) => <Track>[]),
+      sc != null && sc.account.loggedIn ? sc.sc.feed().catchError((_) => <Track>[]) : Future.value(<Track>[]),
+      // Rows of all other source modules.
+      Future.wait([
+        for (final m in d.modules.sources)
+          if (m != sc) m.home().catchError((Object _) => <HomeSection>[]),
+      ]).then((rows) => [for (final r in rows) ...r.where((s) => s.tracks.isNotEmpty)]),
     ).wait;
-    return _HomeData(r.$1, seed, r.$2, r.$3.where((t) => t.playable).toList());
+    return _HomeData(r.$1, seed, r.$2, r.$3.where((t) => t.playable).toList(), r.$4, d.modules.sources.isNotEmpty);
   }
 
   Future<void> _refresh() async {
@@ -166,11 +196,15 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _HomeData {
-  _HomeData(this.selections, this.seed, this.related, this.feed);
+  _HomeData(this.selections, this.seed, this.related, this.feed, this.sections, this.hasSources);
   final List<Selection> selections;
   final List<Track> feed;
   final Track? seed;
   final List<Track> related;
+  final List<HomeSection> sections;
+
+  /// false: no source module active – only web radio and the local library.
+  final bool hasSources;
 }
 
 class _HomeContent extends StatelessWidget {
@@ -191,6 +225,9 @@ class _HomeContent extends StatelessWidget {
           SectionHeader(s.title),
           CardRow(height: 226, children: [for (final p in s.playlists) PlaylistCard(p)]),
         ],
+        for (final s in d.sections) ...[SectionHeader(s.title), _TrackRow(s.tracks)],
+        if (!d.hasSources)
+          MessageView(icon: Icons.extension_rounded, text: context.l10n.homeNoSources),
       ],
     );
   }

@@ -25,7 +25,8 @@ class _LoginSheet extends StatefulWidget {
 
 class _LoginSheetState extends State<_LoginSheet> {
   final _paste = TextEditingController();
-  late final Account _account = context.deps.account;
+  /// Only opened while the SoundCloud module is on.
+  late final Account _account = context.deps.soundcloud!.account;
   bool _showPaste = false;
   bool _closing = false;
 

@@ -5,8 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../core/store.dart';
 import '../library/library.dart';
 import '../player/player_controller.dart';
-import '../sc/models.dart';
-import '../sc/soundcloud.dart';
+import '../modules/source_module.dart';
 import 'dj_flow_controller.dart';
 import 'taste.dart';
 
@@ -72,7 +71,7 @@ class DjCategory {
 /// to new. DJ Flow then keeps ordering the result by key, tempo and energy.
 class MixBuilder extends ChangeNotifier {
   MixBuilder({
-    required this.sc,
+    required this.sources,
     required this.library,
     required this.player,
     required this.dj,
@@ -80,7 +79,7 @@ class MixBuilder extends ChangeNotifier {
     required this.taste,
   });
 
-  final SoundCloud sc;
+  final TrackSource sources;
   final Library library;
   final PlayerController player;
   final DjFlowController dj;
@@ -154,8 +153,8 @@ class MixBuilder extends ChangeNotifier {
     // New: "similar tracks" for a few favourites, plus the search per category.
     final seeds = favorites.take(6).toList();
     final results = await Future.wait([
-      for (final s in seeds) sc.related(s.id, limit: 25).catchError((Object _) => <Track>[]),
-      for (final c in cats) sc.searchTracks(c.search).then((p) => p.items).catchError((Object _) => <Track>[]),
+      for (final s in seeds) sources.related(s, limit: 25).catchError((Object _) => <Track>[]),
+      for (final c in cats) sources.search(c.search).catchError((Object _) => <Track>[]),
     ]);
     final liked = {for (final t in library.likes) t.id};
     final fresh = <int, Track>{};

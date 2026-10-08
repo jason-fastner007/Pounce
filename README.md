@@ -108,6 +108,15 @@ see [Build from source](#-build-from-source).
 </details>
 
 <details>
+<summary><b>Modules</b></summary>
+
+- Sources and designs are modules, like Kodi add-ons: *Settings → Modules*
+- Switch source modules (SoundCloud, …) on and off; without any, Pounce is a web radio player with your library
+- Install designs from the module catalog – one request to GitHub, only when you open it
+- Build your own: **[docs/MODULES.md](docs/MODULES.md)**
+</details>
+
+<details>
 <summary><b>Look & feel</b></summary>
 
 - Dark studio design with a single accent colour – fixed, or taken from the current cover
@@ -177,8 +186,8 @@ flutter run -d linux                 # Linux, needs libmpv (pacman -S mpv / apt 
 | `github` | GitHub Releases, sideloading | in-app updater (GitHub Releases, SHA-256 verified) |
 | `play` | Google Play | Play in-app updates |
 
-Release signing, the web build (CORS proxy), desktop notes and the Rust engine are covered in
-**[docs/BUILDING.md](docs/BUILDING.md)**.
+Release signing, the web build (CORS proxy), the App Store build, desktop notes and the Rust engine are covered in
+**[docs/BUILDING.md](docs/BUILDING.md)**. Writing modules: **[docs/MODULES.md](docs/MODULES.md)**.
 
 <details>
 <summary>Project structure</summary>
@@ -186,14 +195,14 @@ Release signing, the web build (CORS proxy), desktop notes and the Rust engine a
 ```
 lib/
   core/        settings, SQLite store, dependency container
-  sc/          SoundCloud client
+  sc/          SoundCloud client and its source module
   player/      player controller + platform audio engines
   dj/          DJ flow, beat analysis, mix builder, taste model
   radio/       radio-browser.info client and station playback
   lyrics/      LRC parser, LRCLIB, KuGou
   library/     likes, history, playlists, account
   sync/        peer-to-peer sync
-  modules/     self-contained modules (updater)
+  modules/     module system (registry, catalog, designs) and the updater
   ui/          shell, pages, player, widgets
 packages/
   native_player/   Android (Kotlin, Media3) and iOS/macOS (Swift) playback

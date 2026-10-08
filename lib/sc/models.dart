@@ -102,7 +102,15 @@ class Track {
     this.bpm,
     this.streamUrl,
     this.artist,
+    this.source = soundcloud,
+    this.ref,
   });
+
+  /// [source] of SoundCloud tracks (the default, so stored tracks from before modules stay valid).
+  static const soundcloud = 'soundcloud';
+
+  /// [source] of web radio stations.
+  static const radio = 'radio';
 
   final int id;
   final String title;
@@ -124,6 +132,12 @@ class Track {
 
   /// Real artist according to the label (publisher_metadata) – often different from the uploader.
   final String? artist;
+
+  /// ID of the source module the track belongs to (see `SourceModule`), e.g. `soundcloud`.
+  final String source;
+
+  /// The source module's own ID for the track, when it isn't a number (opaque to the app).
+  final String? ref;
 
   bool get isLive => streamUrl != null;
 
@@ -165,7 +179,25 @@ class Track {
     bpm: (j['bpm'] as num?)?.toDouble(),
     streamUrl: j['kf_live_url'] as String?,
     artist: _nonEmpty(j['publisher_metadata']?['artist']) ?? _nonEmpty(j['metadata_artist']),
+    source: j['source'] as String? ?? (j['kf_live_url'] != null ? radio : soundcloud),
+    ref: j['ref'] as String?,
   );
+
+  /// Stable track ID for modules whose own IDs are strings: a 52-bit hash of `source:ref`, offset
+  /// above SoundCloud's ID range (radio stations use negative IDs). Fits JavaScript numbers.
+  static int idFor(String source, String ref) {
+    final key = '$source:$ref';
+    // Two 32-bit FNV-1a hashes with 32-bit-safe arithmetic: same result natively and on the web.
+    int fnv(int h) {
+      for (final c in key.codeUnits) {
+        h = (h ^ c) & 0xFFFFFFFF;
+        h = (((h << 24) & 0xFFFFFFFF) + h * 0x193) & 0xFFFFFFFF;
+      }
+      return h;
+    }
+
+    return 10000000000000 + (fnv(0x811c9dc5) & 0xFFFFF) * 0x100000000 + fnv(0x050c5d1f);
+  }
 
   static String? _nonEmpty(Object? v) => v is String && v.trim().isNotEmpty ? v.trim() : null;
 
@@ -184,14 +216,16 @@ class Track {
     'bpm': bpm,
     if (streamUrl != null) 'kf_live_url': streamUrl,
     if (artist != null) 'publisher_metadata': {'artist': artist},
+    if (source != soundcloud && source != radio) 'source': source,
+    'ref': ?ref,
     // Transcodings/auth expire – fetched again on playback.
   };
 
   @override
-  bool operator ==(Object other) => other is Track && other.id == id;
+  bool operator ==(Object other) => other is Track && other.id == id && other.source == source;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => Object.hash(id, source);
 }
 
 class ScPlaylist {

@@ -15,6 +15,8 @@ import 'package:pounce/player/player_controller.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
+import 'support/modules.dart';
+
 class _FakeEngine extends AudioEngine {
   final loaded = <String>[];
   final crossfaded = <String>[];
@@ -96,8 +98,9 @@ void main() {
     settings = Settings(store);
     final client = MockClient((_) async => http.Response('{"url":"https://cdn/stream.mp3"}', 200));
     sc = SoundCloud(store, settings, client: client);
-    player = PlayerController(_FakeEngine(), sc, settings, Library(store), store);
-    analyzer = BeatAnalyzer(sc, store);
+    final sources = registryWith(store, sc, client: client);
+    player = PlayerController(_FakeEngine(), sources, settings, Library(store), store);
+    analyzer = BeatAnalyzer(sources, store);
     controller = DjFlowController(player: player, analyzer: analyzer, store: store);
   });
 

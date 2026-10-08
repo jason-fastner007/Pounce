@@ -913,4 +913,75 @@ class AppLocalizationsVi extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Vào $entry · $drop · chuyển $fade giây';
   }
+
+  @override
+  String get modules => 'Mô-đun';
+
+  @override
+  String get modulesDesc => 'Nguồn và giao diện – bật, tắt hoặc thêm mới';
+
+  @override
+  String get modulesSources => 'Nguồn trong phiên bản này';
+
+  @override
+  String get modulesNoSources => 'Phiên bản này không có mô-đun nguồn – radio trực tuyến và thư viện vẫn hoạt động.';
+
+  @override
+  String get modulesThemes => 'Giao diện';
+
+  @override
+  String get themeDefault => 'Mặc định';
+
+  @override
+  String get themeDefaultDesc => 'Màu nhấn từ phần cài đặt';
+
+  @override
+  String themeActive(String name) {
+    return 'Giao diện “$name” đang bật – chọn một màu để quay lại';
+  }
+
+  @override
+  String get modulesCatalog => 'Danh mục';
+
+  @override
+  String get modulesBrowse => 'Duyệt mô-đun';
+
+  @override
+  String get modulesBrowseDesc => 'Tải danh mục từ GitHub – một yêu cầu, không gửi thông tin nào về bạn';
+
+  @override
+  String get moduleInstall => 'Cài đặt';
+
+  @override
+  String get moduleRemove => 'Gỡ bỏ';
+
+  @override
+  String get moduleIncluded => 'ĐÃ CÓ';
+
+  @override
+  String get moduleNotInBuild => 'KHÔNG CÓ TRONG BẢN NÀY';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · bởi $author';
+  }
+
+  @override
+  String get modulesDevelop => 'Dành cho nhà phát triển';
+
+  @override
+  String get modulesDevelopTitle => 'Tự tạo mô-đun';
+
+  @override
+  String get modulesDevelopDesc => 'Giao diện, nguồn nhạc và cách đưa chúng vào danh mục';
+
+  @override
+  String get moduleUnavailable => 'Mô-đun cho nội dung này đang tắt hoặc không có trong phiên bản này';
+
+  @override
+  String get homeNoSources =>
+      'Tìm đài radio trực tuyến trong Tìm kiếm – các nguồn khác có dưới dạng mô-đun (Cài đặt → Mô-đun).';
+
+  @override
+  String get djNoSources => 'Mix DJ cần một mô-đun nguồn nhạc hỗ trợ tính năng này (Cài đặt → Mô-đun).';
 }

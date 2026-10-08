@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "soundcloud",
+      "kind": "source",
+      "name": "SoundCloud",
+      "version": "1.0.0",
+      "author": "Pounce",
+      "description": "Search, home feed, likes and playlists from SoundCloud – with or without an account.",
+      "homepage": "https://github.com/jason-fastner007/Pounce/blob/main/docs/MODULES.md",
+      "storeRestricted": true
+    },
+    {
+      "id": "theme.sunset",
+      "kind": "theme",
+      "name": "Sunset",
+      "version": "1.0.0",
+      "author": "Pounce",
+      "description": "Warm coral, like the last minutes of golden hour.",
+      "theme": { "accent": "#FF5F6D" }
+    },
+    {
+      "id": "theme.acid",
+      "kind": "theme",
+      "name": "Acid",
+      "version": "1.0.0",
+      "author": "Pounce",
+      "description": "Rave-poster lime green.",
+      "theme": { "accent": "#B6FF3B" }
+    },
+    {
+      "id": "theme.ultraviolet",
+      "kind": "theme",
+      "name": "Ultraviolet",
+      "version": "1.0.0",
+      "author": "Pounce",
+      "description": "Blacklight purple for late sets.",
+      "theme": { "accent": "#A66BFF" }
+    },
+    {
+      "id": "theme.ice",
+      "kind": "theme",
+      "name": "Ice",
+      "version": "1.0.0",
+      "author": "Pounce",
+      "description": "Cool, calm, almost white blue.",
+      "theme": { "accent": "#9FD8FF" }
+    }
+  ]
+}

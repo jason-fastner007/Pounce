@@ -15,6 +15,7 @@ import 'player/player_sheet.dart';
 import 'player/scrubber.dart';
 import 'player/spectrum.dart';
 import 'theme.dart';
+import 'widgets/account_builder.dart';
 import 'widgets/common.dart';
 import 'widgets/studio.dart';
 
@@ -36,7 +37,7 @@ class _ShellState extends State<Shell> with TickerProviderStateMixin {
   late final _spectrum = SpectrumBus(
     _player,
     this,
-    (t) => waveformOf(context.deps.sc, t),
+    (t) => waveformOf(context.deps.modules, t),
     grid: () => context.deps.dj.currentBeatInfo,
   );
 
@@ -355,7 +356,6 @@ class _Rail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = Theme.of(context).colorScheme.primary;
-    final account = context.deps.account;
     final l = context.l10n;
     return AnimatedContainer(
       duration: Motion.medium,
@@ -401,11 +401,10 @@ class _Rail extends StatelessWidget {
                 ),
               const Spacer(),
               // Konto-Anzeige
-              ListenableBuilder(
-                listenable: account,
-                builder: (context, _) {
-                  final me = account.me;
-                  if (!account.loggedIn || me == null) return const SizedBox.shrink();
+              AccountBuilder(
+                builder: (context, account) {
+                  final me = account?.me;
+                  if (account == null || !account.loggedIn || me == null) return const SizedBox.shrink();
                   return Tooltip(
                     message: l.loggedInAs(me.username),
                     child: SizedBox(

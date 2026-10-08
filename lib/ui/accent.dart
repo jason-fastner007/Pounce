@@ -1,23 +1,32 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../core/settings.dart';
+import '../modules/registry.dart';
 import '../player/player_controller.dart';
 
-/// Provides the single accent colour: fixed (amber/cyan) or taken from the cover.
+/// Provides the single accent colour: from an installed design, fixed (amber/cyan) or taken from the cover.
 class AccentController extends ChangeNotifier {
-  AccentController(this._settings, this._player) {
+  AccentController(this._settings, this._player, this._modules) {
     _settings.addListener(_update);
     _player.addListener(_update);
+    _modules.addListener(_update);
     _update();
   }
 
   final Settings _settings;
   final PlayerController _player;
+  final ModuleRegistry _modules;
   final _cache = <String, Color>{};
   String? _artUrl;
   Color color = Accent.amber.color;
 
   Future<void> _update() async {
+    final theme = _modules.activeTheme;
+    if (theme != null) {
+      _artUrl = null;
+      _set(theme.accent);
+      return;
+    }
     if (_settings.accent != Accent.cover) {
       _set(_settings.accent.color);
       return;
@@ -53,6 +62,7 @@ class AccentController extends ChangeNotifier {
   void dispose() {
     _settings.removeListener(_update);
     _player.removeListener(_update);
+    _modules.removeListener(_update);
     super.dispose();
   }
 }

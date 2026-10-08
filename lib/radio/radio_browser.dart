@@ -113,6 +113,7 @@ class RadioStation {
     permalinkUrl: homepage,
     genre: tags.firstOrNull,
     streamUrl: streamUrl?.call(url) ?? url,
+    source: Track.radio,
   );
 }
 

@@ -478,5 +478,44 @@
         "type": "String"
       }
     }
-  }
+  },
+  "modules": "Modules",
+  "modulesDesc": "Sources and designs – switch on, off or add more",
+  "modulesSources": "Sources in this version",
+  "modulesNoSources": "This version has no source modules – web radio and your library still work.",
+  "modulesThemes": "Designs",
+  "themeDefault": "Default",
+  "themeDefaultDesc": "Accent colour from the settings",
+  "themeActive": "Design “{name}” is active – pick a colour to switch back",
+  "@themeActive": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "modulesCatalog": "Catalog",
+  "modulesBrowse": "Browse modules",
+  "modulesBrowseDesc": "Loads the catalog from GitHub – one request, nothing about you is sent",
+  "moduleInstall": "Install",
+  "moduleRemove": "Remove",
+  "moduleIncluded": "INCLUDED",
+  "moduleNotInBuild": "NOT IN THIS VERSION",
+  "moduleByline": "v{version} · by {author}",
+  "@moduleByline": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "modulesDevelop": "For developers",
+  "modulesDevelopTitle": "Build your own module",
+  "modulesDevelopDesc": "Designs, music sources and how to get them into the catalog",
+  "moduleUnavailable": "The module for this content is switched off or not part of this version",
+  "homeNoSources": "Find web radio stations in Search – more sources come as modules (Settings → Modules).",
+  "djNoSources": "DJ mixes need a music source module that supports them (Settings → Modules)."
 }

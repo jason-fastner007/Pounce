@@ -4,6 +4,7 @@ import '../../core/app_info.dart';
 import '../../core/deps.dart';
 import '../../core/platform.dart';
 import '../../dj/mix_builder.dart';
+import '../../sc/models.dart' show Track;
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/studio.dart';
@@ -22,7 +23,16 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   final _pages = PageController();
   var _index = 0;
-  static const _count = 5;
+
+  /// Account and DJ steps only when a module provides them (not in app store builds without SoundCloud).
+  late final List<Widget> _steps = [
+    const _Welcome(),
+    const _Sources(),
+    if (context.deps.soundcloud != null) const _AccountStep(),
+    if (context.deps.modules.sources.any((m) => m.supportsDj)) const _DjStep(),
+    const _Privacy(),
+  ];
+  int get _count => _steps.length;
 
   @override
   void dispose() {
@@ -75,7 +85,7 @@ class _SetupPageState extends State<SetupPage> {
                   child: PageView(
                     controller: _pages,
                     onPageChanged: (i) => setState(() => _index = i),
-                    children: const [_Welcome(), _Sources(), _AccountStep(), _DjStep(), _Privacy()],
+                    children: _steps,
                   ),
                 ),
                 Padding(
@@ -243,14 +253,15 @@ class _Sources extends StatelessWidget {
         title: l.setupSourcesTitle,
         text: '',
         children: [
-          _Card(
-            child: ListTile(
-              leading: const Icon(Icons.cloud_rounded),
-              title: const Text('SoundCloud'),
-              subtitle: Text(l.setupSoundcloudDesc),
-              trailing: Icon(Icons.check_circle_rounded, color: Theme.of(context).colorScheme.primary),
+          for (final m in context.deps.modules.sources)
+            _Card(
+              child: ListTile(
+                leading: const Icon(Icons.cloud_rounded),
+                title: Text(m.manifest.name),
+                subtitle: Text(m.id == Track.soundcloud ? l.setupSoundcloudDesc : m.manifest.description),
+                trailing: Icon(Icons.check_circle_rounded, color: Theme.of(context).colorScheme.primary),
+              ),
             ),
-          ),
           _Card(
             child: SwitchListTile(
               secondary: const Icon(Icons.radio_rounded),
@@ -272,7 +283,7 @@ class _AccountStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final account = context.deps.account;
+    final account = context.deps.soundcloud!.account;
     return ListenableBuilder(
       listenable: account,
       builder: (context, _) => _Step(

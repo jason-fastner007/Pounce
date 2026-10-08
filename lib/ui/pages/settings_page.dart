@@ -12,9 +12,11 @@ import '../updates.dart';
 import '../../sc/models.dart';
 import '../../player/audio_engine.dart';
 import '../player/controls.dart';
+import '../widgets/account_builder.dart';
 import '../widgets/common.dart';
 import '../widgets/studio.dart';
 import 'login_sheet.dart';
+import 'modules_page.dart';
 import '../../core/app_info.dart';
 import 'setup_page.dart' show BetaBadge;
 
@@ -39,14 +41,27 @@ class SettingsPage extends StatelessWidget {
     final l = context.l10n;
     return Scaffold(
       body: ListenableBuilder(
-        listenable: s,
+        listenable: Listenable.merge([s, context.deps.modules]),
         builder: (context, _) {
+          final theme = context.deps.modules.activeTheme;
           return CustomScrollView(
             slivers: [
               SliverToBoxAdapter(child: StudioHeader(title: l.navSettings)),
               SliverList.list(
                 children: [
                   const _AccountGroup(),
+                  _Group(
+                    title: l.modules,
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.extension_rounded),
+                        title: Text(l.modules),
+                        subtitle: Text(l.modulesDesc),
+                        trailing: const Icon(Icons.chevron_right_rounded),
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ModulesPage())),
+                      ),
+                    ],
+                  ),
                   _Group(
                     title: l.appearance,
                     children: [
@@ -78,13 +93,21 @@ class SettingsPage extends StatelessWidget {
                                           Accent.cyan => 'Cyan',
                                           Accent.cover => 'Cover',
                                         },
-                                        selected: s.accent == a,
-                                        onTap: () => s.accent = a,
+                                        // An installed design overrides the accent until one is picked here.
+                                        selected: theme == null && s.accent == a,
+                                        onTap: () {
+                                          context.deps.modules.useTheme(null);
+                                          s.accent = a;
+                                        },
                                       ),
                                     ),
                                   ),
                               ],
                             ),
+                            if (theme != null) ...[
+                              const SizedBox(height: Studio.s3),
+                              Text(l.themeActive(theme.manifest.name), style: Studio.bodyDim),
+                            ],
                           ],
                         ),
                       ),
@@ -475,11 +498,11 @@ class _AccountGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final account = context.deps.account;
     final l = context.l10n;
-    return ListenableBuilder(
-      listenable: account,
-      builder: (context, _) {
+    return AccountBuilder(
+      builder: (context, account) {
+        // Without the SoundCloud module there is no account to sign in to.
+        if (account == null) return const SizedBox.shrink();
         final me = account.me;
         return _Group(
           title: l.account,

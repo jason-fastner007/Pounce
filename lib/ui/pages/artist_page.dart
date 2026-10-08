@@ -24,9 +24,10 @@ class ArtistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sc = context.deps.sc;
+    final sc = context.deps.soundcloud?.sc;
     final player = context.deps.player;
     final l = context.l10n;
+    if (sc == null) return Scaffold(body: MessageView(icon: Icons.extension_off_rounded, text: l.moduleUnavailable));
     final t = Theme.of(context);
 
     return Scaffold(

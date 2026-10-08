@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:material_ui/material_ui.dart';
 
 import '../../core/deps.dart';
+import '../../modules/registry.dart';
 import '../../sc/models.dart';
 import '../../sc/soundcloud.dart';
+import '../../sc/soundcloud_module.dart';
 import '../nav.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
@@ -29,7 +31,8 @@ class _SearchPageState extends State<SearchPage> {
   Timer? _debounce;
   List<String> _suggestions = [];
   String? _query;
-  _Source _source = _Source.all;
+  /// `all`, `radio` or the ID of a source module.
+  String _source = _all;
 
   @override
   void dispose() {
@@ -46,10 +49,11 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
     _debounce = Timer(const Duration(milliseconds: 250), () async {
-      try {
-        final s = await context.deps.sc.suggestions(q.trim());
-        if (mounted && _ctrl.text == q) setState(() => _suggestions = s);
-      } catch (_) {}
+      final lists = await Future.wait([
+        for (final m in context.deps.modules.sources) m.suggestions(q.trim()).catchError((Object _) => <String>[]),
+      ]);
+      final s = {for (final l in lists) ...l}.take(8).toList();
+      if (mounted && _ctrl.text == q) setState(() => _suggestions = s);
     });
   }
 
@@ -60,9 +64,8 @@ class _SearchPageState extends State<SearchPage> {
     _ctrl.text = q;
     _focus.unfocus();
     // Open shared links directly.
-    if (RegExp(r'(soundcloud\.com|on\.soundcloud\.com)/').hasMatch(q)) {
-      return _openLink(q);
-    }
+    final sc = context.deps.soundcloud;
+    if (sc != null && SoundCloudModule.isLink(q)) return _openLink(sc.sc, q);
     context.deps.library.addSearch(q);
     setState(() {
       _query = q;
@@ -70,10 +73,10 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  Future<void> _openLink(String url) async {
+  Future<void> _openLink(SoundCloud sc, String url) async {
     final d = context.deps;
     try {
-      final r = await d.sc.resolve(url.startsWith('http') ? url : 'https://$url');
+      final r = await sc.resolve(url.startsWith('http') ? url : 'https://$url');
       if (!mounted) return;
       switch (r) {
         case ResolvedTrack(:final track):
@@ -135,30 +138,42 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            // Sources: All | SoundCloud | Web radio (only when web radio is enabled).
+            // Sources: All | one per source module | Web radio (only when web radio is enabled).
             ListenableBuilder(
-              listenable: context.deps.settings,
+              listenable: Listenable.merge([context.deps.settings, context.deps.modules]),
               builder: (context, _) {
                 final radioOn = context.deps.settings.radioEnabled;
-                final source = radioOn ? _source : _Source.soundcloud;
+                final modules = context.deps.modules.sources.toList();
+                final keys = [
+                  if (modules.length + (radioOn ? 1 : 0) > 1) _all,
+                  for (final m in modules) m.id,
+                  if (radioOn) _radio,
+                ];
+                final source = keys.contains(_source) ? _source : keys.firstOrNull;
                 return Expanded(
                   child: Column(
                     children: [
-                      if (radioOn)
+                      if (keys.length > 1)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                          child: SegmentedButton<_Source>(
+                          child: SegmentedButton<String>(
                             showSelectedIcon: false,
                             segments: [
-                              ButtonSegment(value: _Source.all, label: Text(l.srcAll)),
-                              const ButtonSegment(value: _Source.soundcloud, label: Text('SoundCloud')),
-                              ButtonSegment(
-                                value: _Source.radio,
-                                label: Text(l.srcRadio),
-                                icon: const Icon(Icons.radio_rounded, size: 18),
-                              ),
+                              for (final k in keys)
+                                switch (k) {
+                                  _all => ButtonSegment(value: k, label: Text(l.srcAll)),
+                                  _radio => ButtonSegment(
+                                    value: k,
+                                    label: Text(l.srcRadio),
+                                    icon: const Icon(Icons.radio_rounded, size: 18),
+                                  ),
+                                  _ => ButtonSegment(
+                                    value: k,
+                                    label: Text(modules.firstWhere((m) => m.id == k).manifest.name),
+                                  ),
+                                },
                             ],
-                            selected: {source},
+                            selected: {?source},
                             onSelectionChanged: (s) => setState(() => _source = s.first),
                           ),
                         ),
@@ -166,26 +181,21 @@ class _SearchPageState extends State<SearchPage> {
                         child: AnimatedSwitcher(
                           duration: Motion.medium,
                           switchInCurve: Motion.decelerate,
-                          child: _suggestions.isNotEmpty && _focus.hasFocus
+                          child: source == null
+                              ? MessageView(
+                                  key: const ValueKey('none'),
+                                  icon: Icons.extension_rounded,
+                                  text: l.homeNoSources,
+                                )
+                              : _suggestions.isNotEmpty && _focus.hasFocus
                               ? _SuggestionList(key: const ValueKey('s'), items: _suggestions, onPick: _submit)
                               : _query == null
-                              ? (source == _Source.radio
+                              ? (source == _radio
                                     ? const RadioHome(key: ValueKey('rh'))
                                     : _Recent(key: const ValueKey('r'), onPick: _submit))
-                              : source == _Source.radio
+                              : source == _radio
                               ? RadioResults(key: ValueKey('radio:$_query'), query: _query!)
-                              : _Results(
-                                  key: ValueKey('$source:$_query'),
-                                  query: _query!,
-                                  // "All": the best stations above the SoundCloud hits (loaded in parallel).
-                                  header: source == _Source.all
-                                      ? RadioResults(
-                                          query: _query!,
-                                          compact: true,
-                                          onMore: () => setState(() => _source = _Source.radio),
-                                        )
-                                      : null,
-                                ),
+                              : _results(source, modules, radioOn),
                         ),
                       ),
                     ],
@@ -196,6 +206,25 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
+    );
+  }
+
+  /// Results of one source module, or for "All": the best stations above the tracks of all modules.
+  Widget _results(String source, List<SourceModule> modules, bool radioOn) {
+    final query = _query!;
+    final header = source == _all && radioOn
+        ? RadioResults(query: query, compact: true, onMore: () => setState(() => _source = _radio))
+        : null;
+    final sc = context.deps.soundcloud;
+    // SoundCloud has its own tabs (playlists, albums, artists); "All" uses them too when it's there.
+    if (sc != null && (source == sc.id || source == _all)) {
+      return _Results(key: ValueKey('$source:$query'), query: query, header: header);
+    }
+    return _ModuleResults(
+      key: ValueKey('$source:$query'),
+      query: query,
+      modules: source == _all ? modules : modules.where((m) => m.id == source).toList(),
+      header: header,
     );
   }
 }
@@ -261,7 +290,52 @@ class _Recent extends StatelessWidget {
   }
 }
 
-enum _Source { all, soundcloud, radio }
+const _all = 'all', _radio = 'radio';
+
+/// Track results of source modules without their own search UI.
+class _ModuleResults extends StatefulWidget {
+  const _ModuleResults({super.key, required this.query, required this.modules, this.header});
+  final String query;
+  final List<SourceModule> modules;
+  final Widget? header;
+
+  @override
+  State<_ModuleResults> createState() => _ModuleResultsState();
+}
+
+class _ModuleResultsState extends State<_ModuleResults> {
+  late final Future<List<Track>> _results = () async {
+    final lists = await Future.wait([
+      for (final m in widget.modules) m.search(widget.query).catchError((Object _) => <Track>[]),
+    ]);
+    return [for (final l in lists) ...l];
+  }();
+
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      ?widget.header,
+      Expanded(
+        child: FutureBuilder<List<Track>>(
+          future: _results,
+          builder: (context, snap) {
+            final items = snap.data;
+            if (items == null) return const Center(child: CircularProgressIndicator());
+            if (items.isEmpty) return MessageView(icon: Icons.search_off_rounded, text: context.l10n.noResults);
+            return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 160),
+              itemCount: items.length,
+              itemBuilder: (c, i) => StaggeredIn(
+                index: i,
+                child: TrackTile(track: items[i], onTap: () => c.deps.player.playQueue(items, i)),
+              ),
+            );
+          },
+        ),
+      ),
+    ],
+  );
+}
 
 enum _Tab { tracks, playlists, albums, artists }
 
@@ -389,7 +463,7 @@ class _PagedState<T> extends State<_Paged<T>> {
   @override
   void initState() {
     super.initState();
-    _load(() => widget.first(context.deps.sc));
+    _load(() => widget.first(context.deps.soundcloud!.sc));
   }
 
   Future<void> _load(Future<ScPage<T>> Function() f) async {
@@ -428,7 +502,7 @@ class _PagedState<T> extends State<_Paged<T>> {
       onNotification: (n) {
         if (n.metrics.extentAfter < 600 && !_loading && _next != null && !_error) {
           final href = _next!;
-          _load(() => context.deps.sc.next(href, widget.parse));
+          _load(() => context.deps.soundcloud!.sc.next(href, widget.parse));
         }
         return false;
       },

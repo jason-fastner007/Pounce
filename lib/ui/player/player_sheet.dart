@@ -483,10 +483,13 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
               child: showArtInSlot ? _ArtBox(url: track.art('t300x300'), radius: 10, shadow: 0) : null,
             )
           : null,
-      onArtist: () {
-        _animateTo(0);
-        pushPage(context, ArtistPage(user: track.user));
-      },
+      // Artist pages come from the SoundCloud module.
+      onArtist: track.source == Track.soundcloud && !track.isLive && context.deps.soundcloud != null
+          ? () {
+              _animateTo(0);
+              pushPage(context, ArtistPage(user: track.user));
+            }
+          : null,
     );
 
     final controls = Column(
@@ -696,7 +699,7 @@ class _ArtBox extends StatelessWidget {
 class _TrackInfo extends StatelessWidget {
   const _TrackInfo({required this.track, required this.onArtist, this.smallArt});
   final Track track;
-  final VoidCallback onArtist;
+  final VoidCallback? onArtist;
   final Widget? smallArt;
 
   @override

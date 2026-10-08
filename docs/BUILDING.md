@@ -82,6 +82,25 @@ If the library can't be loaded, Pounce keeps working – only DJ analysis is una
   [mpv-winbuild-cmake](https://github.com/shinchiro/mpv-winbuild-cmake/releases)) next to the `.exe`.
 - **macOS / iOS:** AVPlayer, no extra dependencies.
 
+## App Store build (iOS)
+
+App store builds leave out modules marked `storeRestricted` (SoundCloud uses an unofficial API):
+
+```sh
+flutter build ipa --release --dart-define=POUNCE_STORE_BUILD=true
+```
+
+That version is a web radio player with the local library, designs from the module catalog and every source
+module that is cleared for app distribution. Before submitting, also check:
+
+- Signing: set your team in Xcode (`ios/Runner.xcworkspace` → Runner → Signing & Capabilities).
+- `ios/Runner/PrivacyInfo.xcprivacy` still matches what the app does (no tracking, no collected data).
+- App Store Connect: privacy policy URL, age rating, screenshots, and "Data Not Collected" in the privacy labels.
+- The license: Pounce is GPL-3.0, which the FSF considers incompatible with the App Store terms. Publishing there
+  needs the consent of all copyright holders (or an additional permission in the license).
+
+See [MODULES.md](MODULES.md) for how restricted modules are compiled out.
+
 ## Web
 
 SoundCloud's API only allows browser requests from soundcloud.com (CORS), so the web build needs a proxy:

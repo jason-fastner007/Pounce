@@ -9,6 +9,8 @@ import 'package:pounce/dj/beat_analyzer.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
+import 'support/modules.dart';
+
 Track _track({
   required int id,
   required String title,
@@ -80,7 +82,7 @@ void main() {
         return http.Response('{"url":"https://cdn/stream.mp3"}', 200);
       });
       sc = SoundCloud(store, settings, client: client);
-      analyzer = BeatAnalyzer(sc, store);
+      analyzer = BeatAnalyzer(registryWith(store, sc, client: client), store);
     });
 
     test('analyze reads stored analysis from database table', () async {

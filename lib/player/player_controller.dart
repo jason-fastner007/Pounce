@@ -6,8 +6,7 @@ import 'package:flutter/widgets.dart' show AppLifecycleListener, AppLifecycleSta
 import '../core/settings.dart';
 import '../core/store.dart';
 import '../library/library.dart';
-import '../sc/models.dart';
-import '../sc/soundcloud.dart';
+import '../modules/source_module.dart';
 import 'audio_engine.dart';
 
 enum LoopMode { off, all, one }
@@ -18,7 +17,7 @@ enum LoopMode { off, all, one }
 /// loading, queue, duration). The position runs separately via [position] or [livePosition],
 /// so lists and the player view aren't rebuilt ten times per second.
 class PlayerController extends ChangeNotifier {
-  PlayerController(this._engine, this._sc, this._settings, this._library, this._store) {
+  PlayerController(this._engine, this._sources, this._settings, this._library, this._store) {
     _engine.states.listen(_onState);
     _engine.commands.listen(_onCommand);
     _engine.setVolume(_settings.volume);
@@ -33,7 +32,7 @@ class PlayerController extends ChangeNotifier {
   }
 
   final AudioEngine _engine;
-  final SoundCloud _sc;
+  final TrackSource _sources;
   final Settings _settings;
   final Library _library;
   final Store _store;
@@ -147,7 +146,7 @@ class PlayerController extends ChangeNotifier {
 
   /// Resolve the stream URL before the track is started.
   void prefetch(Track t) {
-    if (t.playable && !t.isLive) _sc.prefetchStream(t, fast: _settings.fastStart);
+    if (t.playable && !t.isLive) _sources.prefetchStream(t, fast: _settings.fastStart);
   }
 
   Track? _warmTrack;
@@ -161,7 +160,7 @@ class PlayerController extends ChangeNotifier {
     if (!t.playable || t.isLive || t == current) return;
     _warmTrack = t;
     try {
-      final s = await _sc.stream(t, fast: _settings.fastStart);
+      final s = await _sources.stream(t, fast: _settings.fastStart);
       if (_warmTrack != t) return;
       // The free deck now belongs to this track – a DJ pre-buffer has to reload.
       _prebufferedTrack = null;
@@ -352,7 +351,7 @@ class PlayerController extends ChangeNotifier {
     if (!_settings.autoplay || seed == null || seed.isLive) return false;
     try {
       // Autoplay: don't append hour-long mixes or previews on its own (tapped, they still play).
-      final more = (await _sc.related(seed.id))
+      final more = (await _sources.related(seed))
           .where((t) => _ok(t) && !_queue.contains(t) && !t.isPreview && t.durationMs <= 15 * 60000)
           .toList();
       if (more.isEmpty) return false;
@@ -374,7 +373,7 @@ class PlayerController extends ChangeNotifier {
   /// Tapped/"next": start fast (MP3 instead of HLS, see [Settings.fastStart]).
   Future<StreamInfo> _streamFor(Track t) async => t.isLive
       ? StreamInfo(t.streamUrl!, hls: t.streamUrl!.contains('.m3u8'), live: true)
-      : await _sc.stream(t, fast: _settings.fastStart);
+      : await _sources.stream(t, fast: _settings.fastStart);
 
   Future<void> _load({Duration start = Duration.zero}) async {
     final track = current;
@@ -429,7 +428,7 @@ class PlayerController extends ChangeNotifier {
     _prebufferedTrack = track; // before the await: the position tick calls this several times per second
     _prebufferedStart = start;
     try {
-      final s = await _sc.stream(track);
+      final s = await _sources.stream(track);
       if (_prebufferedTrack != track) return;
       _prebufferedStream = s;
       await _engine.prebuffer(s, _meta(track), start: start, autoAdvance: autoAdvance);
@@ -466,7 +465,7 @@ class PlayerController extends ChangeNotifier {
       if (_prebufferedTrack?.id == targetTrack.id && _prebufferedStream != null) {
         s = _prebufferedStream!;
       } else {
-        s = await _sc.stream(targetTrack);
+        s = await _sources.stream(targetTrack);
       }
       if (token != _loadToken) return;
       stream = s;

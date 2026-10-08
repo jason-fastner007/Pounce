@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../core/deps.dart';
 import '../theme.dart';
 import '../nav.dart';
+import '../widgets/account_builder.dart';
 import '../widgets/cards.dart';
 import '../widgets/common.dart';
 import '../widgets/track_tile.dart';
@@ -118,10 +119,9 @@ class LibraryPage extends StatelessWidget {
             ),
             // Playlists of the SoundCloud account
             SliverToBoxAdapter(
-              child: ListenableBuilder(
-                listenable: context.deps.account,
-                builder: (context, _) {
-                  final remote = context.deps.account.playlists;
+              child: AccountBuilder(
+                builder: (context, account) {
+                  final remote = account?.playlists ?? const [];
                   if (remote.isEmpty) return const SizedBox.shrink();
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

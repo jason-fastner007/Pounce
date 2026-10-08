@@ -913,4 +913,75 @@ class AppLocalizationsHu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Belépés $entry · $drop · $fade mp áttűnés';
   }
+
+  @override
+  String get modules => 'Modulok';
+
+  @override
+  String get modulesDesc => 'Források és dizájnok – be- és kikapcsolás, újak hozzáadása';
+
+  @override
+  String get modulesSources => 'Források ebben a verzióban';
+
+  @override
+  String get modulesNoSources => 'Ebben a verzióban nincs forrásmodul – a webrádió és a könyvtár továbbra is működik.';
+
+  @override
+  String get modulesThemes => 'Dizájnok';
+
+  @override
+  String get themeDefault => 'Alapértelmezett';
+
+  @override
+  String get themeDefaultDesc => 'Kiemelőszín a beállításokból';
+
+  @override
+  String themeActive(String name) {
+    return 'A(z) „$name” dizájn aktív – válassz színt a visszaváltáshoz';
+  }
+
+  @override
+  String get modulesCatalog => 'Katalógus';
+
+  @override
+  String get modulesBrowse => 'Modulok böngészése';
+
+  @override
+  String get modulesBrowseDesc => 'Letölti a katalógust a GitHubról – egy kérés, rólad semmit nem küld';
+
+  @override
+  String get moduleInstall => 'Telepítés';
+
+  @override
+  String get moduleRemove => 'Eltávolítás';
+
+  @override
+  String get moduleIncluded => 'BENNE VAN';
+
+  @override
+  String get moduleNotInBuild => 'NINCS EBBEN A VERZIÓBAN';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · készítette: $author';
+  }
+
+  @override
+  String get modulesDevelop => 'Fejlesztőknek';
+
+  @override
+  String get modulesDevelopTitle => 'Saját modul készítése';
+
+  @override
+  String get modulesDevelopDesc => 'Dizájnok, zeneforrások és hogyan kerülnek a katalógusba';
+
+  @override
+  String get moduleUnavailable => 'A tartalomhoz tartozó modul ki van kapcsolva, vagy nem része ennek a verziónak';
+
+  @override
+  String get homeNoSources =>
+      'Webrádiókat a Keresésben találsz – további források modulként érhetők el (Beállítások → Modulok).';
+
+  @override
+  String get djNoSources => 'A DJ-mixekhez olyan zeneforrás-modul kell, amely támogatja őket (Beállítások → Modulok).';
 }

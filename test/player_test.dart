@@ -12,6 +12,8 @@ import 'package:pounce/player/player_controller.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
+import 'support/modules.dart';
+
 class _FakeEngine extends AudioEngine {
   final loaded = <String>[];
   final prebuffered = <String>[];
@@ -143,7 +145,7 @@ void main() {
       return http.Response('{"url":"https://cdn/a.mp3"}', 200);
     });
     engine = _FakeEngine();
-    player = PlayerController(engine, SoundCloud(store, settings, client: client), settings, Library(store), store);
+    player = PlayerController(engine, registryWith(store, SoundCloud(store, settings, client: client), client: client), settings, Library(store), store);
   });
 
   test('Queue: next/previous/repeat', () async {
@@ -323,7 +325,7 @@ void main() {
     // Create new player controller with same store to test restoration
     final newPlayer = PlayerController(
       _FakeEngine(),
-      SoundCloud(store, settings),
+      registryWith(store, SoundCloud(store, settings)),
       settings,
       Library(store),
       store,

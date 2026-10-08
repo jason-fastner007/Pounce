@@ -15,7 +15,7 @@ class PounceApp extends StatefulWidget {
 }
 
 class _PounceAppState extends State<PounceApp> {
-  late final _accent = AccentController(context.deps.settings, context.deps.player);
+  late final _accent = AccentController(context.deps.settings, context.deps.player, context.deps.modules);
 
   @override
   void dispose() {
@@ -41,9 +41,9 @@ class _PounceAppState extends State<PounceApp> {
         locale: settings.locale,
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: const [AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates],
-        // Pass the language on to SoundCloud content as well.
+        // Pass the language on to the source modules' content as well.
         builder: (context, child) {
-          context.deps.sc.language = Localizations.localeOf(context).languageCode;
+          context.deps.modules.language = Localizations.localeOf(context).languageCode;
           return child!;
         },
         home: AnimatedSwitcher(

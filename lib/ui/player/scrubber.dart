@@ -5,13 +5,12 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../core/deps.dart';
 import '../../player/player_controller.dart';
-import '../../sc/models.dart';
-import '../../sc/soundcloud.dart';
+import '../../modules/source_module.dart';
 import '../tokens.dart';
 import '../widgets/common.dart';
 
 /// Waveform of a track (0..1), loaded once and shared.
-Future<List<double>> waveformOf(SoundCloud sc, Track t) => sc.waveform(t);
+Future<List<double>> waveformOf(TrackSource sources, Track t) => sources.waveform(t);
 
 enum ScrubStyle { waveform, squiggly }
 
@@ -75,7 +74,7 @@ class _ScrubberState extends State<Scrubber> with TickerProviderStateMixin {
   Future<void> _load() async {
     final id = widget.track.id;
     _grow.value = 0;
-    final s = await waveformOf(context.deps.sc, widget.track);
+    final s = await waveformOf(context.deps.modules, widget.track);
     if (!mounted || widget.track.id != id) return;
     setState(() => _samples = s);
     _grow.animateTo(1, curve: Motion.decelerate);

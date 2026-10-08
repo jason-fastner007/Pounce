@@ -1774,6 +1774,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry {entry} · {drop} · {fade} s fade'**
   String planText(String entry, String drop, String fade);
+
+  /// No description provided for @modules.
+  ///
+  /// In en, this message translates to:
+  /// **'Modules'**
+  String get modules;
+
+  /// No description provided for @modulesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sources and designs – switch on, off or add more'**
+  String get modulesDesc;
+
+  /// No description provided for @modulesSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Sources in this version'**
+  String get modulesSources;
+
+  /// No description provided for @modulesNoSources.
+  ///
+  /// In en, this message translates to:
+  /// **'This version has no source modules – web radio and your library still work.'**
+  String get modulesNoSources;
+
+  /// No description provided for @modulesThemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Designs'**
+  String get modulesThemes;
+
+  /// No description provided for @themeDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get themeDefault;
+
+  /// No description provided for @themeDefaultDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent colour from the settings'**
+  String get themeDefaultDesc;
+
+  /// No description provided for @themeActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Design “{name}” is active – pick a colour to switch back'**
+  String themeActive(String name);
+
+  /// No description provided for @modulesCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog'**
+  String get modulesCatalog;
+
+  /// No description provided for @modulesBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse modules'**
+  String get modulesBrowse;
+
+  /// No description provided for @modulesBrowseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Loads the catalog from GitHub – one request, nothing about you is sent'**
+  String get modulesBrowseDesc;
+
+  /// No description provided for @moduleInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get moduleInstall;
+
+  /// No description provided for @moduleRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get moduleRemove;
+
+  /// No description provided for @moduleIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'INCLUDED'**
+  String get moduleIncluded;
+
+  /// No description provided for @moduleNotInBuild.
+  ///
+  /// In en, this message translates to:
+  /// **'NOT IN THIS VERSION'**
+  String get moduleNotInBuild;
+
+  /// No description provided for @moduleByline.
+  ///
+  /// In en, this message translates to:
+  /// **'v{version} · by {author}'**
+  String moduleByline(String version, String author);
+
+  /// No description provided for @modulesDevelop.
+  ///
+  /// In en, this message translates to:
+  /// **'For developers'**
+  String get modulesDevelop;
+
+  /// No description provided for @modulesDevelopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your own module'**
+  String get modulesDevelopTitle;
+
+  /// No description provided for @modulesDevelopDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Designs, music sources and how to get them into the catalog'**
+  String get modulesDevelopDesc;
+
+  /// No description provided for @moduleUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The module for this content is switched off or not part of this version'**
+  String get moduleUnavailable;
+
+  /// No description provided for @homeNoSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Find web radio stations in Search – more sources come as modules (Settings → Modules).'**
+  String get homeNoSources;
+
+  /// No description provided for @djNoSources.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ mixes need a music source module that supports them (Settings → Modules).'**
+  String get djNoSources;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

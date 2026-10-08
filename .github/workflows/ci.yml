@@ -76,6 +76,9 @@ jobs:
           echo "This iOS build compiles from the same codebase, but is **NOT actively tested on iOS devices**." >> $GITHUB_STEP_SUMMARY
           echo "Audio playback, background services, or UI components may have issues." >> $GITHUB_STEP_SUMMARY
       - run: flutter pub get
+      # App Store variant first: restricted modules (SoundCloud) must compile out cleanly.
+      - name: Build iOS App Store variant (unsigned)
+        run: flutter build ios --release --no-codesign --dart-define=POUNCE_STORE_BUILD=true
       - name: Build iOS (unsigned)
         run: flutter build ios --release --no-codesign
       - name: Package unsigned IPA

@@ -28,9 +28,13 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     if (widget.remote != null) {
+      final sc = context.deps.soundcloud?.sc;
+      if (sc == null) {
+        return Scaffold(body: MessageView(icon: Icons.extension_off_rounded, text: context.l10n.moduleUnavailable));
+      }
       return Scaffold(
         body: AsyncView<ScPlaylist>(
-          load: () => context.deps.sc.playlist(widget.remote!.id),
+          load: () => sc.playlist(widget.remote!.id),
           loading: _body(context, widget.remote!.title, widget.remote!.art(), widget.remote!.user.username, null),
           builder: (c, p) => _body(c, p.title, p.art(), p.user.username, p.tracks),
         ),

@@ -6,8 +6,7 @@ import 'dart:typed_data';
 
 import '../core/store.dart';
 import '../engine/deckengine.dart';
-import '../sc/models.dart';
-import '../sc/soundcloud.dart';
+import '../modules/source_module.dart';
 import 'camelot_key.dart';
 
 /// Where an analysis comes from – determines how much it can be trusted.
@@ -231,9 +230,9 @@ class BeatInfo {
 /// background isolate, in the browser in a web worker. Results land in the `beat` table
 /// of the database and are never computed twice.
 class BeatAnalyzer {
-  BeatAnalyzer(this.sc, this.store, {DeckEngine? engine}) : _engine = engine ?? DeckEngine.instance;
+  BeatAnalyzer(this.sources, this.store, {DeckEngine? engine}) : _engine = engine ?? DeckEngine.instance;
 
-  final SoundCloud sc;
+  final TrackSource sources;
   final Store store;
   final DeckEngine? _engine;
 
@@ -314,11 +313,11 @@ class BeatAnalyzer {
     final engine = _engine;
     if (info == null || info.eventsScanned || engine == null || info.source != BeatSource.pcm) return info;
     if (track.isProtected || track.durationMs < 20000) return info;
-    final url = await sc.progressiveMp3(track);
+    final url = await sources.analysisUrl(track);
     if (url == null) return info;
-    var head = await sc.range(url, 0, 8191);
+    var head = await sources.range(url, 0, 8191);
     final need = _headNeeds(head);
-    if (need > head.length) head = await sc.range(url, 0, need - 1);
+    if (need > head.length) head = await sources.range(url, 0, need - 1);
     final layout = _Mp3Layout.of(head);
     if (layout == null) return info;
 
@@ -331,7 +330,7 @@ class BeatAnalyzer {
     for (var at = 0; at < limit; at += stepMs) {
       final from = layout.byteAt(at);
       final to = layout.byteAt(math.min(dur, at + chunkMs)) + 4 * 418;
-      final clip = await sc.range(url, from, to);
+      final clip = await sources.range(url, from, to);
       final e = await engine.scanEvents(
         EventRequest(
           head: head,
@@ -427,12 +426,12 @@ class BeatAnalyzer {
     final engine = _engine;
     // DRM tracks: no unencrypted MP3 for analysis (SoundCloud returns 404).
     if (engine == null || track.durationMs < 8000 || track.isProtected) return null;
-    final url = await sc.progressiveMp3(track);
+    final url = await sources.analysisUrl(track);
     if (url == null) return null;
 
-    var head = await sc.range(url, 0, 8191);
+    var head = await sources.range(url, 0, 8191);
     final need = _headNeeds(head);
-    if (need > head.length) head = await sc.range(url, 0, need - 1);
+    if (need > head.length) head = await sources.range(url, 0, need - 1);
     final layout = _Mp3Layout.of(head);
     if (layout == null) return null;
 
@@ -442,7 +441,7 @@ class BeatAnalyzer {
     final from = layout.byteAt(startMs);
     final to = layout.byteAt(math.min(dur, startMs + _clipMs)) + 4 * 418;
 
-    final results = await (sc.range(url, from, to), sc.waveform(track)).wait;
+    final results = await (sources.range(url, from, to), sources.waveform(track)).wait;
     final env = results.$2.isEmpty ? null : Float32List.fromList(results.$2);
     final a = await engine.analyzeMp3Clip(
       ClipRequest(head: head, clip: results.$1, clipOffset: from, durationMs: dur.toDouble(), envelope: env),
@@ -482,7 +481,7 @@ class BeatAnalyzer {
 
   /// Without audio: rough estimate from the waveform (no key – better none than a made-up one).
   Future<BeatInfo?> _fallback(Track track) async {
-    final samples = await sc.waveform(track);
+    final samples = await sources.waveform(track);
     if (samples.length < 32 || track.durationMs <= 0) return null;
     final native = await _engine?.analyzeWaveform(samples, track.durationMs);
     final est = native ?? _estimateFromWaveform(samples, track.durationMs);

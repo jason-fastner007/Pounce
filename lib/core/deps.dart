@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import '../dj/dj_flow_controller.dart';
 import '../dj/mix_builder.dart';
 import '../dj/taste.dart';
-import '../library/account.dart';
 import '../library/library.dart';
 import '../lyrics/lyrics_service.dart';
 import '../player/player_controller.dart';
 import '../radio/radio_service.dart';
-import '../sc/soundcloud.dart';
+import '../sc/soundcloud_module.dart';
 import '../sync/sync_service.dart';
+import '../modules/registry.dart';
 import '../modules/updater/release_provider.dart';
 import 'settings.dart';
 import 'store.dart';
@@ -19,11 +19,10 @@ class Deps extends InheritedWidget {
   const Deps({
     super.key,
     required this.settings,
-    required this.sc,
+    required this.modules,
     required this.lyrics,
     required this.library,
     required this.player,
-    required this.account,
     required this.dj,
     required this.mix,
     required this.taste,
@@ -35,11 +34,11 @@ class Deps extends InheritedWidget {
   });
 
   final Settings settings;
-  final SoundCloud sc;
+  /// Source modules (SoundCloud, …) and installed designs.
+  final ModuleRegistry modules;
   final LyricsService lyrics;
   final Library library;
   final PlayerController player;
-  final Account account;
   final DjFlowController dj;
   final MixBuilder mix;
   final TasteModel taste;
@@ -58,4 +57,9 @@ class Deps extends InheritedWidget {
 
 extension DepsX on BuildContext {
   Deps get deps => Deps.of(this);
+}
+
+extension DepsModules on Deps {
+  /// The SoundCloud module, null when it isn't part of this build or is switched off.
+  SoundCloudModule? get soundcloud => modules.find<SoundCloudModule>();
 }

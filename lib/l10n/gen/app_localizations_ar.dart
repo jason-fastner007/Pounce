@@ -930,4 +930,74 @@ class AppLocalizationsAr extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'الدخول $entry · $drop · تلاشٍ $fade ث';
   }
+
+  @override
+  String get modules => 'الوحدات';
+
+  @override
+  String get modulesDesc => 'المصادر والتصاميم – شغّلها أو أوقفها أو أضف المزيد';
+
+  @override
+  String get modulesSources => 'المصادر في هذا الإصدار';
+
+  @override
+  String get modulesNoSources => 'لا يحتوي هذا الإصدار على وحدات مصادر – يظل راديو الويب ومكتبتك يعملان.';
+
+  @override
+  String get modulesThemes => 'التصاميم';
+
+  @override
+  String get themeDefault => 'الافتراضي';
+
+  @override
+  String get themeDefaultDesc => 'لون التمييز من الإعدادات';
+
+  @override
+  String themeActive(String name) {
+    return 'التصميم \"$name\" مفعّل – اختر لونًا للعودة';
+  }
+
+  @override
+  String get modulesCatalog => 'الكتالوج';
+
+  @override
+  String get modulesBrowse => 'تصفّح الوحدات';
+
+  @override
+  String get modulesBrowseDesc => 'يحمّل الكتالوج من GitHub – طلب واحد، ولا يُرسَل أي شيء عنك';
+
+  @override
+  String get moduleInstall => 'تثبيت';
+
+  @override
+  String get moduleRemove => 'إزالة';
+
+  @override
+  String get moduleIncluded => 'مضمّنة';
+
+  @override
+  String get moduleNotInBuild => 'غير متوفرة في هذا الإصدار';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'الإصدار $version · من $author';
+  }
+
+  @override
+  String get modulesDevelop => 'للمطورين';
+
+  @override
+  String get modulesDevelopTitle => 'أنشئ وحدتك الخاصة';
+
+  @override
+  String get modulesDevelopDesc => 'التصاميم ومصادر الموسيقى وكيفية إضافتها إلى الكتالوج';
+
+  @override
+  String get moduleUnavailable => 'الوحدة الخاصة بهذا المحتوى متوقفة أو غير موجودة في هذا الإصدار';
+
+  @override
+  String get homeNoSources => 'ابحث عن محطات راديو الويب في البحث – تتوفر مصادر أخرى كوحدات (الإعدادات ← الوحدات).';
+
+  @override
+  String get djNoSources => 'تحتاج مزجات الـDJ إلى وحدة مصدر موسيقى تدعمها (الإعدادات ← الوحدات).';
 }

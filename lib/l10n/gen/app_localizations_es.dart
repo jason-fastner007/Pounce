@@ -927,4 +927,76 @@ class AppLocalizationsEs extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Entrada $entry · $drop · fundido de $fade s';
   }
+
+  @override
+  String get modules => 'Módulos';
+
+  @override
+  String get modulesDesc => 'Fuentes y diseños: actívalos, desactívalos o añade más';
+
+  @override
+  String get modulesSources => 'Fuentes en esta versión';
+
+  @override
+  String get modulesNoSources =>
+      'Esta versión no tiene módulos de fuente: la radio web y tu biblioteca siguen funcionando.';
+
+  @override
+  String get modulesThemes => 'Diseños';
+
+  @override
+  String get themeDefault => 'Predeterminado';
+
+  @override
+  String get themeDefaultDesc => 'Color de acento de los ajustes';
+
+  @override
+  String themeActive(String name) {
+    return 'El diseño «$name» está activo: elige un color para volver';
+  }
+
+  @override
+  String get modulesCatalog => 'Catálogo';
+
+  @override
+  String get modulesBrowse => 'Explorar módulos';
+
+  @override
+  String get modulesBrowseDesc => 'Carga el catálogo desde GitHub: una sola solicitud, no se envía nada sobre ti';
+
+  @override
+  String get moduleInstall => 'Instalar';
+
+  @override
+  String get moduleRemove => 'Quitar';
+
+  @override
+  String get moduleIncluded => 'INCLUIDO';
+
+  @override
+  String get moduleNotInBuild => 'NO ESTÁ EN ESTA VERSIÓN';
+
+  @override
+  String moduleByline(String version, String author) {
+    return 'v$version · de $author';
+  }
+
+  @override
+  String get modulesDevelop => 'Para desarrolladores';
+
+  @override
+  String get modulesDevelopTitle => 'Crea tu propio módulo';
+
+  @override
+  String get modulesDevelopDesc => 'Diseños, fuentes de música y cómo llevarlos al catálogo';
+
+  @override
+  String get moduleUnavailable => 'El módulo de este contenido está desactivado o no forma parte de esta versión';
+
+  @override
+  String get homeNoSources =>
+      'Encuentra emisoras de radio web en Buscar; hay más fuentes como módulos (Ajustes → Módulos).';
+
+  @override
+  String get djNoSources => 'Las mezclas de DJ necesitan un módulo de fuente musical compatible (Ajustes → Módulos).';
 }
