@@ -186,17 +186,13 @@ ThemeData buildTheme(Color accent) {
       hintStyle: WidgetStatePropertyAll(Studio.body.copyWith(fontSize: 14, color: Studio.text3)),
     ),
     sliderTheme: SliderThemeData(
-      // 2024 slider (the flag becomes the default later).
-      // ignore: deprecated_member_use
-      year2023: false,
       trackHeight: 3,
       activeTrackColor: accent,
       inactiveTrackColor: Studio.lineStrong,
       thumbColor: Studio.text,
       overlayShape: SliderComponentShape.noOverlay,
     ),
-    // ignore: deprecated_member_use
-    progressIndicatorTheme: ProgressIndicatorThemeData(year2023: false, color: accent),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: accent),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Studio.bg0 : Studio.text2),
       trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? accent : Studio.surfaceHi),
