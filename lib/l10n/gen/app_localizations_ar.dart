@@ -827,6 +827,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get djFlowActiveDesc => 'مطابقة تلقائية للجمل والمقام';
 
   @override
+  String get djFlowAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djBpm => 'BPM';
+
+  @override
   String get djTapToActivate => 'اضغط للتفعيل';
 
   @override

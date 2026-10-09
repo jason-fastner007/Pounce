@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · сетка битов, тональность (хрома), громкость и ИИ-отпечаток по реальному звуку",
   "engineUnavailable": "Недоступно – только оценка по форме волны",
   "djFlowActiveDesc": "Автоподбор фраз и тональности",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Нажмите, чтобы включить",
   "djAnalyzing": "Анализ аудио…",
   "djNoKey": "Тональность не определена",

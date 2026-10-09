@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · ütemrács, hangnem (kroma), hangosság és MI-ujjlenyomat valódi hangból",
   "engineUnavailable": "Nem elérhető – csak becslés a hullámformából",
   "djFlowActiveDesc": "Automatikus frázis- és hangnemillesztés",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Koppints az aktiváláshoz",
   "djAnalyzing": "Hang elemzése…",
   "djNoKey": "Nem ismerhető fel hangnem",

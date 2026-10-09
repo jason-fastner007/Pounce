@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · Beat-Raster, Tonart (Chroma), Lautheit, KI-Fingerabdruck aus echtem Audio",
   "engineUnavailable": "Nicht verfügbar – nur Schätzung aus der Wellenform",
   "djFlowActiveDesc": "Autonome Phrasen- & Tonart-Abstimmung",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Tippen zum Aktivieren",
   "djAnalyzing": "Audio wird analysiert…",
   "djNoKey": "Keine Tonart erkennbar",

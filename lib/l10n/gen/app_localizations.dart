@@ -1589,6 +1589,18 @@ abstract class AppLocalizations {
   /// **'Automatic phrase & key matching'**
   String get djFlowActiveDesc;
 
+  /// No description provided for @djFlowAutomix.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow & Automix'**
+  String get djFlowAutomix;
+
+  /// No description provided for @djBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'BPM'**
+  String get djBpm;
+
   /// No description provided for @djTapToActivate.
   ///
   /// In en, this message translates to:

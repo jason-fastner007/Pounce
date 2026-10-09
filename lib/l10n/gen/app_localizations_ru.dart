@@ -826,6 +826,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get djFlowActiveDesc => 'Автоподбор фраз и тональности';
 
   @override
+  String get djFlowAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djBpm => 'BPM';
+
+  @override
   String get djTapToActivate => 'Нажмите, чтобы включить';
 
   @override

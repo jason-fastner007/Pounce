@@ -825,6 +825,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get djFlowActiveDesc => 'Calage automatique des phrases et tonalités';
 
   @override
+  String get djFlowAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djBpm => 'BPM';
+
+  @override
   String get djTapToActivate => 'Touchez pour activer';
 
   @override

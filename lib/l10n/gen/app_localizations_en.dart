@@ -820,6 +820,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get djFlowActiveDesc => 'Automatic phrase & key matching';
 
   @override
+  String get djFlowAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djBpm => 'BPM';
+
+  @override
   String get djTapToActivate => 'Tap to activate';
 
   @override

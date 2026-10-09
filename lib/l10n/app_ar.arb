@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · شبكة الإيقاع والمقام (كروما) وشدة الصوت وبصمة الذكاء الاصطناعي من الصوت الحقيقي",
   "engineUnavailable": "غير متاح – تقدير من شكل الموجة فقط",
   "djFlowActiveDesc": "مطابقة تلقائية للجمل والمقام",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "اضغط للتفعيل",
   "djAnalyzing": "جارٍ تحليل الصوت…",
   "djNoKey": "لم يُكتشف مقام",
