@@ -139,7 +139,7 @@ class DjPage extends StatelessWidget {
                     style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(52),
                       foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(borderRadius: Studio.br16),
+                      shape: const RoundedRectangleBorder(borderRadius: Studio.br16),
                     ),
                     onPressed: selected.isEmpty || mix.building ? null : () => _start(context),
                     icon: mix.building
@@ -153,22 +153,25 @@ class DjPage extends StatelessWidget {
               SliverToBoxAdapter(
                 child: ValueListenableBuilder<(int, int)>(
                   valueListenable: d.dj.ahead,
-                  builder: (context, a, _) => AnimatedSize(
-                    duration: Motion.medium,
-                    child: a.$2 == 0 || !d.dj.state.isActive
-                        ? const SizedBox(width: double.infinity)
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(20, Studio.s2, 20, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                LinearProgressIndicator(value: a.$1 / a.$2, minHeight: 3, borderRadius: Studio.br4),
-                                const SizedBox(height: 6),
-                                Mono(l.djAnalyzed(a.$1, a.$2), size: 11),
-                              ],
+                  builder: (context, a, _) {
+                    final hidden = a.$2 == 0 || !d.dj.state.isActive;
+                    return AnimatedSize(
+                      duration: Motion.medium,
+                      child: hidden
+                          ? const SizedBox(width: double.infinity)
+                          : Padding(
+                              padding: const EdgeInsets.fromLTRB(20, Studio.s2, 20, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  LinearProgressIndicator(value: a.$1 / a.$2, minHeight: 3, borderRadius: Studio.br4),
+                                  const SizedBox(height: 6),
+                                  Mono(l.djAnalyzed(a.$1, a.$2), size: 11),
+                                ],
+                              ),
                             ),
-                          ),
-                  ),
+                    );
+                  },
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 140)),
