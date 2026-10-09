@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · lưới nhịp, tông (chroma), độ lớn và dấu vân tay AI từ âm thanh thật",
   "engineUnavailable": "Không khả dụng – chỉ ước tính từ dạng sóng",
   "djFlowActiveDesc": "Tự động khớp câu nhạc & tông",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Chạm để bật",
   "djAnalyzing": "Đang phân tích âm thanh…",
   "djNoKey": "Không nhận ra tông",

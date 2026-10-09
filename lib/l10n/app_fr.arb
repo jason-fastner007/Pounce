@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · grille rythmique, tonalité (chroma), loudness et empreinte IA à partir de l'audio réel",
   "engineUnavailable": "Indisponible – estimation à partir de la forme d'onde uniquement",
   "djFlowActiveDesc": "Calage automatique des phrases et tonalités",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Touchez pour activer",
   "djAnalyzing": "Analyse de l'audio…",
   "djNoKey": "Aucune tonalité détectée",

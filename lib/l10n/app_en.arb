@@ -400,6 +400,8 @@
   },
   "engineUnavailable": "Not available – estimate from the waveform only",
   "djFlowActiveDesc": "Automatic phrase & key matching",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Tap to activate",
   "djAnalyzing": "Analysing audio…",
   "djNoKey": "No key detected",

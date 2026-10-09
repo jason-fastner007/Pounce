@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -116,7 +115,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get emptyPlaylist => 'Плейлист пуст';
 
   @override
-  String get emptyPlaylists => 'Создавайте плейлисты и добавляйте треки через меню ⋮.';
+  String get emptyPlaylists =>
+      'Создавайте плейлисты и добавляйте треки через меню ⋮.';
 
   @override
   String tracksCount(int count) {
@@ -250,10 +250,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get protected => 'Защищено';
 
   @override
-  String get protectedHint => 'Трек защищён DRM и пока не воспроизводится в Pounce – даже после входа';
+  String get protectedHint =>
+      'Трек защищён DRM и пока не воспроизводится в Pounce – даже после входа';
 
   @override
-  String get protectedPlayable => 'Защищено DRM – расшифровывается DRM-модулем браузера';
+  String get protectedPlayable =>
+      'Защищено DRM – расшифровывается DRM-модулем браузера';
 
   @override
   String get account => 'Аккаунт';
@@ -268,7 +270,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get signup => 'Создать аккаунт';
 
   @override
-  String get loginPrivacy => 'Вход происходит на странице SoundCloud. Pounce не видит ваш пароль.';
+  String get loginPrivacy =>
+      'Вход происходит на странице SoundCloud. Pounce не видит ваш пароль.';
 
   @override
   String get loginWaiting => 'Завершите вход в браузере…';
@@ -493,13 +496,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get proxy => 'CORS-прокси';
 
   @override
-  String get proxyDesc => 'Нужен в браузере: SoundCloud разрешает запросы только со своего сайта.';
+  String get proxyDesc =>
+      'Нужен в браузере: SoundCloud разрешает запросы только со своего сайта.';
 
   @override
   String get about => 'О приложении';
 
   @override
-  String get aboutText => 'Вдохновлено KittyTune (alan7383), написано с нуля на Flutter. Свободное ПО под GPL-3.0.';
+  String get aboutText =>
+      'Вдохновлено KittyTune (alan7383), написано с нуля на Flutter. Свободное ПО под GPL-3.0.';
 
   @override
   String get licenses => 'Лицензии открытого ПО';
@@ -508,7 +513,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get previewBadge => 'Превью (30 с)';
 
   @override
-  String get previewHint => 'SoundCloud предлагает только 30-секундное превью этого трека.';
+  String get previewHint =>
+      'SoundCloud предлагает только 30-секундное превью этого трека.';
 
   @override
   String get openInYtMusic => 'Открыть в YouTube Music';
@@ -517,7 +523,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get skipPreviews => 'Пропускать превью';
 
   @override
-  String get skipPreviewsDesc => 'Пропускать 30-секундные превью при переходе по очереди';
+  String get skipPreviewsDesc =>
+      'Пропускать 30-секундные превью при переходе по очереди';
 
   @override
   String get fastStart => 'Быстрый старт';
@@ -606,7 +613,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get radioSource => 'Интернет-радио';
 
   @override
-  String get radioSourceDesc => 'Десятки тысяч станций с radio-browser.info. Выкл.: ни одного запроса.';
+  String get radioSourceDesc =>
+      'Десятки тысяч станций с radio-browser.info. Выкл.: ни одного запроса.';
 
   @override
   String get live => 'ЭФИР';
@@ -618,7 +626,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get updatesAuto => 'Проверять обновления автоматически';
 
   @override
-  String get updatesAutoDesc => 'Не чаще раза в день, один запрос к GitHub без ID устройства. Сам ничего не скачивает.';
+  String get updatesAutoDesc =>
+      'Не чаще раза в день, один запрос к GitHub без ID устройства. Сам ничего не скачивает.';
 
   @override
   String get updatesCheck => 'Проверить';
@@ -649,10 +658,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get updateReleasePage => 'Страница релиза';
 
   @override
-  String get updateChecksumFailed => 'Контрольная сумма не совпала – загрузка удалена.';
+  String get updateChecksumFailed =>
+      'Контрольная сумма не совпала – загрузка удалена.';
 
   @override
-  String get updateNeedsPermission => 'Разреши Pounce устанавливать приложения и нажми снова.';
+  String get updateNeedsPermission =>
+      'Разреши Pounce устанавливать приложения и нажми снова.';
 
   @override
   String get updateFailed => 'Не удалось обновить – попробуй позже.';
@@ -668,7 +679,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get setupWelcome => 'Добро пожаловать в Pounce';
 
   @override
-  String get setupTagline => 'Быстрая музыка из SoundCloud и интернет-радио – с диджеем, который сводит для вас.';
+  String get setupTagline =>
+      'Быстрая музыка из SoundCloud и интернет-радио – с диджеем, который сводит для вас.';
 
   @override
   String get setupStart => 'Поехали';
@@ -689,10 +701,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get setupSourcesTitle => 'Откуда брать музыку?';
 
   @override
-  String get setupSoundcloudDesc => 'Миллионы треков, миксов и ремиксов. Всегда включено.';
+  String get setupSoundcloudDesc =>
+      'Миллионы треков, миксов и ремиксов. Всегда включено.';
 
   @override
-  String get setupRadioDesc => 'Более 30 000 станций через radio-browser.info. Выкл. = ни одного запроса.';
+  String get setupRadioDesc =>
+      'Более 30 000 станций через radio-browser.info. Выкл. = ни одного запроса.';
 
   @override
   String get setupAccountTitle => 'Перенести ваши лайки?';
@@ -708,13 +722,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get setupDjTitle => 'Что будет играть ваш диджей?';
 
   @override
-  String get setupDjDesc => 'Выберите несколько стилей. Их можно изменить во вкладке DJ.';
+  String get setupDjDesc =>
+      'Выберите несколько стилей. Их можно изменить во вкладке DJ.';
 
   @override
   String get setupPrivacyTitle => 'Ваша конфиденциальность';
 
   @override
-  String get setupPrivacyDesc => 'Без трекинга, рекламы и ID устройства. Всё ниже выключено, пока вы сами не включите.';
+  String get setupPrivacyDesc =>
+      'Без трекинга, рекламы и ID устройства. Всё ниже выключено, пока вы сами не включите.';
 
   @override
   String get setupRecognition => 'Распознавание песен (Echolot)';
@@ -824,6 +840,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get djFlowActiveDesc => 'Автоподбор фраз и тональности';
+
+  @override
+  String get djFlowAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djBpm => 'BPM';
 
   @override
   String get djTapToActivate => 'Нажмите, чтобы включить';

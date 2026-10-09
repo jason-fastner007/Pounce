@@ -247,6 +247,8 @@
   "engineRustDesc": "{label} · cuadrícula de compás, tono (chroma), volumen y huella de IA desde audio real",
   "engineUnavailable": "No disponible: estimación solo a partir de la forma de onda",
   "djFlowActiveDesc": "Ajuste automático de frases y tonos",
+  "djFlowAutomix": "DJ Flow & Automix",
+  "djBpm": "BPM",
   "djTapToActivate": "Toca para activar",
   "djAnalyzing": "Analizando audio…",
   "djNoKey": "No se detectó tono",
