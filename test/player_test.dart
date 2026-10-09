@@ -280,13 +280,13 @@ void main() {
   });
 
   test('Error handling in stream loading auto-advances to next track', () async {
-    final brokenTrack = Track(
+    const brokenTrack = Track(
       id: 99,
       title: 'broken',
-      user: const ScUser(id: 1, username: 'u'),
+      user: ScUser(id: 1, username: 'u'),
       durationMs: 1000,
       trackAuthorization: 'x',
-      transcodings: const [
+      transcodings: [
         Transcoding(
           url: 'https://api/error',
           preset: 'mp3',
