@@ -22,7 +22,8 @@ class PlayerController extends ChangeNotifier {
     _engine.states.listen(_onState);
     _engine.commands.listen(_onCommand);
     _engine.setVolume(_settings.volume);
-    _engine.setLoudMode(_settings.loudMode);
+    _loudMode = _settings.loudMode;
+    _engine.setLoudMode(_loudMode);
     _settings.addListener(_onSettings);
     _restore();
     try {
@@ -76,7 +77,7 @@ class PlayerController extends ChangeNotifier {
   /// Direct access to the engine (PCM decoding for analysis).
   AudioEngine get engine => _engine;
 
-  late LoudMode _loudMode = _settings.loudMode;
+  late LoudMode _loudMode;
   void _onSettings() {
     if (_settings.loudMode != _loudMode) {
       _loudMode = _settings.loudMode;

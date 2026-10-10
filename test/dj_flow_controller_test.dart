@@ -155,4 +155,29 @@ void main() {
     expect(controller.lookahead, 30);
     expect(store.get<int>('dj_lookahead'), 30);
   });
+
+  test('BeatClock equality, hashing, and downbeat logic', () {
+    const clock1 = BeatClock(bar: 1, beatInBar: 1, beatInPhrase: 1);
+    const clock2 = BeatClock(bar: 1, beatInBar: 1, beatInPhrase: 1);
+    const clock3 = BeatClock(bar: 1, beatInBar: 2, beatInPhrase: 2);
+
+    expect(clock1.isDownbeat, isTrue);
+    expect(clock3.isDownbeat, isFalse);
+    expect(clock1, equals(clock2));
+    expect(clock1.hashCode, equals(clock2.hashCode));
+    expect(clock1, isNot(equals(clock3)));
+  });
+
+  test('Beat calculation on position updates', () async {
+    final t1 = _t(1, bpm: 120.0); // 120 BPM = 500 ms per beat
+    await player.playQueue([t1]);
+    controller.toggleDjFlow();
+
+    // Move player position to 2000 ms (4 beats = bar 2, beat 1)
+    player.position.value = const Duration(milliseconds: 2000);
+    await pumpEventQueue();
+
+    expect(controller.beat.value.beatInBar, 1);
+    expect(controller.beat.value.bar, 2);
+  });
 }
