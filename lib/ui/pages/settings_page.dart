@@ -28,6 +28,7 @@ const _languageNames = {
   'vi': 'Tiếng Việt',
   'ar': 'العربية',
   'es': 'Español',
+  'pt': 'Português',
 };
 
 class SettingsPage extends StatelessWidget {
