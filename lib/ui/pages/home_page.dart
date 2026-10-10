@@ -256,7 +256,7 @@ class _HomeSkeleton extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       for (var r = 0; r < 3; r++) ...[
-        const Padding(padding: EdgeInsets.fromLTRB(16, 28, 16, 12), child: Skeleton(width: 200, height: 20, radius: 10)),
+        const Padding(padding: EdgeInsetsDirectional.fromSTEB(16, 28, 16, 12), child: Skeleton(width: 200, height: 20, radius: 10)),
         SizedBox(
           height: 200,
           child: ListView(

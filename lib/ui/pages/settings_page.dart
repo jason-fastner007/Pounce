@@ -94,7 +94,7 @@ class SettingsPage extends StatelessWidget {
                         subtitle: Text(l.beatBgDesc),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(Studio.s4, 0, Studio.s4, Studio.s4),
+                        padding: const EdgeInsetsDirectional.fromSTEB(Studio.s4, 0, Studio.s4, Studio.s4),
                         child: Segments<BeatLevel>(
                           height: 36,
                           values: BeatLevel.values,
@@ -305,7 +305,7 @@ class SettingsPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+                padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 12),
                 child: Text(l.language, style: Theme.of(c).textTheme.titleLarge),
               ),
               ListTile(
@@ -374,7 +374,7 @@ class _Group extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(Studio.s4, Studio.s3, Studio.s4, Studio.s2),
+    padding: const EdgeInsetsDirectional.fromSTEB(Studio.s4, Studio.s3, Studio.s4, Studio.s2),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
