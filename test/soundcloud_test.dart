@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,185 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('HTTP 401/403 triggers client_id refresh and retries', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var attempt = 0;
+      final mockClient = MockClient((request) async {
+        if (request.url.host == 'soundcloud.com') {
+          return http.Response('<html><script src="https://a-v2.sndcdn.com/assets/app.js"></script></html>', 200);
+        } else if (request.url.host == 'a-v2.sndcdn.com') {
+          return http.Response('client_id="12345678901234567890123456789099"', 200);
+        } else if (request.url.path == '/tracks/1') {
+          attempt++;
+          if (attempt == 1) {
+            return http.Response('Unauthorized', 401);
+          }
+          return http.Response(
+            jsonEncode({'id': 1, 'title': 'Retry Success', 'user': {'id': 1, 'username': 'Artist'}}),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final track = await sc.track(1);
+
+      expect(track.title, 'Retry Success');
+      expect(attempt, equals(2));
+    });
+
+    test('HTTP error status >= 400 throws ScException', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        return http.Response('Internal Server Error', 500);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      expect(() => sc.track(999), throwsA(isA<ScException>()));
+    });
+
+    test('wrap method proxy logic', () {
+      final sc = SoundCloud(store, settings);
+      final target = Uri.parse('https://api.example.com/data');
+
+      // Without proxy setting
+      expect(sc.wrap(target), equals(target));
+
+      // With custom proxy
+      settings.proxy = 'https://myproxy.com/?url=';
+      // In non-web platform, wrap returns uri directly regardless of proxy
+      expect(sc.wrap(target), equals(target));
+    });
+
+    test('setLiked for web client and mobile client', () async {
+      final calls = <String>[];
+      final mockClient = MockClient((request) async {
+        calls.add('${request.method} ${request.url.path}');
+        return http.Response('', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final track = Track(id: 42, title: 'Test', user: const ScUser(id: 1, username: 'u'), durationMs: 1000);
+
+      // Mobile client path (auth is set, but not web client)
+      final authMobile = ScAuth(store, mockClient, (uri) => uri);
+      sc.auth = authMobile;
+      store.set('auth.access', 'token123');
+      store.set('auth.client', null); // mobile client
+
+      await sc.setLiked(track, true);
+      expect(calls, contains('POST /likes/tracks/create'));
+
+      await sc.setLiked(track, false);
+      expect(calls, contains('POST /likes/tracks/delete'));
+
+      // Web client path
+      calls.clear();
+      store.set('auth.client', 'webclientid');
+      authMobile.setMe(const ScUser(id: 100, username: 'User100'));
+
+      await sc.setLiked(track, true);
+      expect(calls, contains('PUT /users/100/track_likes/42'));
+
+      await sc.setLiked(track, false);
+      expect(calls, contains('DELETE /users/100/track_likes/42'));
+    });
+
+    test('stream on blocked track throws ScException 451', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final sc = SoundCloud(store, settings);
+      final blockedTrack = Track(
+        id: 777,
+        title: 'Blocked',
+        user: const ScUser(id: 1, username: 'u'),
+        durationMs: 1000,
+        policy: 'BLOCK',
+        trackAuthorization: 'auth_token',
+        transcodings: const [
+          Transcoding(url: 'https://api/x', preset: 'mp3', protocol: 'progressive', mime: 'audio/mpeg', snipped: false)
+        ],
+      );
+
+      expect(() => sc.stream(blockedTrack), throwsA(isA<ScException>().having((e) => e.status, 'status', 451)));
+    });
+
+    test('StreamInfo.label formatting for various configurations', () {
+      const liveStream = StreamInfo('https://live/stream', hls: true, live: true);
+      expect(liveStream.label, 'LIVE · HLS');
+
+      const aacStream = StreamInfo('https://stream', hls: true, mime: 'audio/mp4', preset: 'aac_160k');
+      expect(aacStream.label, 'AAC · 160k · HLS');
+
+      const mp3Stream = StreamInfo('https://stream', hls: false, mime: 'audio/mpeg', preset: 'mp3_128k');
+      expect(mp3Stream.label, 'MP3 · 128k · PROG');
+
+      const opusStream = StreamInfo('https://stream', hls: true, mime: 'audio/opus', preset: 'opus_64k');
+      expect(opusStream.label, 'OPUS · 64k · HLS');
+
+      const drmStream = StreamInfo('https://stream', hls: true, mime: 'audio/mp4', preset: 'aac_160k', licenseToken: 'token');
+      expect(drmStream.label, 'AAC · 160k · HLS · DRM');
+    });
+
+    test('Models edge cases: Transcoding, ScUser, Track, ScPlaylist', () {
+      final tcEnc = Transcoding.fromJson({
+        'url': 'https://stream',
+        'preset': 'aac_160k',
+        'snipped': true,
+        'format': {'protocol': 'ctr-encrypted-hls', 'mime_type': 'audio/mp4'},
+      });
+      expect(tcEnc.isEncrypted, isTrue);
+      expect(tcEnc.toJson()['snipped'], isTrue);
+
+      final userWithBanner = ScUser.fromJson({
+        'id': 10,
+        'username': 'Artist',
+        'visuals': {
+          'visuals': [
+            {'visual_url': 'https://banner.jpg'}
+          ]
+        }
+      });
+      expect(userWithBanner.bannerUrl, 'https://banner.jpg');
+      expect(userWithBanner.toJson()['id'], 10);
+
+      final trackWithMeta = Track.fromJson({
+        'id': 55,
+        'title': 'Track',
+        'user': {'id': 1, 'username': 'Uploader'},
+        'duration': 120000,
+        'publisher_metadata': {'artist': 'Label Artist'},
+        'artwork_url': 'https://art-large.jpg',
+      });
+      expect(trackWithMeta.artist, 'Label Artist');
+      expect(trackWithMeta.art('t300x300'), 'https://art-t300x300.jpg');
+
+      final playlistWithTracks = ScPlaylist.fromJson({
+        'id': 88,
+        'title': 'Playlist',
+        'user': {'id': 1, 'username': 'Uploader'},
+        'tracks': [
+          {
+            'id': 1,
+            'title': 'T1',
+            'duration': 100000,
+            'artwork_url': 'https://trackart-original.jpg',
+            'user': {'id': 1, 'username': 'U'},
+          }
+        ]
+      });
+      expect(playlistWithTracks.art('t500x500'), 'https://trackart-t500x500.jpg');
+
+      final copiedPl = playlistWithTracks.copyWith(tracks: []);
+      expect(copiedPl.tracks, isEmpty);
     });
   });
 }

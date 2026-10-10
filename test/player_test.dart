@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,17 +22,27 @@ class _FakeEngine extends AudioEngine {
   Duration? seekedTo;
   double volume = 1.0;
   double speed = 1.0;
+  LoudMode? loudMode;
 
   final _st = StreamController<EngineState>.broadcast();
   final _cmd = StreamController<RemoteCommand>.broadcast();
+  final _titleNotifier = ValueNotifier<String?>(null);
+  final _loudnessNotifier = ValueNotifier<Loudness>(Loudness.none);
 
   void emitState(EngineState state) => _st.add(state);
   void emitCommand(RemoteCommand command) => _cmd.add(command);
+  void emitTitle(String? title) => _titleNotifier.value = title;
+  void emitLoudness(Loudness l) => _loudnessNotifier.value = l;
 
   @override
   Stream<EngineState> get states => _st.stream;
   @override
   Stream<RemoteCommand> get commands => _cmd.stream;
+  @override
+  ValueListenable<String?> get streamTitle => _titleNotifier;
+  @override
+  ValueListenable<Loudness> get loudness => _loudnessNotifier;
+
   @override
   Future<void> load(StreamInfo s, MediaMeta m, {bool play = true, Duration start = Duration.zero}) async {
     loaded.add(m.id);
@@ -87,13 +98,12 @@ class _FakeEngine extends AudioEngine {
   }
 
   @override
-  Future<void> setLoudMode(LoudMode mode) async {}
+  Future<void> setLoudMode(LoudMode mode) async {
+    loudMode = mode;
+  }
 
   @override
-  bool get supportsLoudness => false;
-
-  @override
-  final ValueListenable<Loudness> loudness = ValueNotifier(Loudness.none);
+  bool get supportsLoudness => true;
 
   @override
   SpectrumSource? get spectrum => null;
@@ -139,6 +149,31 @@ void main() {
     final client = MockClient((req) async {
       if (req.url.path.contains('error')) {
         return http.Response('{"error":"not_found"}', 404);
+      } else if (req.url.path.contains('/related')) {
+        return http.Response(
+          jsonEncode({
+            'collection': [
+              {
+                'id': 100,
+                'title': 'Related Track',
+                'duration': 180000,
+                'user': {'id': 1, 'username': 'Artist'},
+                'track_authorization': 'auth',
+                'media': {
+                  'transcodings': [
+                    {
+                      'url': 'https://cdn/audio.mp3',
+                      'preset': 'mp3_128k',
+                      'snipped': false,
+                      'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'}
+                    }
+                  ]
+                }
+              }
+            ]
+          }),
+          200,
+        );
       }
       return http.Response('{"url":"https://cdn/a.mp3"}', 200);
     });
@@ -333,5 +368,52 @@ void main() {
     expect(newPlayer.index, 1);
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
+  });
+
+  test('djFits static helper', () {
+    final liveTrack = _t(1, isLive: true);
+    final shortTrack = _t(2, durationMs: 180000); // 3 mins
+    final longTrack = _t(3, durationMs: 400000); // > 6 mins
+    final previewTrack = _t(4, isPreview: true);
+
+    expect(PlayerController.djFits(liveTrack), isTrue);
+    expect(PlayerController.djFits(shortTrack), isTrue);
+    expect(PlayerController.djFits(longTrack), isFalse);
+    expect(PlayerController.djFits(previewTrack), isFalse);
+  });
+
+  test('Autoplay extends queue when reaching end of queue', () async {
+    settings.autoplay = true;
+    await player.playQueue([_t(1)]);
+
+    await player.next(auto: true);
+
+    expect(player.queue.length, 2);
+    expect(player.queue.last.id, 100);
+    expect(player.current!.id, 100);
+  });
+
+  test('StreamTitle and Loudness forwarded from AudioEngine', () async {
+    expect(player.supportsLoudness, isTrue);
+
+    engine.emitTitle('Station XYZ - Live Song');
+    expect(player.streamTitle.value, 'Station XYZ - Live Song');
+
+    const testLoudness = Loudness(momentary: -14.0, integrated: -14.5, gainDb: 1.0);
+    engine.emitLoudness(testLoudness);
+    expect(player.loudness.value.integrated, -14.5);
+  });
+
+  test('Changing settings.loudMode propagates to engine', () {
+    settings.loudMode = LoudMode.quiet;
+    expect(engine.loudMode, LoudMode.quiet);
+  });
+
+  test('Playback state updates startLatency', () async {
+    await player.playQueue([_t(1)]);
+
+    engine.emitState(const EngineState(playing: true, status: EngineStatus.ready));
+    await pumpEventQueue();
+    expect(player.startLatency.value, isNotNull);
   });
 }
