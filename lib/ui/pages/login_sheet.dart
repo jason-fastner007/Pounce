@@ -69,7 +69,7 @@ class _LoginSheetState extends State<_LoginSheet> {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.viewInsetsOf(context).bottom;
     return Padding(
-      padding: EdgeInsets.fromLTRB(24, 0, 24, 24 + bottom),
+      padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 24 + bottom),
       child: ListenableBuilder(
         listenable: _account,
         builder: (context, _) => AnimatedSize(
