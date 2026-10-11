@@ -50,6 +50,7 @@
   "addedToPlaylist": "Добавлено в «{name}»",
   "alreadyInPlaylist": "Уже в «{name}»",
   "nowPlaying": "Сейчас играет",
+  "seek": "Позиция",
   "queue": "Очередь",
   "lyrics": "Текст",
   "noLyrics": "Текст не найден",

@@ -50,6 +50,7 @@
   "addedToPlaylist": "Ajouté à {name}",
   "alreadyInPlaylist": "Déjà dans {name}",
   "nowPlaying": "En cours de lecture",
+  "seek": "Position",
   "queue": "File d'attente",
   "lyrics": "Paroles",
   "noLyrics": "Aucunes paroles trouvées",

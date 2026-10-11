@@ -62,6 +62,7 @@ s('addedToQueue', en='Added to queue', de='Zur Warteschlange hinzugefügt', fr="
 s('addedToPlaylist', en='Added to {name}', de='Zu {name} hinzugefügt', fr='Ajouté à {name}', ru='Добавлено в «{name}»', hu='Hozzáadva: {name}', vi='Đã thêm vào {name}', ar='تمت الإضافة إلى {name}', es='Añadido a {name}')
 s('alreadyInPlaylist', en='Already in {name}', de='Schon in {name}', fr='Déjà dans {name}', ru='Уже в «{name}»', hu='Már szerepel itt: {name}', vi='Đã có trong {name}', ar='موجود بالفعل في {name}', es='Ya está en {name}')
 s('nowPlaying', en='Now playing', de='Läuft gerade', fr='En cours de lecture', ru='Сейчас играет', hu='Most szól', vi='Đang phát', ar='قيد التشغيل الآن', es='Sonando ahora')
+s('seek', en='Position', de='Position', fr='Position', ru='Позиция', hu='Pozíció', vi='Vị trí', ar='الموقع', es='Posición')
 s('queue', en='Queue', de='Warteschlange', fr="File d'attente", ru='Очередь', hu='Lejátszási sor', vi='Hàng đợi', ar='قائمة الانتظار', es='Cola')
 s('lyrics', en='Lyrics', de='Songtext', fr='Paroles', ru='Текст', hu='Dalszöveg', vi='Lời bài hát', ar='الكلمات', es='Letra')
 s('noLyrics', en='No lyrics found', de='Kein Songtext gefunden', fr='Aucunes paroles trouvées', ru='Текст не найден', hu='Nem található dalszöveg', vi='Không tìm thấy lời bài hát', ar='لم يتم العثور على كلمات', es='No se encontró la letra')

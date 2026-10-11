@@ -50,6 +50,7 @@
   "addedToPlaylist": "Zu {name} hinzugefügt",
   "alreadyInPlaylist": "Schon in {name}",
   "nowPlaying": "Läuft gerade",
+  "seek": "Position",
   "queue": "Warteschlange",
   "lyrics": "Songtext",
   "noLyrics": "Kein Songtext gefunden",

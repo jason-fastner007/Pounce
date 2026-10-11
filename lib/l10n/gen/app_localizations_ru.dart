@@ -181,6 +181,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nowPlaying => 'Сейчас играет';
 
   @override
+  String get seek => 'Позиция';
+
+  @override
   String get queue => 'Очередь';
 
   @override

@@ -179,6 +179,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nowPlaying => 'Läuft gerade';
 
   @override
+  String get seek => 'Position';
+
+  @override
   String get queue => 'Warteschlange';
 
   @override

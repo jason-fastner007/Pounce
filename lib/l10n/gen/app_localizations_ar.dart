@@ -182,6 +182,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get nowPlaying => 'قيد التشغيل الآن';
 
   @override
+  String get seek => 'الموقع';
+
+  @override
   String get queue => 'قائمة الانتظار';
 
   @override

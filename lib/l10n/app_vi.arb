@@ -50,6 +50,7 @@
   "addedToPlaylist": "Đã thêm vào {name}",
   "alreadyInPlaylist": "Đã có trong {name}",
   "nowPlaying": "Đang phát",
+  "seek": "Vị trí",
   "queue": "Hàng đợi",
   "lyrics": "Lời bài hát",
   "noLyrics": "Không tìm thấy lời bài hát",
