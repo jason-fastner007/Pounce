@@ -50,6 +50,7 @@
   "addedToPlaylist": "Hozzáadva: {name}",
   "alreadyInPlaylist": "Már szerepel itt: {name}",
   "nowPlaying": "Most szól",
+  "seek": "Pozíció",
   "queue": "Lejátszási sor",
   "lyrics": "Dalszöveg",
   "noLyrics": "Nem található dalszöveg",

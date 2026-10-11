@@ -407,6 +407,12 @@ abstract class AppLocalizations {
   /// **'Now playing'**
   String get nowPlaying;
 
+  /// No description provided for @seek.
+  ///
+  /// In en, this message translates to:
+  /// **'Position'**
+  String get seek;
+
   /// No description provided for @queue.
   ///
   /// In en, this message translates to:

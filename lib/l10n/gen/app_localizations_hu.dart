@@ -173,6 +173,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get nowPlaying => 'Most szól';
 
   @override
+  String get seek => 'Pozíció';
+
+  @override
   String get queue => 'Lejátszási sor';
 
   @override

@@ -102,7 +102,12 @@ class _TactileState extends State<Tactile> {
       ),
     );
     if (widget.tooltip != null) w = Tooltip(message: widget.tooltip!, child: w);
-    return Semantics(button: true, label: widget.tooltip, child: w);
+    return Semantics(
+      button: true,
+      toggled: widget.active,
+      label: widget.tooltip,
+      child: w,
+    );
   }
 }
 

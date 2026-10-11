@@ -179,6 +179,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nowPlaying => 'En cours de lecture';
 
   @override
+  String get seek => 'Position';
+
+  @override
   String get queue => 'File d\'attente';
 
   @override

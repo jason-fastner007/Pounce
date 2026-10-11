@@ -173,6 +173,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get nowPlaying => 'Đang phát';
 
   @override
+  String get seek => 'Vị trí';
+
+  @override
   String get queue => 'Hàng đợi';
 
   @override

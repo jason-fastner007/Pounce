@@ -50,6 +50,7 @@
   "addedToPlaylist": "تمت الإضافة إلى {name}",
   "alreadyInPlaylist": "موجود بالفعل في {name}",
   "nowPlaying": "قيد التشغيل الآن",
+  "seek": "الموقع",
   "queue": "قائمة الانتظار",
   "lyrics": "الكلمات",
   "noLyrics": "لم يتم العثور على كلمات",

@@ -179,6 +179,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nowPlaying => 'Sonando ahora';
 
   @override
+  String get seek => 'Posición';
+
+  @override
   String get queue => 'Cola';
 
   @override

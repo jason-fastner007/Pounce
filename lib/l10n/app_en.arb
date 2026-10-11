@@ -92,6 +92,7 @@
     }
   },
   "nowPlaying": "Now playing",
+  "seek": "Position",
   "queue": "Queue",
   "lyrics": "Lyrics",
   "noLyrics": "No lyrics found",
