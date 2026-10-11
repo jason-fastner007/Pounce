@@ -334,4 +334,103 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('playQueue handles empty or unplayable tracks gracefully', () async {
+    await player.playQueue([]);
+    expect(player.current, isNull);
+
+    final unplayable = Track(
+      id: 999,
+      title: 'blocked',
+      user: const ScUser(id: 1, username: 'u'),
+      durationMs: 1000,
+      policy: 'BLOCK',
+    );
+    await player.playQueue([unplayable]);
+    expect(player.current, isNull);
+  });
+
+  test('playNext when current is null calls playTrack', () async {
+    final t1 = _t(1);
+    player.playNext(t1);
+    expect(player.current!.id, 1);
+  });
+
+  test('addToQueue prevents duplicate track entries', () async {
+    final t1 = _t(1);
+    final t2 = _t(2);
+    await player.playQueue([t1]);
+    player.addToQueue(t2);
+    player.addToQueue(t2); // second call should be ignored
+    expect(player.queue.map((e) => e.id), [1, 2]);
+  });
+
+  test('removeAt ignores removing the currently playing track index', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.removeAt(0); // removing index 0 (current track) -> ignored
+    expect(player.queue.length, 2);
+  });
+
+  test('previous rewinds position if >3s into track, otherwise changes track', () async {
+    await player.playQueue([_t(1), _t(2)], 1);
+    player.position.value = const Duration(seconds: 5);
+
+    await player.previous();
+    expect(player.current!.id, 2);
+    expect(engine.seekedTo, Duration.zero);
+
+    player.position.value = const Duration(seconds: 1);
+    await player.previous();
+    expect(player.current!.id, 1);
+  });
+
+  test('LoopMode.one seeks to start on track ended event', () async {
+    await player.playQueue([_t(1)]);
+    player.repeat = LoopMode.one;
+
+    // Transition from playing/ready state to ended
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+    engine.emitState(const EngineState(status: EngineStatus.ended));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, true);
+  });
+
+  test('PlayerController.djFits checks duration and preview status', () {
+    final normalTrack = _t(1, durationMs: 180000);
+    final previewTrack = _t(2, isPreview: true);
+    final longMix = _t(3, durationMs: 7 * 60 * 1000); // 7 minutes
+    final liveStream = _t(4, isLive: true);
+
+    expect(PlayerController.djFits(normalTrack), isTrue);
+    expect(PlayerController.djFits(previewTrack), isFalse);
+    expect(PlayerController.djFits(longMix), isFalse);
+    expect(PlayerController.djFits(liveStream), isTrue);
+  });
+
+  test('MediaMeta toMap formats attributes correctly', () {
+    const meta = MediaMeta(
+      id: '123',
+      title: 'Title',
+      artist: 'Artist',
+      artUrl: 'https://art.jpg',
+      duration: Duration(seconds: 180),
+    );
+    final map = meta.toMap();
+
+    expect(map['id'], '123');
+    expect(map['title'], 'Title');
+    expect(map['artist'], 'Artist');
+    expect(map['artUrl'], 'https://art.jpg');
+    expect(map['durationMs'], 180000);
+  });
+
+  test('logBandEdges computes fft bin band boundaries', () {
+    final edges = logBandEdges(44100, 2048);
+    expect(edges.length, SpectrumSource.bands + 1);
+    expect(edges.first, greaterThanOrEqualTo(1));
+    expect(edges.last, lessThan(1024));
+  });
 }
