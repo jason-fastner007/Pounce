@@ -1625,6 +1625,30 @@ abstract class AppLocalizations {
   /// **'Phrase beat {beat}/16'**
   String djPhraseBeat(int beat);
 
+  /// No description provided for @statBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'BPM'**
+  String get statBpm;
+
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
+  /// No description provided for @rustAudioEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustAudioEngine;
+
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
   /// No description provided for @statGrid.
   ///
   /// In en, this message translates to:

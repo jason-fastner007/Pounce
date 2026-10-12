@@ -134,8 +134,8 @@ class DjDeckView extends StatelessWidget {
                                     color: Studio.text,
                                   ),
                                 ),
-                                const Text(
-                                  'BPM',
+                                Text(
+                                  l10n.statBpm,
                                   style: TextStyle(
                                     fontFamily: Studio.sans,
                                     fontSize: 13,

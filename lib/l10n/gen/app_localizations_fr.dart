@@ -847,6 +847,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get statBpm => 'BPM';
+
+  @override
+  String get sync => 'Synchroniser';
+
+  @override
+  String get rustAudioEngine => 'Moteur Audio Rust (deckengine)';
+
+  @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get statGrid => 'Grille';
 
   @override

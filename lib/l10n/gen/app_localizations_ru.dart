@@ -848,6 +848,18 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get statBpm => 'BPM';
+
+  @override
+  String get sync => 'Синхронизация';
+
+  @override
+  String get rustAudioEngine => 'Аудиодвижок Rust (deckengine)';
+
+  @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get statGrid => 'Сетка';
 
   @override
