@@ -135,7 +135,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
     final artSize = wide ? 220.0 : 180.0;
 
     final header = Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
       child: Flex(
         direction: wide ? Axis.horizontal : Axis.vertical,
         crossAxisAlignment: wide ? CrossAxisAlignment.end : CrossAxisAlignment.center,

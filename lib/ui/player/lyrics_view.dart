@@ -120,7 +120,7 @@ class _LinesState extends State<_Lines> {
         blendMode: BlendMode.dstIn,
         child: ListView.builder(
           controller: _scroll,
-          padding: const EdgeInsets.fromLTRB(24, 48, 24, 240),
+          padding: const EdgeInsetsDirectional.fromSTEB(24, 48, 24, 240),
           itemCount: lines.length + 1,
           itemBuilder: (context, i) {
             if (i == lines.length) {
