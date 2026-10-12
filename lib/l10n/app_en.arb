@@ -420,6 +420,10 @@
       }
     }
   },
+  "statBpm": "BPM",
+  "sync": "Sync",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
+  "soundcloud": "SoundCloud",
   "statGrid": "Grid",
   "statKey": "Key",
   "statLoudness": "Loudness",

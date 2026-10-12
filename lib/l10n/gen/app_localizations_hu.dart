@@ -832,6 +832,18 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
+  String get statBpm => 'BPM';
+
+  @override
+  String get sync => 'Szinkronizálás';
+
+  @override
+  String get rustAudioEngine => 'Rust Hangmotor (deckengine)';
+
+  @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get statGrid => 'Rács';
 
   @override
