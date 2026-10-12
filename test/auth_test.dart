@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
 import 'package:pounce/sc/auth.dart';
+import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -115,5 +116,80 @@ void main() {
     await auth.complete('https://soundcloud.com/signin/callback?code=WEBCODE999&state=');
     expect(auth.usesWebClient, isTrue);
     expect((await sc.me()).username, 'web');
+  });
+
+  test('AuthException toString', () {
+    const ex = AuthException('invalid_callback');
+    expect(ex.toString(), 'AuthException(invalid_callback)');
+  });
+
+  test('complete throws AuthException on invalid callback or missing verifier', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    // Invalid callback
+    expect(() => auth.complete('sc://auth?error=access_denied'), throwsA(isA<AuthException>()));
+
+    // Valid callback but missing verifier in store
+    expect(() => auth.complete('sc://auth?code=VALIDCODE'), throwsA(isA<AuthException>()));
+  });
+
+  test('token returns cached token or refreshes when expiring soon', () async {
+    final store = Store.memory();
+    final client = MockClient((req) async {
+      return http.Response(jsonEncode({'access_token': 'NEW_TOKEN', 'expires_in': 3600}), 200);
+    });
+    final auth = ScAuth(store, client, (u) => u);
+
+    expect(await auth.token(), isNull); // not logged in
+
+    // Set token expiring in 10 seconds (soon)
+    store
+      ..set('auth.access', 'OLD_TOKEN')
+      ..set('auth.refresh', 'REFRESH_TOKEN')
+      ..set('auth.expires', DateTime.now().millisecondsSinceEpoch + 10000);
+
+    // Because it expires soon, token() calls refresh() and gets NEW_TOKEN
+    final tok = await auth.token();
+    expect(tok, 'NEW_TOKEN');
+
+    // Set token expiring in 1 hour (not soon)
+    store
+      ..set('auth.access', 'STABLE_TOKEN')
+      ..set('auth.expires', DateTime.now().millisecondsSinceEpoch + 3600000);
+
+    expect(await auth.token(), 'STABLE_TOKEN');
+  });
+
+  test('setMe and logout state management', () {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    expect(auth.me, isNull);
+
+    const user = ScUser(id: 42, username: 'TestUser');
+    auth.setMe(user);
+
+    expect(auth.me?.id, 42);
+    expect(auth.me?.username, 'TestUser');
+    expect(store.get<Map>('auth.me'), containsPair('id', 42));
+
+    auth.logout();
+
+    expect(auth.me, isNull);
+    expect(store.get<Map>('auth.me'), isNull);
+    expect(auth.loggedIn, isFalse);
+  });
+
+  test('deviceId is generated once and stored', () {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    final devId = auth.deviceId;
+    expect(devId, isNotEmpty);
+    expect(devId.length, 32);
+
+    // Second call returns stored device ID
+    expect(auth.deviceId, devId);
   });
 }

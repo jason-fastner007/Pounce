@@ -334,4 +334,25 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('LoopMode cycleRepeat cycles through off, all, one', () {
+    expect(player.repeat, LoopMode.off);
+    player.cycleRepeat();
+    expect(player.repeat, LoopMode.all);
+    player.cycleRepeat();
+    expect(player.repeat, LoopMode.one);
+    player.cycleRepeat();
+    expect(player.repeat, LoopMode.off);
+  });
+
+  test('toggle shuffle and playNext updates queue', () async {
+    await player.playQueue([_t(1), _t(2), _t(3)], 0);
+    expect(player.shuffle, isFalse);
+
+    player.toggleShuffle();
+    expect(player.shuffle, isTrue);
+
+    player.toggleShuffle();
+    expect(player.shuffle, isFalse);
+  });
 }
