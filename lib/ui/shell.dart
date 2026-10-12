@@ -330,7 +330,9 @@ class _ShellState extends State<Shell> with TickerProviderStateMixin {
   /// Let snackbars float above the deck or mini player.
   Widget _withSnackInset(double bottom, Widget child) => Theme(
     data: Theme.of(context).copyWith(
-      snackBarTheme: Theme.of(context).snackBarTheme.copyWith(insetPadding: EdgeInsets.fromLTRB(16, 0, 16, bottom)),
+      snackBarTheme: Theme.of(context).snackBarTheme.copyWith(
+        insetPadding: EdgeInsets.fromLTRB(16, 0, 16, bottom),
+      ),
     ),
     child: child,
   );
