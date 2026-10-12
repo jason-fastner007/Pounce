@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,185 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('ScException string representation', () {
+      final exWithStatus = ScException('Unauthorized', 401);
+      expect(exWithStatus.toString(), 'ScException(401): Unauthorized');
+
+      final exNoStatus = ScException('Unknown error');
+      expect(exNoStatus.toString(), 'ScException(null): Unknown error');
+    });
+
+    test('StreamInfo label formatting', () {
+      const liveStream = StreamInfo('https://radio', hls: true, live: true);
+      expect(liveStream.label, 'LIVE · HLS');
+
+      const mp3Stream = StreamInfo('https://audio.mp3', hls: false, mime: 'audio/mpeg', preset: 'mp3_128k');
+      expect(mp3Stream.label, 'MP3 · 128k · PROG');
+
+      const opusStream = StreamInfo('https://audio.ogg', hls: true, mime: 'audio/ogg', preset: 'opus_160k');
+      expect(opusStream.label, 'OPUS · 160k · HLS');
+
+      const drmStream = StreamInfo(
+        'https://stream.m3u8',
+        hls: true,
+        mime: 'audio/mp4; codecs="mp4a.40.2"',
+        preset: 'aac_160k',
+        licenseToken: 'jwt',
+      );
+      expect(drmStream.label, 'AAC · 160k · HLS · DRM');
+      expect(drmStream.drm, isTrue);
+    });
+
+    test('wrap proxy behavior', () {
+      final sc = SoundCloud(store, settings);
+      final uri = Uri.parse('https://api.soundcloud.com/test');
+
+      // Without proxy setting or web platform, returns uri directly
+      settings.proxy = '';
+      expect(sc.wrap(uri), uri);
+
+      settings.proxy = '/proxy?url=';
+      // In non-web tests, Platform.isWeb is false so wrap returns original uri
+      expect(sc.wrap(uri), uri);
+    });
+
+    test('setLiked web mode vs mobile mode', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Liked Track',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      var callCount = 0;
+      final mockClient = MockClient((request) async {
+        callCount++;
+        if (request.url.path.contains('/likes/tracks/create')) {
+          expect(request.method, 'POST');
+          return http.Response('', 200);
+        } else if (request.url.path.contains('/likes/tracks/delete')) {
+          expect(request.method, 'POST');
+          return http.Response('', 200);
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final auth = ScAuth(store, mockClient, sc.wrap);
+      store.set('auth.access', 'MOCK_TOKEN');
+      sc.auth = auth;
+
+      await sc.setLiked(track, true);
+      await sc.setLiked(track, false);
+
+      expect(callCount, 2);
+    });
+
+    test('stream throws status 451 when track is blocked', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        return http.Response('OK', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final blockedTrack = Track.fromJson({
+        'id': 505,
+        'policy': 'BLOCK',
+        'title': 'Blocked Track',
+        'user': {'id': 1, 'username': 'Artist'},
+        'track_authorization': 'auth',
+        'media': {
+          'transcodings': [
+            {
+              'url': 'https://api/tc',
+              'preset': 'mp3_128k',
+              'snipped': false,
+              'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+            }
+          ]
+        }
+      });
+
+      expect(() => sc.stream(blockedTrack), throwsA(predicate((e) => e is ScException && e.status == 451)));
+    });
+
+    test('stream fetches track when transcodings or authorization is missing', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path == '/tracks/606') {
+          return http.Response(
+            jsonEncode({
+              'id': 606,
+              'title': 'Resolved Track',
+              'duration': 120000,
+              'track_authorization': 'auth_606',
+              'user': {'id': 1, 'username': 'Artist'},
+              'media': {
+                'transcodings': [
+                  {
+                    'url': 'https://api-v2.soundcloud.com/transcodings/tc606',
+                    'preset': 'mp3_128k',
+                    'snipped': false,
+                    'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+                  }
+                ]
+              }
+            }),
+            200,
+          );
+        } else if (request.url.path == '/transcodings/tc606') {
+          return http.Response(jsonEncode({'url': 'https://cdn/audio606.mp3'}), 200);
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      // Minimal track stub with missing transcodings
+      final stubTrack = Track.fromJson({
+        'id': 606,
+        'title': 'Stub Track',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      final info = await sc.stream(stubTrack);
+      expect(info.url, 'https://cdn/audio606.mp3');
+    });
+
+    test('page parsing safely skips malformed JSON items', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        return http.Response(
+          jsonEncode({
+            'collection': [
+              {
+                'id': 1001,
+                'title': 'Valid Track',
+                'user': {'id': 1, 'username': 'Artist'},
+              },
+              'invalid_string_item', // cause map exception
+              {
+                'id': 'not_an_int', // malformed id
+              }
+            ]
+          }),
+          200,
+        );
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final page = await sc.searchTracks('test');
+      expect(page.items.length, 1);
+      expect(page.items.first.id, 1001);
     });
   });
 }
