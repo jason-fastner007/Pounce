@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,146 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('_get retries on 401/403 and throws ScException on persistent error', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var attempts = 0;
+      final mockClient = MockClient((request) async {
+        if (request.url.toString() == 'https://soundcloud.com/') {
+          return http.Response('<html><script src="https://a-v2.sndcdn.com/assets/1.js"></script></html>', 200);
+        } else if (request.url.toString() == 'https://a-v2.sndcdn.com/assets/1.js') {
+          return http.Response('client_id="12345678901234567890123456789012"', 200);
+        }
+        attempts++;
+        if (attempts == 1) {
+          return http.Response('Unauthorized', 401, reasonPhrase: 'Unauthorized');
+        }
+        return http.Response('Forbidden', 403, reasonPhrase: 'Forbidden');
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      await expectLater(
+        sc.related(101),
+        throwsA(isA<ScException>().having((e) => e.status, 'status', 403)),
+      );
+      expect(attempts, 2);
+    });
+
+    test('related, userTracks, userTopTracks, userPlaylists endpoints', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/tracks/100/related') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 101, 'title': 'Related Track 1', 'user': {'id': 1, 'username': 'Artist'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/5/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 102, 'title': 'User Track', 'user': {'id': 5, 'username': 'User 5'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/5/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 103, 'title': 'Top Track', 'user': {'id': 5, 'username': 'User 5'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/5/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 201, 'title': 'User Playlist', 'user': {'id': 5, 'username': 'User 5'}, 'tracks': []}
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final rel = await sc.related(100);
+      expect(rel.length, 1);
+      expect(rel.first.title, 'Related Track 1');
+
+      final uTracks = await sc.userTracks(5);
+      expect(uTracks.items.first.title, 'User Track');
+
+      final uTop = await sc.userTopTracks(5);
+      expect(uTop.items.first.title, 'Top Track');
+
+      final uPlaylists = await sc.userPlaylists(5);
+      expect(uPlaylists.items.first.title, 'User Playlist');
+    });
+
+    test('setLiked with web client and mobile client', () async {
+      store.set('auth.access', 'access_token_123');
+      store.set('auth.expires', DateTime.now().millisecondsSinceEpoch + 100000);
+      store.set('auth.client', 'web_client_123');
+      store.set('auth.me', {'id': 99, 'username': 'WebUser'});
+
+      final scAuth = ScAuth(store, MockClient((_) async => http.Response('', 200)), (uri) => uri);
+
+      final requests = <http.Request>[];
+      final mockClient = MockClient((request) async {
+        requests.add(request);
+        return http.Response('', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient)..auth = scAuth;
+
+      final track = Track.fromJson({
+        'id': 555,
+        'title': 'Test Track',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      // Web client PUT like
+      await sc.setLiked(track, true);
+      expect(requests.last.method, 'PUT');
+      expect(requests.last.url.path, '/users/99/track_likes/555');
+
+      // Web client DELETE like
+      await sc.setLiked(track, false);
+      expect(requests.last.method, 'DELETE');
+      expect(requests.last.url.path, '/users/99/track_likes/555');
+
+      // Mobile client like test
+      store.set('auth.client', null); // clear web client flag
+      await sc.setLiked(track, true);
+      expect(requests.last.method, 'POST');
+      expect(requests.last.url.host, 'api-mobile.soundcloud.com');
+      expect(requests.last.url.path, '/likes/tracks/create');
+    });
+
+    test('_mobile throws ScException when not logged in', () async {
+      final sc = SoundCloud(store, settings, client: MockClient((_) async => http.Response('', 200)));
+      final track = Track.fromJson({
+        'id': 555,
+        'title': 'Test Track',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      expect(() => sc.setLiked(track, true), throwsA(isA<ScException>().having((e) => e.status, 'status', 401)));
     });
   });
 }
