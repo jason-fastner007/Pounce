@@ -500,44 +500,48 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
             final state = dj.state;
             if (!state.isActive || _pane == _Pane.dj) return const SizedBox(height: 16);
             return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
-              child: GestureDetector(
-                onTap: () => _setPane(_Pane.dj),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: .12),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.primary.withValues(alpha: .3),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _BeatPulseDot(
-                        player: context.deps.player,
-                        bpm: state.currentBpm > 0 ? state.currentBpm : 125.0,
-                        firstBeatOffsetMs:
-                            dj.currentBeatInfo?.downbeatOffsetMs ?? dj.currentBeatInfo?.firstBeatOffsetMs ?? 0,
-                        color: Theme.of(context).colorScheme.primary,
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 6, 16, 10),
+              child: Semantics(
+                button: true,
+                label: 'DJ Flow',
+                child: GestureDetector(
+                  onTap: () => _setPane(_Pane.dj),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary.withValues(alpha: .12),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary.withValues(alpha: .3),
                       ),
-                      const SizedBox(width: 8),
-                      ValueListenableBuilder<BeatClock>(
-                        valueListenable: dj.beat,
-                        builder: (context, b, _) => Text(
-                          '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
-                          style: TextStyle(
-                            fontFamily: Studio.mono,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _BeatPulseDot(
+                          player: context.deps.player,
+                          bpm: state.currentBpm > 0 ? state.currentBpm : 125.0,
+                          firstBeatOffsetMs:
+                              dj.currentBeatInfo?.downbeatOffsetMs ?? dj.currentBeatInfo?.firstBeatOffsetMs ?? 0,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        ValueListenableBuilder<BeatClock>(
+                          valueListenable: dj.beat,
+                          builder: (context, b, _) => Text(
+                            '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
+                            style: TextStyle(
+                              fontFamily: Studio.mono,
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 6),
-                      const Icon(Icons.chevron_right_rounded, size: 16, color: Studio.text3),
-                    ],
+                        const SizedBox(width: 6),
+                        const Icon(Icons.chevron_right_rounded, size: 16, color: Studio.text3),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -586,7 +590,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 24, 24),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 24),
                     child: _SidePanel(track: track),
                   ),
                 ),
@@ -704,7 +708,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
@@ -840,9 +844,12 @@ class _BottomActions extends StatelessWidget {
             player.sleepAt != null,
             () => _sleepSheet(context, player),
           ),
-          TextButton(
-            onPressed: () => _speedSheet(context, player),
-            child: Text('${player.speed.toStringAsFixed(player.speed % 1 == 0 ? 0 : 2)}×'),
+          Tooltip(
+            message: l.speed,
+            child: TextButton(
+              onPressed: () => _speedSheet(context, player),
+              child: Text('${player.speed.toStringAsFixed(player.speed % 1 == 0 ? 0 : 2)}×'),
+            ),
           ),
           if (showPanes) btn(Icons.queue_music_rounded, l.queue, pane == _Pane.queue, () => onPane(_Pane.queue)),
         ],
@@ -901,15 +908,21 @@ class _BottomActions extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('${c.l10n.speed} · ${player.speed.toStringAsFixed(2)}×', style: Theme.of(c).textTheme.titleLarge),
-                Slider(
-                  value: player.speed,
-                  min: .5,
-                  max: 2,
-                  divisions: 30,
-                  onChanged: (v) {
-                    player.setSpeed(double.parse(v.toStringAsFixed(2)));
-                    set(() {});
-                  },
+                Semantics(
+                  slider: true,
+                  label: c.l10n.speed,
+                  value: '${player.speed.toStringAsFixed(2)}×',
+                  child: Slider(
+                    value: player.speed,
+                    min: .5,
+                    max: 2,
+                    divisions: 30,
+                    label: '${player.speed.toStringAsFixed(2)}×',
+                    onChanged: (v) {
+                      player.setSpeed(double.parse(v.toStringAsFixed(2)));
+                      set(() {});
+                    },
+                  ),
                 ),
                 Wrap(
                   spacing: 8,
