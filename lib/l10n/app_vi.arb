@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "không có drop",
   "planSearching": "đang tìm drop…",
+  "djFlowTitle": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "soundcloud": "SoundCloud",
+  "rustAudioEngine": "Engine âm thanh Rust (deckengine)",
+  "sync": "Đồng bộ",
   "planText": "Vào {entry} · {drop} · chuyển {fade} giây"
 }

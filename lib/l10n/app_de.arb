@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "kein Drop",
   "planSearching": "Drop wird gesucht…",
+  "djFlowTitle": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "soundcloud": "SoundCloud",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
+  "sync": "Sync",
   "planText": "Einstieg {entry} · {drop} · {fade} s Blende"
 }

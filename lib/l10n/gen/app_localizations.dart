@@ -1769,6 +1769,36 @@ abstract class AppLocalizations {
   /// **'looking for the drop…'**
   String get planSearching;
 
+  /// No description provided for @djFlowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow & Automix'**
+  String get djFlowTitle;
+
+  /// No description provided for @bpm.
+  ///
+  /// In en, this message translates to:
+  /// **'BPM'**
+  String get bpm;
+
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
+  /// No description provided for @rustAudioEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustAudioEngine;
+
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
   /// No description provided for @planText.
   ///
   /// In en, this message translates to:

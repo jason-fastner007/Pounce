@@ -465,6 +465,11 @@
   },
   "planNoDrop": "no drop",
   "planSearching": "looking for the drop…",
+  "djFlowTitle": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "soundcloud": "SoundCloud",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
+  "sync": "Sync",
   "planText": "Entry {entry} · {drop} · {fade} s fade",
   "@planText": {
     "placeholders": {

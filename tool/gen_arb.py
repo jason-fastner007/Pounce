@@ -299,6 +299,11 @@ s('bandHigh', en='HIGH (hi-hats & air)', de='HIGH (Hi-Hats & Air)', fr='AIGUS (c
 s('planDrop', en='Drop {time}', de='Drop {time}', fr='Drop {time}', ru='Дроп {time}', hu='Drop {time}', vi='Drop {time}', ar='الذروة {time}', es='Drop {time}')
 s('planNoDrop', en='no drop', de='kein Drop', fr='pas de drop', ru='без дропа', hu='nincs drop', vi='không có drop', ar='لا ذروة', es='sin drop')
 s('planSearching', en='looking for the drop…', de='Drop wird gesucht…', fr='recherche du drop…', ru='ищем дроп…', hu='drop keresése…', vi='đang tìm drop…', ar='جارٍ البحث عن الذروة…', es='buscando el drop…')
+s('djFlowTitle', en='DJ Flow & Automix', de='DJ Flow & Automix', fr='DJ Flow & Automix', ru='DJ Flow и Automix', hu='DJ Flow és Automix', vi='DJ Flow & Automix', ar='DJ Flow و Automix', es='DJ Flow & Automix')
+s('bpm', en='BPM', de='BPM', fr='BPM', ru='BPM', hu='BPM', vi='BPM', ar='BPM', es='BPM')
+s('soundcloud', en='SoundCloud', de='SoundCloud', fr='SoundCloud', ru='SoundCloud', hu='SoundCloud', vi='SoundCloud', ar='SoundCloud', es='SoundCloud')
+s('rustAudioEngine', en='Rust Audio Engine (deckengine)', de='Rust Audio Engine (deckengine)', fr='Moteur audio Rust (deckengine)', ru='Аудиодвижок Rust (deckengine)', hu='Rust Hangmotor (deckengine)', vi='Engine âm thanh Rust (deckengine)', ar='محرك الصوت Rust (deckengine)', es='Motor de audio Rust (deckengine)')
+s('sync', en='Sync', de='Sync', fr='Synchronisation', ru='Синхронизация', hu='Szinkronizálás', vi='Đồng bộ', ar='مزامنة', es='Sincronización')
 s('planText', en='Entry {entry} · {drop} · {fade} s fade', de='Einstieg {entry} · {drop} · {fade} s Blende', fr='Entrée {entry} · {drop} · fondu {fade} s', ru='Вход {entry} · {drop} · переход {fade} с', hu='Belépés {entry} · {drop} · {fade} mp áttűnés', vi='Vào {entry} · {drop} · chuyển {fade} giây', ar='الدخول {entry} · {drop} · تلاشٍ {fade} ث', es='Entrada {entry} · {drop} · fundido de {fade} s')
 
 PH = {
