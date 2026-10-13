@@ -520,6 +520,7 @@ class _ModeButton extends StatelessWidget {
       onTap: onTap,
       radius: Studio.br10,
       active: selected,
+      tooltip: '$label ($sub)',
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: Column(
         children: [
