@@ -252,7 +252,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esta pista tiene protección DRM y aún no se puede reproducir en Pounce, ni siquiera con la sesión iniciada';
 
   @override
-  String get protectedPlayable => 'Protegido por DRM: descifrado por el módulo DRM de tu navegador';
+  String get protectedPlayable =>
+      'Protegido por DRM: descifrado por el módulo DRM de tu navegador';
 
   @override
   String get account => 'Cuenta';
@@ -267,7 +268,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signup => 'Crear cuenta';
 
   @override
-  String get loginPrivacy => 'Inicias sesión en la propia página de SoundCloud. Pounce nunca ve tu contraseña.';
+  String get loginPrivacy =>
+      'Inicias sesión en la propia página de SoundCloud. Pounce nunca ve tu contraseña.';
 
   @override
   String get loginWaiting => 'Completa el inicio de sesión en el navegador…';
@@ -301,7 +303,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logout => 'Cerrar sesión';
 
   @override
-  String get logoutConfirm => '¿Cerrar sesión? Tus me gusta se mantendrán en este dispositivo.';
+  String get logoutConfirm =>
+      '¿Cerrar sesión? Tus me gusta se mantendrán en este dispositivo.';
 
   @override
   String get homeStream => 'Tu feed';
@@ -415,7 +418,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get beatBg => 'Fondo al ritmo del compás';
 
   @override
-  String get beatBgDesc => 'Los colores palpitan y cambian con cada ritmo detectado';
+  String get beatBgDesc =>
+      'Los colores palpitan y cambian con cada ritmo detectado';
 
   @override
   String get beatLight => 'Suave';
@@ -454,7 +458,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get artworkColors => 'Colores de la carátula';
 
   @override
-  String get artworkColorsDesc => 'El reproductor adapta sus colores a la carátula';
+  String get artworkColorsDesc =>
+      'El reproductor adapta sus colores a la carátula';
 
   @override
   String get accentColor => 'Color de acento';
@@ -481,7 +486,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoplay => 'Reproducción automática';
 
   @override
-  String get autoplayDesc => 'Sigue reproduciendo pistas similares al terminar la cola';
+  String get autoplayDesc =>
+      'Sigue reproduciendo pistas similares al terminar la cola';
 
   @override
   String get network => 'Red';
@@ -490,7 +496,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get proxy => 'Proxy CORS';
 
   @override
-  String get proxyDesc => 'Necesario en el navegador, porque SoundCloud solo permite su propio sitio web.';
+  String get proxyDesc =>
+      'Necesario en el navegador, porque SoundCloud solo permite su propio sitio web.';
 
   @override
   String get about => 'Acerca de';
@@ -506,7 +513,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get previewBadge => 'Muestra (30 s)';
 
   @override
-  String get previewHint => 'SoundCloud solo ofrece una muestra de 30 segundos de esta pista.';
+  String get previewHint =>
+      'SoundCloud solo ofrece una muestra de 30 segundos de esta pista.';
 
   @override
   String get openInYtMusic => 'Abrir en YouTube Music';
@@ -515,7 +523,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get skipPreviews => 'Omitir muestras';
 
   @override
-  String get skipPreviewsDesc => 'Omitir muestras de 30 segundos al avanzar en la cola';
+  String get skipPreviewsDesc =>
+      'Omitir muestras de 30 segundos al avanzar en la cola';
 
   @override
   String get fastStart => 'Inicio rápido';
@@ -561,7 +570,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get djBuilding => 'Creando tu mezcla…';
 
   @override
-  String get djNothing => 'No se encontró nada adecuado: prueba otra categoría.';
+  String get djNothing =>
+      'No se encontró nada adecuado: prueba otra categoría.';
 
   @override
   String get djPickCategory => 'Elige al menos una categoría';
@@ -604,7 +614,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get radioSource => 'Radio web';
 
   @override
-  String get radioSourceDesc => 'Decenas de miles de emisoras desde radio-browser.info. Desactivado: sin peticiones.';
+  String get radioSourceDesc =>
+      'Decenas de miles de emisoras desde radio-browser.info. Desactivado: sin peticiones.';
 
   @override
   String get live => 'EN VIVO';
@@ -626,7 +637,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updatesNone => 'Pounce está actualizado';
 
   @override
-  String get updatesUnavailable => 'Las actualizaciones no están disponibles en esta versión';
+  String get updatesUnavailable =>
+      'Las actualizaciones no están disponibles en esta versión';
 
   @override
   String updateTitle(String version) {
@@ -648,13 +660,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateReleasePage => 'Página de la versión';
 
   @override
-  String get updateChecksumFailed => 'La suma de comprobación no coincide: se descartó la descarga.';
+  String get updateChecksumFailed =>
+      'La suma de comprobación no coincide: se descartó la descarga.';
 
   @override
-  String get updateNeedsPermission => 'Permite a Pounce instalar aplicaciones y vuelve a pulsar.';
+  String get updateNeedsPermission =>
+      'Permite a Pounce instalar aplicaciones y vuelve a pulsar.';
 
   @override
-  String get updateFailed => 'Error en la actualización: inténtalo de nuevo más tarde.';
+  String get updateFailed =>
+      'Error en la actualización: inténtalo de nuevo más tarde.';
 
   @override
   String get beta => 'Beta';
@@ -667,7 +682,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setupWelcome => 'Te damos la bienvenida a Pounce';
 
   @override
-  String get setupTagline => 'Música rápida de SoundCloud y radio web, con un DJ que mezcla para ti.';
+  String get setupTagline =>
+      'Música rápida de SoundCloud y radio web, con un DJ que mezcla para ti.';
 
   @override
   String get setupStart => 'Empezar';
@@ -688,10 +704,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setupSourcesTitle => '¿De dónde debe venir la música?';
 
   @override
-  String get setupSoundcloudDesc => 'Millones de pistas, mezclas y remixes. Siempre activo.';
+  String get setupSoundcloudDesc =>
+      'Millones de pistas, mezclas y remixes. Siempre activo.';
 
   @override
-  String get setupRadioDesc => 'Más de 30 000 emisoras a través de radio-browser.info. Desactivado = sin peticiones.';
+  String get setupRadioDesc =>
+      'Más de 30 000 emisoras a través de radio-browser.info. Desactivado = sin peticiones.';
 
   @override
   String get setupAccountTitle => '¿Quieres traer tus me gusta?';
@@ -707,7 +725,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setupDjTitle => '¿Qué debe poner tu DJ?';
 
   @override
-  String get setupDjDesc => 'Elige algunos estilos. Puedes cambiarlos en cualquier momento en la pestaña DJ.';
+  String get setupDjDesc =>
+      'Elige algunos estilos. Puedes cambiarlos en cualquier momento en la pestaña DJ.';
 
   @override
   String get setupPrivacyTitle => 'Tu privacidad';
@@ -818,7 +837,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable => 'No disponible: estimación solo a partir de la forma de onda';
+  String get engineUnavailable =>
+      'No disponible: estimación solo a partir de la forma de onda';
 
   @override
   String get djFlowActiveDesc => 'Ajuste automático de frases y tonos';
