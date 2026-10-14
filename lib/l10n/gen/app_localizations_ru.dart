@@ -815,6 +815,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get engineTitle => 'Аудиодвижок и производительность';
 
   @override
+  String get rustAudioEngine => 'Аудиодвижок Rust (deckengine)';
+
+  @override
+  String get syncText => 'Синхронизация';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · сетка битов, тональность (хрома), громкость и ИИ-отпечаток по реальному звуку';
   }
@@ -870,6 +876,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get srcTitle => 'Название';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Энергия аудио (live)';

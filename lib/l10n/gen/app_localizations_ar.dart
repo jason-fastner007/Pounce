@@ -816,6 +816,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get engineTitle => 'محرك الصوت والأداء';
 
   @override
+  String get rustAudioEngine => 'محرك الصوت Rust (deckengine)';
+
+  @override
+  String get syncText => 'مزامنة';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · شبكة الإيقاع والمقام (كروما) وشدة الصوت وبصمة الذكاء الاصطناعي من الصوت الحقيقي';
   }
@@ -871,6 +877,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get srcTitle => 'العنوان';
+
+  @override
+  String get srcSoundCloud => 'ساوند كلاود';
 
   @override
   String get djEnergiesLive => 'طاقات الصوت (مباشر)';

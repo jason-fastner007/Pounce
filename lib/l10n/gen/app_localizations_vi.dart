@@ -799,6 +799,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get engineTitle => 'Engine âm thanh & hiệu năng';
 
   @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get syncText => 'Đồng bộ';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · lưới nhịp, tông (chroma), độ lớn và dấu vân tay AI từ âm thanh thật';
   }
@@ -854,6 +860,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get srcTitle => 'Tiêu đề';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Năng lượng âm thanh (trực tiếp)';

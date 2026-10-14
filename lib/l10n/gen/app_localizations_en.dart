@@ -809,6 +809,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get engineTitle => 'Audio engine & performance';
 
   @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get syncText => 'Sync';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · beat grid, key (chroma), loudness and AI fingerprint from real audio';
   }
@@ -864,6 +870,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get srcTitle => 'Title';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Audio energies (live)';

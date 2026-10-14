@@ -799,6 +799,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get engineTitle => 'Hangmotor és teljesítmény';
 
   @override
+  String get rustAudioEngine => 'Rust hangmotor (deckengine)';
+
+  @override
+  String get syncText => 'Szinkronizálás';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · ütemrács, hangnem (kroma), hangosság és MI-ujjlenyomat valódi hangból';
   }
@@ -854,6 +860,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get srcTitle => 'Cím';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Hangenergiák (élő)';

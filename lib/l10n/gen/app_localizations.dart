@@ -1571,6 +1571,18 @@ abstract class AppLocalizations {
   /// **'Audio engine & performance'**
   String get engineTitle;
 
+  /// No description provided for @rustAudioEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustAudioEngine;
+
+  /// No description provided for @syncText.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncText;
+
   /// No description provided for @engineRustDesc.
   ///
   /// In en, this message translates to:
@@ -1672,6 +1684,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title'**
   String get srcTitle;
+
+  /// No description provided for @srcSoundCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get srcSoundCloud;
 
   /// No description provided for @djEnergiesLive.
   ///
