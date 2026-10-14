@@ -151,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                             showSelectedIcon: false,
                             segments: [
                               ButtonSegment(value: _Source.all, label: Text(l.srcAll)),
-                              const ButtonSegment(value: _Source.soundcloud, label: Text('SoundCloud')),
+                              ButtonSegment(value: _Source.soundcloud, label: Text(l.srcSoundCloud)),
                               ButtonSegment(
                                 value: _Source.radio,
                                 label: Text(l.srcRadio),

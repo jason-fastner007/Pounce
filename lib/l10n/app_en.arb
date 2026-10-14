@@ -390,6 +390,8 @@
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
+  "syncText": "Sync",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
@@ -428,6 +430,7 @@
   "srcAudio": "Audio",
   "srcWaveform": "Waveform",
   "srcTitle": "Title",
+  "srcSoundCloud": "SoundCloud",
   "djEnergiesLive": "Audio energies (live)",
   "djTransitionIn": "Transition in {beats} beats",
   "@djTransitionIn": {
