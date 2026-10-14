@@ -586,7 +586,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 24, 24),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 24),
                     child: _SidePanel(track: track),
                   ),
                 ),
@@ -704,7 +704,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
