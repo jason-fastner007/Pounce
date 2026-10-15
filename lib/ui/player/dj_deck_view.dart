@@ -517,6 +517,7 @@ class _ModeButton extends StatelessWidget {
     final primary = theme.colorScheme.primary;
 
     return Tactile(
+      tooltip: '$label: $sub',
       onTap: onTap,
       radius: Studio.br10,
       active: selected,

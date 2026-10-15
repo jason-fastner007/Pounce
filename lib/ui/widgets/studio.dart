@@ -102,7 +102,7 @@ class _TactileState extends State<Tactile> {
       ),
     );
     if (widget.tooltip != null) w = Tooltip(message: widget.tooltip!, child: w);
-    return Semantics(button: true, label: widget.tooltip, child: w);
+    return Semantics(button: true, selected: widget.active, label: widget.tooltip, child: w);
   }
 }
 
@@ -262,26 +262,31 @@ class Segments<T> extends StatelessWidget {
                     Expanded(
                       child: _MaybeTooltip(
                         message: tooltip?.call(v),
-                        child: MouseRegion(
-                          cursor: onChanged == null ? SystemMouseCursors.basic : SystemMouseCursors.click,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: onChanged == null ? null : () => onChanged!(v),
-                            child: Center(
-                              child: AnimatedDefaultTextStyle(
-                                duration: Motion.short,
-                                style: TextStyle(
-                                  fontFamily: Studio.sans,
-                                  fontSize: 12,
-                                  fontWeight: v == selected ? FontWeight.w700 : FontWeight.w500,
-                                  color: v == selected ? accent : (onChanged == null ? Studio.text3 : Studio.text2),
-                                ),
-                                // Shrink long labels (e.g. "WARTESCHLANGE") instead of wrapping.
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(label(v), maxLines: 1, softWrap: false),
+                        child: Semantics(
+                          button: true,
+                          selected: v == selected,
+                          label: tooltip?.call(v) ?? label(v),
+                          child: MouseRegion(
+                            cursor: onChanged == null ? SystemMouseCursors.basic : SystemMouseCursors.click,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: onChanged == null ? null : () => onChanged!(v),
+                              child: Center(
+                                child: AnimatedDefaultTextStyle(
+                                  duration: Motion.short,
+                                  style: TextStyle(
+                                    fontFamily: Studio.sans,
+                                    fontSize: 12,
+                                    fontWeight: v == selected ? FontWeight.w700 : FontWeight.w500,
+                                    color: v == selected ? accent : (onChanged == null ? Studio.text3 : Studio.text2),
+                                  ),
+                                  // Shrink long labels (e.g. "WARTESCHLANGE") instead of wrapping.
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(label(v), maxLines: 1, softWrap: false),
+                                    ),
                                   ),
                                 ),
                               ),
