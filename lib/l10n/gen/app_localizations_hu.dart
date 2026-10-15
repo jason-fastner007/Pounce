@@ -796,7 +796,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get syncButton => 'Szinkronizálás';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
+
+  @override
+  String get engineRustAudio => 'Rust hangmotor (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -854,6 +860,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get srcTitle => 'Cím';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Hangenergiák (élő)';

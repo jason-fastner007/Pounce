@@ -1565,11 +1565,23 @@ abstract class AppLocalizations {
   /// **'Synced'**
   String get syncDone;
 
+  /// No description provided for @syncButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncButton;
+
   /// No description provided for @engineTitle.
   ///
   /// In en, this message translates to:
   /// **'Audio engine & performance'**
   String get engineTitle;
+
+  /// No description provided for @engineRustAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRustAudio;
 
   /// No description provided for @engineRustDesc.
   ///
@@ -1672,6 +1684,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title'**
   String get srcTitle;
+
+  /// No description provided for @srcSoundCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get srcSoundCloud;
 
   /// No description provided for @djEnergiesLive.
   ///

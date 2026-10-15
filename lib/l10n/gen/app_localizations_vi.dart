@@ -796,7 +796,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncDone => 'Đã đồng bộ';
 
   @override
+  String get syncButton => 'Đồng bộ';
+
+  @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRustAudio => 'Engine âm thanh Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -854,6 +860,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get srcTitle => 'Tiêu đề';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Năng lượng âm thanh (trực tiếp)';
