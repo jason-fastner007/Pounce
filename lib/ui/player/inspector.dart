@@ -36,7 +36,7 @@ class _InspectorState extends State<Inspector> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(Studio.s3, Studio.s3, Studio.s2, Studio.s2),
+            padding: const EdgeInsetsDirectional.fromSTEB(Studio.s3, Studio.s3, Studio.s2, Studio.s2),
             child: Row(
               children: [
                 Expanded(
@@ -107,7 +107,7 @@ class _SignalPanel extends StatelessWidget {
       children: [
         Container(
           height: 132,
-          padding: const EdgeInsets.fromLTRB(Studio.s2, Studio.s3, Studio.s2, Studio.s2),
+          padding: const EdgeInsetsDirectional.fromSTEB(Studio.s2, Studio.s3, Studio.s2, Studio.s2),
           decoration: Studio.panel(color: Studio.bg0),
           child: const SpectrumBars(height: 116, bars: 40),
         ),

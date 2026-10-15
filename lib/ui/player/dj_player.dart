@@ -95,6 +95,7 @@ class DjPlayer extends StatelessWidget {
                             final liked = d.library.isLiked(track);
                             return IconButton(
                               iconSize: 28,
+                              tooltip: liked ? context.l10n.unlike : context.l10n.like,
                               onPressed: () => d.library.toggleLike(track),
                               icon: Icon(liked ? Icons.favorite_rounded : Icons.favorite_border_rounded, color: liked ? accent : null),
                             );

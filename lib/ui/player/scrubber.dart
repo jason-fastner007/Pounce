@@ -126,21 +126,27 @@ class _ScrubberState extends State<Scrubber> with TickerProviderStateMixin {
           _syncPlaying();
         }
 
+        final playedRatio = _drag ?? (_player.duration.inMilliseconds == 0 ? 0.0 : (_player.position.value.inMilliseconds / _player.duration.inMilliseconds).clamp(0.0, 1.0));
         return MouseRegion(
           cursor: SystemMouseCursors.click,
           onHover: (e) => _hover.value = _fraction(e.localPosition, w),
           onExit: (_) => _hover.value = null,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onHorizontalDragStart: (d) => start(d.localPosition),
-            onHorizontalDragUpdate: (d) {
-              setState(() => _drag = _fraction(d.localPosition, w));
-              _hover.value = _drag;
-            },
-            onHorizontalDragEnd: (_) => end(),
-            onTapDown: (d) => start(d.localPosition),
-            onTapUp: (_) => end(),
-            child: SizedBox(
+          child: Semantics(
+            container: true,
+            slider: true,
+            label: context.l10n.nowPlaying,
+            value: '${(playedRatio * 100).round()}%',
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onHorizontalDragStart: (d) => start(d.localPosition),
+              onHorizontalDragUpdate: (d) {
+                setState(() => _drag = _fraction(d.localPosition, w));
+                _hover.value = _drag;
+              },
+              onHorizontalDragEnd: (_) => end(),
+              onTapDown: (d) => start(d.localPosition),
+              onTapUp: (_) => end(),
+              child: SizedBox(
               height: widget.height,
               width: w,
               child: Stack(
@@ -201,7 +207,8 @@ class _ScrubberState extends State<Scrubber> with TickerProviderStateMixin {
               ),
             ),
           ),
-        );
+        ),
+      );
       },
     );
 
