@@ -116,4 +116,48 @@ void main() {
     expect(auth.usesWebClient, isTrue);
     expect((await sc.me()).username, 'web');
   });
+
+  test('complete throws AuthException on invalid callback or missing verifier', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    // Invalid callback
+    expect(
+      () => auth.complete('sc://auth?error=access_denied'),
+      throwsA(isA<AuthException>().having((e) => e.code, 'code', 'invalid_callback')),
+    );
+
+    // No pending login verifier
+    expect(
+      () => auth.complete('sc://auth?code=VALIDCODE'),
+      throwsA(isA<AuthException>().having((e) => e.code, 'code', 'no_pending_login')),
+    );
+  });
+
+  test('token auto-refreshes when token is expiring soon and logout clears state', () async {
+    final store = Store.memory();
+    var refreshCalls = 0;
+    final client = MockClient((req) async {
+      if (req.url.host == 'api-auth.soundcloud.com') {
+        refreshCalls++;
+        return http.Response(jsonEncode({'access_token': 'NEW_ACCESS', 'refresh_token': 'NEW_REFRESH', 'expires_in': 3600}), 200);
+      }
+      return http.Response('{}', 404);
+    });
+
+    final auth = ScAuth(store, client, (u) => u);
+    store.set('auth.access', 'OLD_ACCESS');
+    store.set('auth.refresh', 'REFRESH_TOKEN');
+    // Set expiry to 10 seconds in the future (within the 60 second "soon" window)
+    store.set('auth.expires', DateTime.now().millisecondsSinceEpoch + 10000);
+
+    final activeToken = await auth.token();
+    expect(activeToken, 'NEW_ACCESS');
+    expect(refreshCalls, 1);
+
+    auth.logout();
+    expect(auth.loggedIn, isFalse);
+    expect(auth.me, isNull);
+    expect(store.get<String>('auth.access'), isNull);
+  });
 }
