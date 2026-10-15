@@ -207,7 +207,7 @@ class RadioBrowser {
   }
 
   /// Most played stations worldwide.
-  Future<List<RadioStation>> topClick({int limit = 50}) => _stations('/json/stations/topclick/$limit', const {});
+  Future<List<RadioStation>> topClick({int limit = 50}) => _stations('/json/stations/search', {'order': 'clickcount', 'reverse': 'true', 'limit': '$limit'});
 
   /// Stations with exactly this tag (e.g. "techno"), most popular first.
   Future<List<RadioStation>> byTag(String tag, {int limit = 50}) => _stations(

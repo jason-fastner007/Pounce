@@ -46,7 +46,7 @@ void main() {
     await api.byCountryCodeExact('de');
     await api.searchByName('x');
     expect(paths.map((u) => u.path), [
-      '/json/stations/topclick/50',
+      '/json/stations/search',
       '/json/stations/bytag/techno',
       '/json/stations/bycountrycodeexact/DE',
       '/json/stations/search',
