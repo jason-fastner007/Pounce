@@ -243,6 +243,8 @@
   "syncNow": "Synchroniser maintenant",
   "syncNever": "Pas encore synchronisé",
   "syncDone": "Synchronisé",
+  "syncButton": "Synchroniser",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
   "engineTitle": "Moteur audio et performances",
   "engineRustDesc": "{label} · grille rythmique, tonalité (chroma), loudness et empreinte IA à partir de l'audio réel",
   "engineUnavailable": "Indisponible – estimation à partir de la forme d'onde uniquement",

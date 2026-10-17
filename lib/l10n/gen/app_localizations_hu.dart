@@ -796,6 +796,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get syncButton => 'Szinkronizálás';
+
+  @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
 
   @override

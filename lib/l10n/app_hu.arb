@@ -243,6 +243,8 @@
   "syncNow": "Szinkronizálás most",
   "syncNever": "Még nincs szinkronizálva",
   "syncDone": "Szinkronizálva",
+  "syncButton": "Szinkronizálás",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
   "engineTitle": "Hangmotor és teljesítmény",
   "engineRustDesc": "{label} · ütemrács, hangnem (kroma), hangosság és MI-ujjlenyomat valódi hangból",
   "engineUnavailable": "Nem elérhető – csak becslés a hullámformából",

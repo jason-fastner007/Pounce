@@ -243,6 +243,8 @@
   "syncNow": "Đồng bộ ngay",
   "syncNever": "Chưa đồng bộ",
   "syncDone": "Đã đồng bộ",
+  "syncButton": "Đồng bộ",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
   "engineTitle": "Engine âm thanh & hiệu năng",
   "engineRustDesc": "{label} · lưới nhịp, tông (chroma), độ lớn và dấu vân tay AI từ âm thanh thật",
   "engineUnavailable": "Không khả dụng – chỉ ước tính từ dạng sóng",

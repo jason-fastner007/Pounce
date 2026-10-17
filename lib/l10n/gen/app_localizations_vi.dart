@@ -796,6 +796,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncDone => 'Đã đồng bộ';
 
   @override
+  String get syncButton => 'Đồng bộ';
+
+  @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
 
   @override

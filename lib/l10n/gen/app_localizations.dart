@@ -1565,6 +1565,18 @@ abstract class AppLocalizations {
   /// **'Synced'**
   String get syncDone;
 
+  /// No description provided for @syncButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncButton;
+
+  /// No description provided for @rustAudioEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustAudioEngine;
+
   /// No description provided for @engineTitle.
   ///
   /// In en, this message translates to:
