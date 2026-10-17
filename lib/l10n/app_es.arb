@@ -243,6 +243,8 @@
   "syncNow": "Sincronizar ahora",
   "syncNever": "Aún no sincronizado",
   "syncDone": "Sincronizado",
+  "syncButton": "Sincronizar",
+  "rustAudioEngine": "Motor de audio Rust (deckengine)",
   "engineTitle": "Motor de audio y rendimiento",
   "engineRustDesc": "{label} · cuadrícula de compás, tono (chroma), volumen y huella de IA desde audio real",
   "engineUnavailable": "No disponible: estimación solo a partir de la forma de onda",

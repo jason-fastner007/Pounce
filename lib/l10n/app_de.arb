@@ -243,6 +243,8 @@
   "syncNow": "Jetzt synchronisieren",
   "syncNever": "Noch nicht synchronisiert",
   "syncDone": "Synchronisiert",
+  "syncButton": "Synchronisieren",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
   "engineTitle": "Audio Engine & Performance",
   "engineRustDesc": "{label} · Beat-Raster, Tonart (Chroma), Lautheit, KI-Fingerabdruck aus echtem Audio",
   "engineUnavailable": "Nicht verfügbar – nur Schätzung aus der Wellenform",
