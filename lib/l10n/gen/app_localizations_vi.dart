@@ -577,6 +577,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get srcAll => 'Tất cả';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get srcRadio => 'Radio';
 
   @override
@@ -728,6 +731,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get sync => 'Đồng bộ';
+
+  @override
   String get syncTitle => 'Đồng bộ thiết bị';
 
   @override
@@ -797,6 +803,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

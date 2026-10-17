@@ -591,6 +591,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get srcAll => 'الكل';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get srcRadio => 'راديو الويب';
 
   @override
@@ -740,6 +743,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get sync => 'مزامنة';
+
+  @override
   String get syncTitle => 'مزامنة الأجهزة';
 
   @override
@@ -814,6 +820,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get engineTitle => 'محرك الصوت والأداء';
+
+  @override
+  String get engineRustTitle => 'محرك الصوت Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

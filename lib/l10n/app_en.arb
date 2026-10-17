@@ -280,6 +280,7 @@
   "djStop": "Stop DJ",
   "djSkip": "Skip (mixes over and learns)",
   "srcAll": "All",
+  "srcSoundCloud": "SoundCloud",
   "srcRadio": "Web radio",
   "radioSection": "Live radio · Stations",
   "radioFavorites": "Favourite stations",
@@ -354,6 +355,7 @@
       }
     }
   },
+  "sync": "Sync",
   "syncTitle": "Device sync",
   "syncBackground": "Background sync",
   "syncServerActive": "Server active (port {port}) · peer-to-peer on your local network",
@@ -390,6 +392,7 @@
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
