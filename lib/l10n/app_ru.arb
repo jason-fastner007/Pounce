@@ -277,5 +277,8 @@
   "planDrop": "Дроп {time}",
   "planNoDrop": "без дропа",
   "planSearching": "ищем дроп…",
-  "planText": "Вход {entry} · {drop} · переход {fade} с"
+  "planText": "Вход {entry} · {drop} · переход {fade} с",
+  "rustEngine": "Аудиодвижок Rust (deckengine)",
+  "syncAction": "Синхронизировать",
+  "soundcloud": "SoundCloud"
 }

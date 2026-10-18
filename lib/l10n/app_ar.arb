@@ -277,5 +277,8 @@
   "planDrop": "الذروة {time}",
   "planNoDrop": "لا ذروة",
   "planSearching": "جارٍ البحث عن الذروة…",
-  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث"
+  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث",
+  "rustEngine": "محرك الصوت Rust (deckengine)",
+  "syncAction": "مزامنة",
+  "soundcloud": "ساوند كلاود"
 }

@@ -913,4 +913,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Belépés $entry · $drop · $fade mp áttűnés';
   }
+
+  @override
+  String get rustEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
+  String get soundcloud => 'SoundCloud';
 }

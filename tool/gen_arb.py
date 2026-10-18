@@ -301,6 +301,14 @@ s('planNoDrop', en='no drop', de='kein Drop', fr='pas de drop', ru='без др�
 s('planSearching', en='looking for the drop…', de='Drop wird gesucht…', fr='recherche du drop…', ru='ищем дроп…', hu='drop keresése…', vi='đang tìm drop…', ar='جارٍ البحث عن الذروة…', es='buscando el drop…')
 s('planText', en='Entry {entry} · {drop} · {fade} s fade', de='Einstieg {entry} · {drop} · {fade} s Blende', fr='Entrée {entry} · {drop} · fondu {fade} s', ru='Вход {entry} · {drop} · переход {fade} с', hu='Belépés {entry} · {drop} · {fade} mp áttűnés', vi='Vào {entry} · {drop} · chuyển {fade} giây', ar='الدخول {entry} · {drop} · تلاشٍ {fade} ث', es='Entrada {entry} · {drop} · fundido de {fade} s')
 
+
+
+
+
+s('rustEngine', en='Rust Audio Engine (deckengine)', de='Rust Audio Engine (deckengine)', fr='Moteur audio Rust (deckengine)', ru='Аудиодвижок Rust (deckengine)', hu='Rust Audio Engine (deckengine)', vi='Engine âm thanh Rust (deckengine)', ar='محرك الصوت Rust (deckengine)', es='Motor de audio Rust (deckengine)')
+s('syncAction', en='Sync', de='Synchronisieren', fr='Synchroniser', ru='Синхронизировать', hu='Szinkronizálás', vi='Đồng bộ', ar='مزامنة', es='Sincronizar')
+s('soundcloud', en='SoundCloud', de='SoundCloud', fr='SoundCloud', ru='SoundCloud', hu='SoundCloud', vi='SoundCloud', ar='ساوند كلاود', es='SoundCloud')
+
 PH = {
   'homeBecauseYouPlayed': {'title': {'type': 'String'}},
   'deletePlaylistConfirm': {'name': {'type': 'String'}},

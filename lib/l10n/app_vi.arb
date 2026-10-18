@@ -277,5 +277,8 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "không có drop",
   "planSearching": "đang tìm drop…",
-  "planText": "Vào {entry} · {drop} · chuyển {fade} giây"
+  "planText": "Vào {entry} · {drop} · chuyển {fade} giây",
+  "rustEngine": "Engine âm thanh Rust (deckengine)",
+  "syncAction": "Đồng bộ",
+  "soundcloud": "SoundCloud"
 }
