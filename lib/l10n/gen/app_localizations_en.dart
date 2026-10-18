@@ -806,7 +806,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncDone => 'Synced';
 
   @override
+  String get syncAction => 'Sync';
+
+  @override
   String get engineTitle => 'Audio engine & performance';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

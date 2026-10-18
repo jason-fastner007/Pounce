@@ -813,7 +813,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncDone => 'تمت المزامنة';
 
   @override
+  String get syncAction => 'مزامنة';
+
+  @override
   String get engineTitle => 'محرك الصوت والأداء';
+
+  @override
+  String get engineRust => 'محرك الصوت Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

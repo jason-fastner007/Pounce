@@ -389,7 +389,9 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "syncAction": "Sync",
   "engineTitle": "Audio engine & performance",
+  "engineRust": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
