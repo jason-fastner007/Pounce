@@ -811,7 +811,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get syncDone => 'Synchronisé';
 
   @override
+  String get syncAction => 'Synchroniser';
+
+  @override
   String get engineTitle => 'Moteur audio et performances';
+
+  @override
+  String get engineRust => 'Moteur audio Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
