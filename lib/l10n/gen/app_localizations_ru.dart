@@ -929,4 +929,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Вход $entry · $drop · переход $fade с';
   }
+
+  @override
+  String get rustEngine => 'Аудиодвижок Rust (deckengine)';
+
+  @override
+  String get syncAction => 'Синхронизировать';
+
+  @override
+  String get soundcloud => 'SoundCloud';
 }

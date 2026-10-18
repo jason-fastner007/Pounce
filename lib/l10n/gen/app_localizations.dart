@@ -1774,6 +1774,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry {entry} · {drop} · {fade} s fade'**
   String planText(String entry, String drop, String fade);
+
+  /// No description provided for @rustEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustEngine;
+
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

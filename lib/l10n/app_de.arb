@@ -277,5 +277,8 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "kein Drop",
   "planSearching": "Drop wird gesucht…",
-  "planText": "Einstieg {entry} · {drop} · {fade} s Blende"
+  "planText": "Einstieg {entry} · {drop} · {fade} s Blende",
+  "rustEngine": "Rust Audio Engine (deckengine)",
+  "syncAction": "Synchronisieren",
+  "soundcloud": "SoundCloud"
 }
