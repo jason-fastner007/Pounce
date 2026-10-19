@@ -554,5 +554,84 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('ScException formatting and wrap method', () {
+      final ex = ScException('Unauthorized', 401);
+      expect(ex.toString(), 'ScException(401): Unauthorized');
+
+      final sc = SoundCloud(store, settings);
+      final uri = Uri.parse('https://api-v2.soundcloud.com/tracks');
+      expect(sc.wrap(uri), uri);
+    });
+
+    test('_get handles 401/403 retry and throws ScException on HTTP error', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var attempts = 0;
+      final mockClient = MockClient((request) async {
+        if (request.url.toString() == 'https://soundcloud.com/') {
+          return http.Response(
+            '<html><script src="https://a-v2.sndcdn.com/assets/123-abc.js"></script></html>',
+            200,
+          );
+        } else if (request.url.toString() == 'https://a-v2.sndcdn.com/assets/123-abc.js') {
+          return http.Response('client_id="12345678901234567890123456789012"', 200);
+        }
+
+        if (request.url.path == '/tracks/1') {
+          attempts++;
+          if (attempts == 1) {
+            return http.Response('Unauthorized', 401);
+          } else {
+            return http.Response(
+              jsonEncode({
+                'id': 1,
+                'title': 'Retried Track',
+                'duration': 100000,
+                'user': {'id': 1, 'username': 'Artist'},
+              }),
+              200,
+            );
+          }
+        }
+        return http.Response('Server Error', 500);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final track = await sc.track(1);
+      expect(track.title, 'Retried Track');
+      expect(attempts, 2);
+
+      expect(() => sc.track(999), throwsA(isA<ScException>()));
+    });
+
+    test('stream throws ScException when blocked or no transcodings available', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final sc = SoundCloud(store, settings, client: MockClient((req) async => http.Response('Not Found', 404)));
+
+      final blockedTrack = Track.fromJson({
+        'id': 10,
+        'title': 'Blocked Track',
+        'duration': 1000,
+        'policy': 'BLOCK',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      expect(() => sc.stream(blockedTrack), throwsA(isA<ScException>()));
+
+      final noTranscodingsTrack = Track.fromJson({
+        'id': 11,
+        'title': 'No Transcoding',
+        'duration': 1000,
+        'user': {'id': 1, 'username': 'Artist'},
+        'track_authorization': 'auth',
+        'media': {'transcodings': []},
+      });
+
+      expect(() => sc.stream(noTranscodingsTrack), throwsA(isA<ScException>()));
+    });
   });
 }
