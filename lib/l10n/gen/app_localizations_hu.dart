@@ -847,6 +847,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get statSource => 'Forrás';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
   String get srcAudio => 'Hang';
 
   @override
