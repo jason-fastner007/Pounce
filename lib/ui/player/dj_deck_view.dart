@@ -390,7 +390,7 @@ class DjDeckView extends StatelessWidget {
                             ),
                             onPressed: () => dj.triggerMixNow(),
                             icon: const Icon(Icons.flash_on_rounded, size: 16),
-                            label: Text(l10n.djMixNow, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                            label: Text(l10n.djMixNow, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
                           ),
                         ],
                       ),
