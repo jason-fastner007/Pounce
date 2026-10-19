@@ -862,6 +862,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statSource => 'Source';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get rustAudioEngine => 'Moteur audio Rust (deckengine)';
+
+  @override
+  String get syncAction => 'Synchronisation';
+
+  @override
   String get srcAudio => 'Audio';
 
   @override
