@@ -43,9 +43,13 @@ class _MorphPlayButtonState extends State<MorphPlayButton> with SingleTickerProv
     final s = widget.size;
     final accent = Theme.of(context).colorScheme.primary;
     final on = Theme.of(context).colorScheme.onPrimary;
-    return Tooltip(
-      message: p.playing ? context.l10n.pause : context.l10n.play,
-      child: MouseRegion(
+    final label = p.playing ? context.l10n.pause : context.l10n.play;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Tooltip(
+        message: label,
+        child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTapDown: (_) => setState(() => _down = true),
@@ -86,6 +90,7 @@ class _MorphPlayButtonState extends State<MorphPlayButton> with SingleTickerProv
             ),
           ),
         ),
+      ),
       ),
     );
   }
@@ -181,25 +186,30 @@ class _VolumeAttenuatorState extends State<VolumeAttenuator> {
                 }
               },
             ),
-            Tooltip(
-              message: '${context.l10n.volume} · ${_db(gain)}',
-              child: Listener(
-                // Mouse wheel = fine steps (1 dB)
-                onPointerSignal: (e) {
-                  if (e is PointerScrollEvent) setPos(pos + (e.scrollDelta.dy < 0 ? 1 : -1) / _range);
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  onEnter: (_) => setState(() => _show = true),
-                  onExit: (_) => setState(() => _show = false),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTapDown: (d) => setPos(d.localPosition.dx / widget.width),
-                    onHorizontalDragUpdate: (d) => setPos(d.localPosition.dx / widget.width),
-                    child: SizedBox(
-                      width: widget.width,
-                      height: 24,
-                      child: CustomPaint(painter: _FaderPainter(pos, accent, _show)),
+            Semantics(
+              label: context.l10n.volume,
+              slider: true,
+              value: _db(gain),
+              child: Tooltip(
+                message: '${context.l10n.volume} · ${_db(gain)}',
+                child: Listener(
+                  // Mouse wheel = fine steps (1 dB)
+                  onPointerSignal: (e) {
+                    if (e is PointerScrollEvent) setPos(pos + (e.scrollDelta.dy < 0 ? 1 : -1) / _range);
+                  },
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    onEnter: (_) => setState(() => _show = true),
+                    onExit: (_) => setState(() => _show = false),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTapDown: (d) => setPos(d.localPosition.dx / widget.width),
+                      onHorizontalDragUpdate: (d) => setPos(d.localPosition.dx / widget.width),
+                      child: SizedBox(
+                        width: widget.width,
+                        height: 24,
+                        child: CustomPaint(painter: _FaderPainter(pos, accent, _show)),
+                      ),
                     ),
                   ),
                 ),
