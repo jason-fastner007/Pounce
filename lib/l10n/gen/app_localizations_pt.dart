@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -251,8 +252,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Esta faixa tem proteção DRM e ainda não pode ser tocada no Pounce – mesmo com a conta conectada';
 
   @override
-  String get protectedPlayable =>
-      'Protegido por DRM – descriptografado pelo módulo DRM do seu navegador';
+  String get protectedPlayable => 'Protegido por DRM – descriptografado pelo módulo DRM do seu navegador';
 
   @override
   String get account => 'Conta';
@@ -267,8 +267,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get signup => 'Criar conta';
 
   @override
-  String get loginPrivacy =>
-      'Você entra na própria página do SoundCloud. O Pounce nunca vê sua senha.';
+  String get loginPrivacy => 'Você entra na própria página do SoundCloud. O Pounce nunca vê sua senha.';
 
   @override
   String get loginWaiting => 'Conclua o login no navegador…';
@@ -302,8 +301,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get logout => 'Sair';
 
   @override
-  String get logoutConfirm =>
-      'Sair? Suas curtidas permanecerão neste dispositivo.';
+  String get logoutConfirm => 'Sair? Suas curtidas permanecerão neste dispositivo.';
 
   @override
   String get homeStream => 'Seu feed';
@@ -332,8 +330,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get loudTitle => 'Modo de volume';
 
   @override
-  String get loudDesc =>
-      'Equaliza faixas altas e baixas (ITU-R BS.1770) com um limitador integrado contra distorções.';
+  String get loudDesc => 'Equaliza faixas altas e baixas (ITU-R BS.1770) com um limitador integrado contra distorções.';
 
   @override
   String get loudOff => 'Desativado';
@@ -483,8 +480,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get autoplay => 'Reprodução automática';
 
   @override
-  String get autoplayDesc =>
-      'Continuar tocando faixas semelhantes quando a fila terminar';
+  String get autoplayDesc => 'Continuar tocando faixas semelhantes quando a fila terminar';
 
   @override
   String get network => 'Rede';
@@ -493,8 +489,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get proxy => 'Proxy CORS';
 
   @override
-  String get proxyDesc =>
-      'Necessário no navegador, pois o SoundCloud só permite seu próprio site.';
+  String get proxyDesc => 'Necessário no navegador, pois o SoundCloud só permite seu próprio site.';
 
   @override
   String get about => 'Sobre';
@@ -510,8 +505,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get previewBadge => 'Prévia (30s)';
 
   @override
-  String get previewHint =>
-      'O SoundCloud oferece apenas uma prévia de 30 segundos desta faixa.';
+  String get previewHint => 'O SoundCloud oferece apenas uma prévia de 30 segundos desta faixa.';
 
   @override
   String get openInYtMusic => 'Abrir no YouTube Music';
@@ -520,8 +514,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get skipPreviews => 'Pular prévias';
 
   @override
-  String get skipPreviewsDesc =>
-      'Pular prévias de 30 segundos quando a fila avançar';
+  String get skipPreviewsDesc => 'Pular prévias de 30 segundos quando a fila avançar';
 
   @override
   String get fastStart => 'Início rápido';
@@ -633,8 +626,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get updatesNone => 'O Pounce está atualizado';
 
   @override
-  String get updatesUnavailable =>
-      'Atualizações não estão disponíveis nesta versão';
+  String get updatesUnavailable => 'Atualizações não estão disponíveis nesta versão';
 
   @override
   String updateTitle(String version) {
@@ -656,16 +648,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get updateReleasePage => 'Página de lançamentos';
 
   @override
-  String get updateChecksumFailed =>
-      'Incompatibilidade de checksum – o download foi descartado.';
+  String get updateChecksumFailed => 'Incompatibilidade de checksum – o download foi descartado.';
 
   @override
-  String get updateNeedsPermission =>
-      'Permita que o Pounce instale aplicativos e toque novamente.';
+  String get updateNeedsPermission => 'Permita que o Pounce instale aplicativos e toque novamente.';
 
   @override
-  String get updateFailed =>
-      'Falha na atualização – tente novamente mais tarde.';
+  String get updateFailed => 'Falha na atualização – tente novamente mais tarde.';
 
   @override
   String get beta => 'Beta';
@@ -678,8 +667,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setupWelcome => 'Boas-vindas ao Pounce';
 
   @override
-  String get setupTagline =>
-      'Música rápida do SoundCloud e rádio web – com um DJ que mistura para você.';
+  String get setupTagline => 'Música rápida do SoundCloud e rádio web – com um DJ que mistura para você.';
 
   @override
   String get setupStart => 'Vamos lá';
@@ -700,12 +688,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setupSourcesTitle => 'De onde deve vir a música?';
 
   @override
-  String get setupSoundcloudDesc =>
-      'Milhões de faixas, mixes e remixes. Sempre ativo.';
+  String get setupSoundcloudDesc => 'Milhões de faixas, mixes e remixes. Sempre ativo.';
 
   @override
-  String get setupRadioDesc =>
-      'Mais de 30.000 estações via radio-browser.info. Desativado = nenhuma requisição.';
+  String get setupRadioDesc => 'Mais de 30.000 estações via radio-browser.info. Desativado = nenhuma requisição.';
 
   @override
   String get setupAccountTitle => 'Trazer suas curtidas junto?';
@@ -721,8 +707,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setupDjTitle => 'O que o seu DJ deve tocar?';
 
   @override
-  String get setupDjDesc =>
-      'Escolha alguns estilos. Você pode alterá-los a qualquer momento na aba DJ.';
+  String get setupDjDesc => 'Escolha alguns estilos. Você pode alterá-los a qualquer momento na aba DJ.';
 
   @override
   String get setupPrivacyTitle => 'Sua privacidade';
@@ -833,8 +818,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable =>
-      'Não disponível – estimativa apenas pela forma de onda';
+  String get engineUnavailable => 'Não disponível – estimativa apenas pela forma de onda';
 
   @override
   String get djFlowActiveDesc => 'Ajuste automático de frases e tom';
