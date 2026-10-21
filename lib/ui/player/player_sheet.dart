@@ -500,7 +500,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
             final state = dj.state;
             if (!state.isActive || _pane == _Pane.dj) return const SizedBox(height: 16);
             return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 6, 16, 10),
               child: GestureDetector(
                 onTap: () => _setPane(_Pane.dj),
                 child: Container(
@@ -704,7 +704,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
@@ -828,7 +828,7 @@ class _BottomActions extends StatelessWidget {
       icon: Icon(i),
     );
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -896,20 +896,24 @@ class _BottomActions extends StatelessWidget {
       builder: (c) => StatefulBuilder(
         builder: (c, set) => SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+            padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('${c.l10n.speed} · ${player.speed.toStringAsFixed(2)}×', style: Theme.of(c).textTheme.titleLarge),
-                Slider(
-                  value: player.speed,
-                  min: .5,
-                  max: 2,
-                  divisions: 30,
-                  onChanged: (v) {
-                    player.setSpeed(double.parse(v.toStringAsFixed(2)));
-                    set(() {});
-                  },
+                Semantics(
+                  label: c.l10n.speed,
+                  value: '${player.speed.toStringAsFixed(2)}x',
+                  child: Slider(
+                    value: player.speed,
+                    min: .5,
+                    max: 2,
+                    divisions: 30,
+                    onChanged: (v) {
+                      player.setSpeed(double.parse(v.toStringAsFixed(2)));
+                      set(() {});
+                    },
+                  ),
                 ),
                 Wrap(
                   spacing: 8,

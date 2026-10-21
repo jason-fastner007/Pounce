@@ -69,7 +69,7 @@ class _LoginSheetState extends State<_LoginSheet> {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.viewInsetsOf(context).bottom;
     return Padding(
-      padding: EdgeInsets.fromLTRB(24, 0, 24, 24 + bottom),
+      padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 24 + bottom),
       child: ListenableBuilder(
         listenable: _account,
         builder: (context, _) => AnimatedSize(
@@ -227,7 +227,7 @@ class _LoginSheetState extends State<_LoginSheet> {
               child: !_showPaste
                   ? const SizedBox(width: double.infinity)
                   : Padding(
-                      padding: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsetsDirectional.only(top: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [

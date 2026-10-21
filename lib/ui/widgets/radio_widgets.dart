@@ -31,7 +31,7 @@ class StationTile extends StatelessWidget {
             size: 11,
           ),
           trailing: IconButton(
-            tooltip: context.l10n.radioFavorites,
+            tooltip: fav ? context.l10n.unlike : context.l10n.like,
             onPressed: () => radio.toggleFavorite(station),
             icon: Icon(fav ? Icons.star_rounded : Icons.star_border_rounded, color: fav ? accent : null),
           ),
