@@ -478,5 +478,10 @@
         "type": "String"
       }
     }
-  }
+  },
+  "djFlow": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "syncAction": "Sync",
+  "deckEngine": "Rust Audio Engine (deckengine)",
+  "soundcloud": "SoundCloud"
 }

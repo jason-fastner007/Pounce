@@ -62,8 +62,7 @@ class DjDeckView extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                'DJ Flow & Automix',
+                              Text(l10n.djFlow,
                                 style: TextStyle(
                                   fontFamily: Studio.sans,
                                   fontSize: 15,
@@ -134,8 +133,7 @@ class DjDeckView extends StatelessWidget {
                                     color: Studio.text,
                                   ),
                                 ),
-                                const Text(
-                                  'BPM',
+                                Text(l10n.bpm,
                                   style: TextStyle(
                                     fontFamily: Studio.sans,
                                     fontSize: 13,
