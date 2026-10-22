@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -115,8 +116,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emptyPlaylist => 'Cette playlist est vide';
 
   @override
-  String get emptyPlaylists =>
-      'Créez des playlists et ajoutez des titres via le menu ⋮.';
+  String get emptyPlaylists => 'Créez des playlists et ajoutez des titres via le menu ⋮.';
 
   @override
   String tracksCount(int count) {
@@ -248,12 +248,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get protected => 'Protégé';
 
   @override
-  String get protectedHint =>
-      'Ce titre est protégé par DRM et ne peut pas encore être lu dans Pounce, même connecté';
+  String get protectedHint => 'Ce titre est protégé par DRM et ne peut pas encore être lu dans Pounce, même connecté';
 
   @override
-  String get protectedPlayable =>
-      'Protégé par DRM – déchiffré par le module DRM de votre navigateur';
+  String get protectedPlayable => 'Protégé par DRM – déchiffré par le module DRM de votre navigateur';
 
   @override
   String get account => 'Compte';
@@ -262,8 +260,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get login => 'Se connecter avec SoundCloud';
 
   @override
-  String get loginSubtitle =>
-      'Synchroniser titres aimés, playlists et votre flux';
+  String get loginSubtitle => 'Synchroniser titres aimés, playlists et votre flux';
 
   @override
   String get signup => 'Créer un compte';
@@ -304,8 +301,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get logout => 'Se déconnecter';
 
   @override
-  String get logoutConfirm =>
-      'Se déconnecter ? Vos titres aimés restent sur cet appareil.';
+  String get logoutConfirm => 'Se déconnecter ? Vos titres aimés restent sur cet appareil.';
 
   @override
   String get homeStream => 'Votre flux';
@@ -419,8 +415,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get beatBg => 'Arrière-plan en rythme';
 
   @override
-  String get beatBgDesc =>
-      'Les couleurs pulsent et changent à chaque temps détecté';
+  String get beatBgDesc => 'Les couleurs pulsent et changent à chaque temps détecté';
 
   @override
   String get beatLight => 'Léger';
@@ -453,15 +448,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dynamicColor => 'Couleurs du système';
 
   @override
-  String get dynamicColorDesc =>
-      'Utiliser la couleur d\'accentuation du système';
+  String get dynamicColorDesc => 'Utiliser la couleur d\'accentuation du système';
 
   @override
   String get artworkColors => 'Couleurs de la pochette';
 
   @override
-  String get artworkColorsDesc =>
-      'Le lecteur adapte ses couleurs à la pochette';
+  String get artworkColorsDesc => 'Le lecteur adapte ses couleurs à la pochette';
 
   @override
   String get accentColor => 'Couleur d\'accentuation';
@@ -488,8 +481,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get autoplay => 'Lecture automatique';
 
   @override
-  String get autoplayDesc =>
-      'Continuer avec des titres similaires à la fin de la file';
+  String get autoplayDesc => 'Continuer avec des titres similaires à la fin de la file';
 
   @override
   String get network => 'Réseau';
@@ -498,8 +490,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get proxy => 'Proxy CORS';
 
   @override
-  String get proxyDesc =>
-      'Nécessaire dans le navigateur, car SoundCloud n\'autorise que son propre site.';
+  String get proxyDesc => 'Nécessaire dans le navigateur, car SoundCloud n\'autorise que son propre site.';
 
   @override
   String get about => 'À propos';
@@ -515,8 +506,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get previewBadge => 'Extrait (30 s)';
 
   @override
-  String get previewHint =>
-      'SoundCloud ne propose qu’un extrait de 30 secondes de ce titre.';
+  String get previewHint => 'SoundCloud ne propose qu’un extrait de 30 secondes de ce titre.';
 
   @override
   String get openInYtMusic => 'Ouvrir dans YouTube Music';
@@ -525,8 +515,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get skipPreviews => 'Ignorer les extraits';
 
   @override
-  String get skipPreviewsDesc =>
-      'Ignorer les extraits de 30 secondes lors du passage au titre suivant';
+  String get skipPreviewsDesc => 'Ignorer les extraits de 30 secondes lors du passage au titre suivant';
 
   @override
   String get fastStart => 'Démarrage rapide';
@@ -660,12 +649,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get updateReleasePage => 'Page de la version';
 
   @override
-  String get updateChecksumFailed =>
-      'Somme de contrôle incorrecte – le téléchargement a été supprimé.';
+  String get updateChecksumFailed => 'Somme de contrôle incorrecte – le téléchargement a été supprimé.';
 
   @override
-  String get updateNeedsPermission =>
-      'Autorise Pounce à installer des applis, puis réessaie.';
+  String get updateNeedsPermission => 'Autorise Pounce à installer des applis, puis réessaie.';
 
   @override
   String get updateFailed => 'Échec de la mise à jour – réessaie plus tard.';
@@ -681,8 +668,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get setupWelcome => 'Bienvenue dans Pounce';
 
   @override
-  String get setupTagline =>
-      'De la musique rapide depuis SoundCloud et la radio web – avec un DJ qui mixe pour vous.';
+  String get setupTagline => 'De la musique rapide depuis SoundCloud et la radio web – avec un DJ qui mixe pour vous.';
 
   @override
   String get setupStart => 'C\'est parti';
@@ -703,12 +689,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get setupSourcesTitle => 'D\'où doit venir la musique ?';
 
   @override
-  String get setupSoundcloudDesc =>
-      'Des millions de titres, mixes et remixes. Toujours actif.';
+  String get setupSoundcloudDesc => 'Des millions de titres, mixes et remixes. Toujours actif.';
 
   @override
-  String get setupRadioDesc =>
-      'Plus de 30 000 stations via radio-browser.info. Désactivé = aucune requête.';
+  String get setupRadioDesc => 'Plus de 30 000 stations via radio-browser.info. Désactivé = aucune requête.';
 
   @override
   String get setupAccountTitle => 'Importer vos titres aimés ?';
@@ -724,8 +708,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get setupDjTitle => 'Que doit jouer votre DJ ?';
 
   @override
-  String get setupDjDesc =>
-      'Choisissez quelques styles. Modifiables à tout moment dans l\'onglet DJ.';
+  String get setupDjDesc => 'Choisissez quelques styles. Modifiables à tout moment dans l\'onglet DJ.';
 
   @override
   String get setupPrivacyTitle => 'Votre vie privée';
@@ -836,8 +819,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable =>
-      'Indisponible – estimation à partir de la forme d\'onde uniquement';
+  String get engineUnavailable => 'Indisponible – estimation à partir de la forme d\'onde uniquement';
 
   @override
   String get djFlowActiveDesc => 'Calage automatique des phrases et tonalités';

@@ -47,7 +47,8 @@ s('tracksCount',
   hu='{count, plural, =0{Nincs szám} other{{count} szám}}',
   vi='{count, plural, =0{Không có bài hát} other{{count} bài hát}}',
   ar='{count, plural, zero{لا توجد مقاطع} one{مقطع واحد} two{مقطعان} few{{count} مقاطع} many{{count} مقطعًا} other{{count} مقطع}}',
-  es='{count, plural, =0{Sin pistas} =1{1 pista} other{{count} pistas}}', pt='{count, plural, =0{Nenhuma faixa} =1{1 faixa} other{{count} faixas}}')
+  es='{count, plural, =0{Sin pistas} =1{1 pista} other{{count} pistas}}',
+  pt='{count, plural, =0{Nenhuma faixa} =1{1 faixa} other{{count} faixas}}')
 s('followers', en='{count} followers', de='{count} Follower', fr='{count} abonnés', ru='Подписчики: {count}', hu='{count} követő', vi='{count} người theo dõi', ar='{count} متابع', es='{count} seguidores', pt='{count} seguidores')
 s('playNext', en='Play next', de='Als Nächstes abspielen', fr='Lire ensuite', ru='Играть следующим', hu='Lejátszás következőként', vi='Phát tiếp theo', ar='التشغيل التالي', es='Reproducir a continuación', pt='Reproduzir a seguir')
 s('addToQueue', en='Add to queue', de='Zur Warteschlange', fr="Ajouter à la file d'attente", ru='Добавить в очередь', hu='Hozzáadás a sorhoz', vi='Thêm vào hàng đợi', ar='إضافة إلى قائمة الانتظار', es='Añadir a la cola', pt='Adicionar à fila')
