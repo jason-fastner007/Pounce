@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "pas de drop",
   "planSearching": "recherche du drop…",
-  "planText": "Entrée {entry} · {drop} · fondu {fade} s"
+  "planText": "Entrée {entry} · {drop} · fondu {fade} s",
+  "djFlow": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "syncAction": "Synchroniser",
+  "deckEngine": "Moteur audio Rust (deckengine)",
+  "soundcloud": "SoundCloud"
 }

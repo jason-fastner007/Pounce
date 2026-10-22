@@ -927,4 +927,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Einstieg $entry · $drop · $fade s Blende';
   }
+
+  @override
+  String get djFlow => 'DJ Flow & Automix';
+
+  @override
+  String get bpm => 'BPM';
+
+  @override
+  String get syncAction => 'Synchronisieren';
+
+  @override
+  String get deckEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get soundcloud => 'SoundCloud';
 }

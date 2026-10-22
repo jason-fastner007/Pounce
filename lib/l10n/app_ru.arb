@@ -277,5 +277,10 @@
   "planDrop": "Дроп {time}",
   "planNoDrop": "без дропа",
   "planSearching": "ищем дроп…",
-  "planText": "Вход {entry} · {drop} · переход {fade} с"
+  "planText": "Вход {entry} · {drop} · переход {fade} с",
+  "djFlow": "DJ Flow & Automix",
+  "bpm": "BPM",
+  "syncAction": "Синхронизировать",
+  "deckEngine": "Аудиодвижок Rust (deckengine)",
+  "soundcloud": "SoundCloud"
 }
