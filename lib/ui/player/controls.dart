@@ -43,45 +43,50 @@ class _MorphPlayButtonState extends State<MorphPlayButton> with SingleTickerProv
     final s = widget.size;
     final accent = Theme.of(context).colorScheme.primary;
     final on = Theme.of(context).colorScheme.onPrimary;
-    return Tooltip(
-      message: p.playing ? context.l10n.pause : context.l10n.play,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTapDown: (_) => setState(() => _down = true),
-          onTapCancel: () => setState(() => _down = false),
-          onTapUp: (_) => setState(() => _down = false),
-          onTap: p.toggle,
-          child: AnimatedScale(
-            scale: _down ? .88 : 1,
-            duration: _down ? Motion.micro : Motion.medium,
-            curve: _down ? Curves.easeOut : Motion.spring,
-            child: AnimatedContainer(
-              duration: Motion.long,
-              curve: Motion.spring,
-              width: s,
-              height: s,
-              decoration: BoxDecoration(
-                color: accent,
-                borderRadius: BorderRadius.circular(s / 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: accent.withValues(alpha: p.playing ? .40 : .25),
-                    blurRadius: s * .45,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnimatedIcon(icon: AnimatedIcons.play_pause, progress: _icon, size: s * .5, color: on),
-                  if (p.loading)
-                    SizedBox.square(
-                      dimension: s * .8,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: on),
+    final label = p.playing ? context.l10n.pause : context.l10n.play;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Tooltip(
+        message: label,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTapDown: (_) => setState(() => _down = true),
+            onTapCancel: () => setState(() => _down = false),
+            onTapUp: (_) => setState(() => _down = false),
+            onTap: p.toggle,
+            child: AnimatedScale(
+              scale: _down ? .88 : 1,
+              duration: _down ? Motion.micro : Motion.medium,
+              curve: _down ? Curves.easeOut : Motion.spring,
+              child: AnimatedContainer(
+                duration: Motion.long,
+                curve: Motion.spring,
+                width: s,
+                height: s,
+                decoration: BoxDecoration(
+                  color: accent,
+                  borderRadius: BorderRadius.circular(s / 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: accent.withValues(alpha: p.playing ? .40 : .25),
+                      blurRadius: s * .45,
+                      offset: const Offset(0, 3),
                     ),
-                ],
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AnimatedIcon(icon: AnimatedIcons.play_pause, progress: _icon, size: s * .5, color: on),
+                    if (p.loading)
+                      SizedBox.square(
+                        dimension: s * .8,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: on),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
