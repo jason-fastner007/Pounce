@@ -732,6 +732,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'Sincronizar';
+
+  @override
+  String get djDeck => 'Mesa de DJ';
+
+  @override
+  String get rustEngineTitle => 'Motor de audio Rust (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'Sincronizado ($count nuevos eventos)';
   }

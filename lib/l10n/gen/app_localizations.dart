@@ -1433,6 +1433,24 @@ abstract class AppLocalizations {
   /// **'Version {version}'**
   String version(String version);
 
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
+  /// No description provided for @djDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Deck'**
+  String get djDeck;
+
+  /// No description provided for @rustEngineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustEngineTitle;
+
   /// No description provided for @syncLast.
   ///
   /// In en, this message translates to:

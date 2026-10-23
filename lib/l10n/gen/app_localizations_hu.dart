@@ -723,6 +723,15 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
+  String get djDeck => 'DJ-pult';
+
+  @override
+  String get rustEngineTitle => 'Rust hangmotor (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'Szinkronizálva ($count új esemény)';
   }

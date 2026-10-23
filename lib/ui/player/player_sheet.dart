@@ -833,7 +833,7 @@ class _BottomActions extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           if (showPanes) btn(Icons.lyrics_rounded, l.lyrics, pane == _Pane.lyrics, () => onPane(_Pane.lyrics)),
-          if (showPanes) btn(Icons.album_rounded, 'DJ Deck', pane == _Pane.dj, () => onPane(_Pane.dj)),
+          if (showPanes) btn(Icons.album_rounded, l.djDeck, pane == _Pane.dj, () => onPane(_Pane.dj)),
           btn(
             Icons.bedtime_rounded,
             player.sleepAt == null ? l.sleepTimer : l.sleepIn(_minutesLeft(player.sleepAt!)),

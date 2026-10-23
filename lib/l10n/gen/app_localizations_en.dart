@@ -728,6 +728,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'Sync';
+
+  @override
+  String get djDeck => 'DJ Deck';
+
+  @override
+  String get rustEngineTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'Synced ($count new events)';
   }

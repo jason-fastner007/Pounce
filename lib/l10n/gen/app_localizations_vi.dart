@@ -723,6 +723,15 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
+  String get djDeck => 'Bàn DJ';
+
+  @override
+  String get rustEngineTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'Đã đồng bộ ($count sự kiện mới)';
   }

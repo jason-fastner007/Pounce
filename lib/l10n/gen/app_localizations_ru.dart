@@ -732,6 +732,15 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'Синхронизировать';
+
+  @override
+  String get djDeck => 'DJ-пульт';
+
+  @override
+  String get rustEngineTitle => 'Аудиодвижок Rust (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'Синхронизировано (новых событий: $count)';
   }

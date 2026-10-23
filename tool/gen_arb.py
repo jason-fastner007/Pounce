@@ -243,6 +243,9 @@ s('setupAgain', en='Run setup again', de='Einrichtung erneut starten', fr='Relan
 s('version', en='Version {version}', de='Version {version}', fr='Version {version}', ru='Версия {version}', hu='Verzió: {version}', vi='Phiên bản {version}', ar='الإصدار {version}', es='Versión {version}')
 
 # Sync, engine, DJ deck
+s('syncAction', en='Sync', de='Synchronisieren', fr='Synchroniser', ru='Синхронизировать', hu='Szinkronizálás', vi='Đồng bộ', ar='مزامنة', es='Sincronizar')
+s('djDeck', en='DJ Deck', de='DJ-Deck', fr='Platine DJ', ru='DJ-пульт', hu='DJ-pult', vi='Bàn DJ', ar='مكتب الدي جي', es='Mesa de DJ')
+s('rustEngineTitle', en='Rust Audio Engine (deckengine)', de='Rust Audio Engine (deckengine)', fr='Moteur audio Rust (deckengine)', ru='Аудиодвижок Rust (deckengine)', hu='Rust hangmotor (deckengine)', vi='Rust Audio Engine (deckengine)', ar='محرك الصوت Rust (deckengine)', es='Motor de audio Rust (deckengine)')
 s('syncLast', en='Synced ({count} new events)', de='Synchronisiert ({count} neue Events)', fr='Synchronisé ({count} nouveaux événements)', ru='Синхронизировано (новых событий: {count})', hu='Szinkronizálva ({count} új esemény)', vi='Đã đồng bộ ({count} sự kiện mới)', ar='تمت المزامنة ({count} أحداث جديدة)', es='Sincronizado ({count} nuevos eventos)')
 s('syncTitle', en='Device sync', de='Gerätesynchronisation', fr='Synchronisation des appareils', ru='Синхронизация устройств', hu='Eszközszinkronizálás', vi='Đồng bộ thiết bị', ar='مزامنة الأجهزة', es='Sincronización de dispositivos')
 s('syncBackground', en='Background sync', de='Hintergrund-Synchronisation', fr='Synchronisation en arrière-plan', ru='Фоновая синхронизация', hu='Háttérszinkronizálás', vi='Đồng bộ nền', ar='المزامنة في الخلفية', es='Sincronización en segundo plano')

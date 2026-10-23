@@ -735,6 +735,15 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get syncAction => 'مزامنة';
+
+  @override
+  String get djDeck => 'مكتب الدي جي';
+
+  @override
+  String get rustEngineTitle => 'محرك الصوت Rust (deckengine)';
+
+  @override
   String syncLast(int count) {
     return 'تمت المزامنة ($count أحداث جديدة)';
   }
