@@ -346,6 +346,9 @@
       }
     }
   },
+  "syncAction": "Sync",
+  "djDeck": "DJ Deck",
+  "rustEngineTitle": "Rust Audio Engine (deckengine)",
   "syncLast": "Synced ({count} new events)",
   "@syncLast": {
     "placeholders": {
