@@ -126,78 +126,83 @@ class _ScrubberState extends State<Scrubber> with TickerProviderStateMixin {
           _syncPlaying();
         }
 
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          onHover: (e) => _hover.value = _fraction(e.localPosition, w),
-          onExit: (_) => _hover.value = null,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onHorizontalDragStart: (d) => start(d.localPosition),
-            onHorizontalDragUpdate: (d) {
-              setState(() => _drag = _fraction(d.localPosition, w));
-              _hover.value = _drag;
-            },
-            onHorizontalDragEnd: (_) => end(),
-            onTapDown: (d) => start(d.localPosition),
-            onTapUp: (_) => end(),
-            child: SizedBox(
-              height: widget.height,
-              width: w,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: RepaintBoundary(
-                      child: CustomPaint(
-                        painter: _ScrubPainter(
-                          style: widget.style,
-                          samples: _samples,
-                          position: _player.position,
-                          duration: () => _player.duration,
-                          buffered: () => _player.buffered,
-                          drag: _drag,
-                          hover: _hover,
-                          grow: _grow,
-                          amp: _amp,
-                          phase: _phase,
-                          rtl: rtl,
-                          accent: accent,
+        return Semantics(
+          slider: true,
+          label: context.l10n.nowPlaying,
+          value: fmtDuration(_drag != null ? _player.duration * _drag! : _player.position.value),
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            onHover: (e) => _hover.value = _fraction(e.localPosition, w),
+            onExit: (_) => _hover.value = null,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onHorizontalDragStart: (d) => start(d.localPosition),
+              onHorizontalDragUpdate: (d) {
+                setState(() => _drag = _fraction(d.localPosition, w));
+                _hover.value = _drag;
+              },
+              onHorizontalDragEnd: (_) => end(),
+              onTapDown: (d) => start(d.localPosition),
+              onTapUp: (_) => end(),
+              child: SizedBox(
+                height: widget.height,
+                width: w,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned.fill(
+                      child: RepaintBoundary(
+                        child: CustomPaint(
+                          painter: _ScrubPainter(
+                            style: widget.style,
+                            samples: _samples,
+                            position: _player.position,
+                            duration: () => _player.duration,
+                            buffered: () => _player.buffered,
+                            drag: _drag,
+                            hover: _hover,
+                            grow: _grow,
+                            amp: _amp,
+                            phase: _phase,
+                            rtl: rtl,
+                            accent: accent,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  // Time tooltip at the mouse position (ms-accurate).
-                  ValueListenableBuilder<double?>(
-                    valueListenable: _hover,
-                    builder: (_, f, _) {
-                      if (f == null) return const SizedBox.shrink();
-                      final x = (rtl ? 1 - f : f) * w;
-                      return PositionedDirectional(
-                        start: 0,
-                        bottom: widget.height + 6,
-                        child: Transform.translate(
-                          offset: Offset(x.clamp(36, math.max(36, w - 36)) - 36, 0),
-                          child: IgnorePointer(
-                            child: Container(
-                              width: 72,
-                              padding: const EdgeInsets.symmetric(vertical: 3),
-                              decoration: BoxDecoration(
-                                color: Studio.surfaceTop,
-                                borderRadius: Studio.br4,
-                                border: Border.all(color: Studio.lineStrong),
-                              ),
-                              child: Text(
-                                _precise(_player.duration * f),
-                                textAlign: TextAlign.center,
-                                style: Studio.monoStyle(size: 10, color: Studio.text),
+                    // Time tooltip at the mouse position (ms-accurate).
+                    ValueListenableBuilder<double?>(
+                      valueListenable: _hover,
+                      builder: (_, f, _) {
+                        if (f == null) return const SizedBox.shrink();
+                        final x = (rtl ? 1 - f : f) * w;
+                        return PositionedDirectional(
+                          start: 0,
+                          bottom: widget.height + 6,
+                          child: Transform.translate(
+                            offset: Offset(x.clamp(36, math.max(36, w - 36)) - 36, 0),
+                            child: IgnorePointer(
+                              child: Container(
+                                width: 72,
+                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Studio.surfaceTop,
+                                  borderRadius: Studio.br4,
+                                  border: Border.all(color: Studio.lineStrong),
+                                ),
+                                child: Text(
+                                  _precise(_player.duration * f),
+                                  textAlign: TextAlign.center,
+                                  style: Studio.monoStyle(size: 10, color: Studio.text),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
