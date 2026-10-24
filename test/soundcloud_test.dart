@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -554,5 +555,250 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('user, userTracks, userTopTracks, userPlaylists, and related', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/42') {
+          return http.Response(jsonEncode({'id': 42, 'username': 'Artist42'}), 200);
+        } else if (path == '/users/42/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 1, 'title': 'U Track 1', 'user': {'id': 42, 'username': 'Artist42'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 2, 'title': 'Top Track 1', 'user': {'id': 42, 'username': 'Artist42'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 10, 'title': 'U Playlist 1', 'user': {'id': 42, 'username': 'Artist42'}, 'tracks': []}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/tracks/100/related') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 101, 'title': 'Related 101', 'user': {'id': 1, 'username': 'RelArtist'}}
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final u = await sc.user(42);
+      expect(u.id, 42);
+      expect(u.username, 'Artist42');
+
+      final uTracks = await sc.userTracks(42);
+      expect(uTracks.items.first.title, 'U Track 1');
+
+      final uTop = await sc.userTopTracks(42);
+      expect(uTop.items.first.title, 'Top Track 1');
+
+      final uPlaylists = await sc.userPlaylists(42);
+      expect(uPlaylists.items.first.title, 'U Playlist 1');
+
+      final rel = await sc.related(100);
+      expect(rel.first.title, 'Related 101');
+    });
+
+    test('setLiked web flow vs mobile flow', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var lastMethod = '';
+      var lastPath = '';
+      var lastBody = '';
+
+      final mockClient = MockClient((request) async {
+        lastMethod = request.method;
+        lastPath = request.url.path;
+        lastBody = request.body;
+        return http.Response('', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final mockAuth = FakeAuth(store, mockClient, sc.wrap, isWeb: true, meUser: const ScUser(id: 99, username: 'WebUser'));
+      sc.auth = mockAuth;
+
+      final track = Track.fromJson({
+        'id': 555,
+        'title': 'Like Track',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      // Web like (PUT)
+      await sc.setLiked(track, true);
+      expect(lastMethod, 'PUT');
+      expect(lastPath, '/users/99/track_likes/555');
+
+      // Web unlike (DELETE)
+      await sc.setLiked(track, false);
+      expect(lastMethod, 'DELETE');
+      expect(lastPath, '/users/99/track_likes/555');
+
+      // Mobile like
+      mockAuth.usesWebClientOverride = false;
+      await sc.setLiked(track, true);
+      expect(lastMethod, 'POST');
+      expect(lastPath, '/likes/tracks/create');
+      expect(jsonDecode(lastBody)['likes'][0]['target_urn'], 'soundcloud:tracks:555');
+
+      // Mobile unlike
+      await sc.setLiked(track, false);
+      expect(lastMethod, 'POST');
+      expect(lastPath, '/likes/tracks/delete');
+    });
+
+    test('stream throws blocked exception for policy BLOCK', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final sc = SoundCloud(store, settings, client: MockClient((_) async => http.Response('', 404)));
+
+      final blockedTrack = Track.fromJson({
+        'id': 123,
+        'title': 'Blocked',
+        'policy': 'BLOCK',
+        'user': {'id': 1, 'username': 'Artist'},
+        'media': {
+          'transcodings': [
+            {
+              'url': 'https://api-v2.soundcloud.com/transcodings/prog',
+              'preset': 'mp3_128k',
+              'snipped': false,
+              'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+            }
+          ]
+        },
+        'track_authorization': 'auth',
+      });
+
+      expect(() => sc.stream(blockedTrack), throwsA(isA<ScException>().having((e) => e.status, 'status', 451)));
+    });
+
+    test('network 401/403 triggers retry and clientId refresh', () async {
+      store.set('sc.cid', 'oldcid1234567890123456789012345');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var attempt = 0;
+      final mockClient = MockClient((request) async {
+        final urlStr = request.url.toString();
+        if (request.url.path == '/search/tracks') {
+          attempt++;
+          if (attempt == 1) {
+            expect(request.url.queryParameters['client_id'], 'oldcid1234567890123456789012345');
+            return http.Response('Unauthorized', 401);
+          } else {
+            expect(request.url.queryParameters['client_id'], '12345678901234567890123456789099');
+            return http.Response(
+              jsonEncode({
+                'collection': [
+                  {'id': 1, 'title': 'Retry Track', 'user': {'id': 1, 'username': 'A'}}
+                ]
+              }),
+              200,
+            );
+          }
+        } else if (urlStr == 'https://soundcloud.com/') {
+          return http.Response('<html><script src="https://a-v2.sndcdn.com/assets/123-abc.js"></script></html>', 200);
+        } else if (urlStr == 'https://a-v2.sndcdn.com/assets/123-abc.js') {
+          return http.Response('console.log("hello"); client_id="12345678901234567890123456789099"', 200);
+        }
+        return http.Response('Not found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final page = await sc.searchTracks('retry test');
+      expect(page.items.first.title, 'Retry Track');
+      expect(attempt, 2);
+    });
+
+    test('ScUser, Track, and ScPlaylist model edge cases', () {
+      final userWithBanner = ScUser.fromJson({
+        'id': 1,
+        'username': 'banner_user',
+        'avatar_url': 'https://i1.sndcdn.com/avatars-large.jpg',
+        'visuals': {
+          'visuals': [
+            {'visual_url': 'https://banner.jpg'}
+          ]
+        }
+      });
+      expect(userWithBanner.bannerUrl, 'https://banner.jpg');
+
+      final trackWithMetadata = Track.fromJson({
+        'id': 10,
+        'title': 'Track Title',
+        'publisher_metadata': {'artist': 'Publisher Artist'},
+        'user': {'id': 1, 'username': 'Uploader', 'avatar_url': 'https://i1.sndcdn.com/avatars-large.jpg'},
+      });
+      expect(trackWithMetadata.artist, 'Publisher Artist');
+      expect(trackWithMetadata.art(), 'https://i1.sndcdn.com/avatars-t500x500.jpg'); // fallback to user avatar
+
+      final liveTrack = Track.fromJson({
+        'id': 20,
+        'title': 'Radio Live',
+        'kf_live_url': 'https://radio.stream/live',
+        'user': {'id': 1, 'username': 'Radio'},
+      });
+      expect(liveTrack.isLive, isTrue);
+
+      final playlistWithCalculatedArt = ScPlaylist.fromJson({
+        'id': 30,
+        'title': 'Calculated Playlist',
+        'calculated_artwork_url': 'https://i1.sndcdn.com/artworks-large.jpg',
+        'user': {'id': 1, 'username': 'User'},
+        'tracks': [
+          {'id': 100} // stub track
+        ]
+      });
+      expect(playlistWithCalculatedArt.art(), 'https://i1.sndcdn.com/artworks-t500x500.jpg');
+      expect(playlistWithCalculatedArt.tracks.first.isStub, isTrue);
+    });
   });
+}
+
+class FakeAuth extends ScAuth {
+  FakeAuth(super.store, super.http, super.wrap, {this.isWeb = false, this.meUser});
+
+  bool isWeb;
+  ScUser? meUser;
+  bool usesWebClientOverride = true;
+
+  @override
+  bool get usesWebClient => usesWebClientOverride && isWeb;
+
+  @override
+  ScUser? get me => meUser;
+
+  @override
+  Future<String?> token() async => 'fake_oauth_token';
+
+  @override
+  String get requestClientId => 'fake_web_client_id';
+
+  @override
+  String get deviceId => 'fake_device_id';
 }
