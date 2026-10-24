@@ -44,7 +44,7 @@ class DjPage extends StatelessWidget {
               SliverToBoxAdapter(child: StudioHeader(title: l.djHeadline)),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, Studio.s3),
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, Studio.s3),
                   child: Text(
                     l.djIntro,
                     style: const TextStyle(fontFamily: Studio.sans, fontSize: 13.5, color: Studio.text2, height: 1.4),
@@ -134,7 +134,7 @@ class DjPage extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, Studio.s4, 16, Studio.s2),
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, Studio.s4, 16, Studio.s2),
                   child: FilledButton.icon(
                     style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(52),
@@ -158,7 +158,7 @@ class DjPage extends StatelessWidget {
                     child: a.$2 == 0 || !d.dj.state.isActive
                         ? const SizedBox(width: double.infinity)
                         : Padding(
-                            padding: const EdgeInsets.fromLTRB(20, Studio.s2, 20, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(20, Studio.s2, 20, 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

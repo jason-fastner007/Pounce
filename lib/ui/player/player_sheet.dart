@@ -167,9 +167,9 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                         ),
                       ),
                     if (track != null)
-                      Positioned(
-                        left: 0,
-                        right: 0,
+                      PositionedDirectional(
+                        start: 0,
+                        end: 0,
                         top: top,
                         height: sheetH,
                         child: PopScope(
@@ -180,7 +180,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                           child: Builder(builder: (context) => _sheet(context, track, p, w, h, travel, rtl)),
                         ),
                       ),
-                    if (bar != null) Positioned(left: 0, right: 0, bottom: -barH * p, height: barH, child: bar),
+                    if (bar != null) PositionedDirectional(start: 0, end: 0, bottom: -barH * p, height: barH, child: bar),
                   ],
                 );
               },
@@ -206,9 +206,11 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
       clipBehavior: Clip.none,
       children: [
         // Background: mini = card, full = cover gradient.
-        Positioned.fill(
-          left: m,
-          right: m,
+        PositionedDirectional(
+          start: m,
+          end: m,
+          top: 0,
+          bottom: 0,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(radius),
             child: Stack(
@@ -265,9 +267,9 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
         ),
         // Mini-Player.
         if (miniOpacity > 0)
-          Positioned(
-            left: m,
-            right: m,
+          PositionedDirectional(
+            start: m,
+            end: m,
             top: 0,
             height: _miniH,
             child: Opacity(opacity: miniOpacity, child: _mini(context, track, travel)),
@@ -500,7 +502,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
             final state = dj.state;
             if (!state.isActive || _pane == _Pane.dj) return const SizedBox(height: 16);
             return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 6, 16, 10),
               child: GestureDetector(
                 onTap: () => _setPane(_Pane.dj),
                 child: Container(
@@ -586,7 +588,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 24, 24),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 24),
                     child: _SidePanel(track: track),
                   ),
                 ),
@@ -704,7 +706,7 @@ class _TrackInfo extends StatelessWidget {
     final t = Theme.of(context);
     final lib = context.deps.library;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 8, 12, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 12, 0),
       child: Row(
         children: [
           AnimatedSize(
@@ -906,6 +908,7 @@ class _BottomActions extends StatelessWidget {
                   min: .5,
                   max: 2,
                   divisions: 30,
+                  semanticFormatterCallback: (v) => '${v.toStringAsFixed(2)}×',
                   onChanged: (v) {
                     player.setSpeed(double.parse(v.toStringAsFixed(2)));
                     set(() {});
