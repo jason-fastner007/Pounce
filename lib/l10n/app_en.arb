@@ -428,6 +428,9 @@
   "srcAudio": "Audio",
   "srcWaveform": "Waveform",
   "srcTitle": "Title",
+  "soundcloud": "SoundCloud",
+  "syncShort": "Sync",
+  "engineRust": "Rust Audio Engine (deckengine)",
   "djEnergiesLive": "Audio energies (live)",
   "djTransitionIn": "Transition in {beats} beats",
   "@djTransitionIn": {
