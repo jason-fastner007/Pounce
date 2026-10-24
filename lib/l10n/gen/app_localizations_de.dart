@@ -870,6 +870,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get srcTitle => 'Titel';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get syncShort => 'Sync';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get djEnergiesLive => 'Audio-Energien (live)';
 
   @override

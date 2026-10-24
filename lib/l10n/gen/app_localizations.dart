@@ -1673,6 +1673,24 @@ abstract class AppLocalizations {
   /// **'Title'**
   String get srcTitle;
 
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
+  /// No description provided for @syncShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncShort;
+
+  /// No description provided for @engineRust.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRust;
+
   /// No description provided for @djEnergiesLive.
   ///
   /// In en, this message translates to:

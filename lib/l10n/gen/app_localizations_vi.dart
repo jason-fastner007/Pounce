@@ -856,6 +856,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get srcTitle => 'Tiêu đề';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get syncShort => 'Đồng bộ';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get djEnergiesLive => 'Năng lượng âm thanh (trực tiếp)';
 
   @override

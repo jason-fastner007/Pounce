@@ -873,6 +873,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get srcTitle => 'العنوان';
 
   @override
+  String get soundcloud => 'ساوند كلاود';
+
+  @override
+  String get syncShort => 'مزامنة';
+
+  @override
+  String get engineRust => 'محرك الصوت Rust (deckengine)';
+
+  @override
   String get djEnergiesLive => 'طاقات الصوت (مباشر)';
 
   @override

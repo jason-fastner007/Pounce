@@ -856,6 +856,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get srcTitle => 'Cím';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get syncShort => 'Szinkronizálás';
+
+  @override
+  String get engineRust => 'Rust Hangmotor (deckengine)';
+
+  @override
   String get djEnergiesLive => 'Hangenergiák (élő)';
 
   @override
