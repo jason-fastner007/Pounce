@@ -81,7 +81,11 @@ class DjPage extends StatelessWidget {
                 child: _Panel(
                   child: Column(
                     children: [
-                      Slider(value: mix.discovery, divisions: 10, onChanged: (v) => mix.discovery = v),
+                      Semantics(
+                        label: l.djBlend,
+                        value: '${(mix.discovery * 100).round()}%',
+                        child: Slider(value: mix.discovery, divisions: 10, onChanged: (v) => mix.discovery = v),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(
@@ -206,39 +210,44 @@ class CategoryTile extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => PressableCard(
-    onTap: onTap,
-    child: AnimatedContainer(
-      duration: Motion.short,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: selected ? accent.withValues(alpha: .14) : Studio.surface,
-        borderRadius: Studio.br14,
-        border: Border.all(color: selected ? accent.withValues(alpha: .55) : Studio.line),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: selected ? accent : Studio.text2),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontFamily: Studio.sans,
-                fontSize: 14,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                color: selected ? Studio.text : Studio.text2,
+  Widget build(BuildContext context) => Semantics(
+    button: true,
+    label: label,
+    selected: selected,
+    child: PressableCard(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Motion.short,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: selected ? accent.withValues(alpha: .14) : Studio.surface,
+          borderRadius: Studio.br14,
+          border: Border.all(color: selected ? accent.withValues(alpha: .55) : Studio.line),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: selected ? accent : Studio.text2),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: Studio.sans,
+                  fontSize: 14,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: selected ? Studio.text : Studio.text2,
+                ),
               ),
             ),
-          ),
-          AnimatedOpacity(
-            opacity: selected ? 1 : 0,
-            duration: Motion.short,
-            child: Icon(Icons.check_circle_rounded, size: 18, color: accent),
-          ),
-        ],
+            AnimatedOpacity(
+              opacity: selected ? 1 : 0,
+              duration: Motion.short,
+              child: Icon(Icons.check_circle_rounded, size: 18, color: accent),
+            ),
+          ],
+        ),
       ),
     ),
   );
