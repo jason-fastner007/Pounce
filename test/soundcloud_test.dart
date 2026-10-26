@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,159 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('userTracks, userTopTracks, userPlaylists and related endpoints', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/5/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 11, 'title': 'User Track', 'duration': 100000, 'user': {'id': 5, 'username': 'Artist 5'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/5/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 12, 'title': 'Top Track', 'duration': 120000, 'user': {'id': 5, 'username': 'Artist 5'}}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/5/playlists_without_albums') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 13, 'title': 'User Playlist', 'user': {'id': 5, 'username': 'Artist 5'}, 'tracks': []}
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/tracks/100/related') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {'id': 101, 'title': 'Related Track', 'duration': 90000, 'user': {'id': 6, 'username': 'Artist 6'}}
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final tracks = await sc.userTracks(5);
+      expect(tracks.items.first.title, 'User Track');
+
+      final topTracks = await sc.userTopTracks(5);
+      expect(topTracks.items.first.title, 'Top Track');
+
+      final playlists = await sc.userPlaylists(5);
+      expect(playlists.items.first.title, 'User Playlist');
+
+      final related = await sc.related(100);
+      expect(related.first.title, 'Related Track');
+    });
+
+    test('setLiked with web client triggers PUT and DELETE', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+      store.set('auth.client', 'WEBCLIENT');
+      store.set('auth.access', 'token123');
+
+      final methodCalls = <String>[];
+      final mockClient = MockClient((request) async {
+        methodCalls.add(request.method);
+        expect(request.url.path, '/users/50/track_likes/777');
+        expect(request.headers['Authorization'], 'OAuth token123');
+        return http.Response('', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final auth = ScAuth(store, mockClient, sc.wrap);
+      auth.me = const ScUser(id: 50, username: 'Me');
+      sc.auth = auth;
+
+      final track = Track.fromJson({
+        'id': 777,
+        'title': 'Test',
+        'duration': 1000,
+        'user': {'id': 1, 'username': 'U'},
+      });
+
+      await sc.setLiked(track, true);
+      await sc.setLiked(track, false);
+
+      expect(methodCalls, ['PUT', 'DELETE']);
+    });
+
+    test('setLiked with mobile client triggers POST create and delete', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+      store.set('auth.access', 'token123');
+
+      final calledPaths = <String>[];
+      final mockClient = MockClient((request) async {
+        calledPaths.add(request.url.path);
+        expect(request.headers['Authorization'], 'OAuth token123');
+        return http.Response('', 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final auth = ScAuth(store, mockClient, sc.wrap);
+      sc.auth = auth;
+
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Mobile Track',
+        'duration': 1000,
+        'user': {'id': 1, 'username': 'U'},
+      });
+
+      await sc.setLiked(track, true);
+      await sc.setLiked(track, false);
+
+      expect(calledPaths, ['/likes/tracks/create', '/likes/tracks/delete']);
+    });
+
+    test('transport retries on 401/403 and throws ScException on HTTP errors', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      var attempt = 0;
+      final mockClient = MockClient((request) async {
+        if (request.url.toString() == 'https://soundcloud.com/') {
+          return http.Response('<script src="https://a-v2.sndcdn.com/assets/app.js"></script>', 200);
+        } else if (request.url.toString() == 'https://a-v2.sndcdn.com/assets/app.js') {
+          return http.Response('client_id="12345678901234567890123456789012"', 200);
+        } else if (request.url.path == '/tracks/1') {
+          attempt++;
+          if (attempt == 1) return http.Response('Unauthorized', 401);
+          return http.Response(
+            jsonEncode({'id': 1, 'title': 'Retry Success', 'duration': 100, 'user': {'id': 1, 'username': 'U'}}),
+            200,
+          );
+        } else if (request.url.path == '/tracks/999') {
+          return http.Response('Not Found', 404);
+        }
+        return http.Response('Error', 500);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final track = await sc.track(1);
+      expect(track.title, 'Retry Success');
+
+      expect(() => sc.track(999), throwsA(isA<ScException>()));
     });
   });
 }
