@@ -277,5 +277,9 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "sin drop",
   "planSearching": "buscando el drop…",
-  "planText": "Entrada {entry} · {drop} · fundido de {fade} s"
+  "planText": "Entrada {entry} · {drop} · fundido de {fade} s",
+  "djFlowDeck": "Platina DJ Flow",
+  "soundCloud": "SoundCloud",
+  "sync": "Sincronizar",
+  "rustAudioEngine": "Motor de audio Rust (deckengine)"
 }

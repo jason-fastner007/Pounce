@@ -478,5 +478,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "djFlowDeck": "DJ Flow Deck",
+  "soundCloud": "SoundCloud",
+  "sync": "Sync",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)"
 }

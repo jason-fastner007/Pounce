@@ -277,5 +277,9 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "không có drop",
   "planSearching": "đang tìm drop…",
-  "planText": "Vào {entry} · {drop} · chuyển {fade} giây"
+  "planText": "Vào {entry} · {drop} · chuyển {fade} giây",
+  "djFlowDeck": "Bàn DJ Flow",
+  "soundCloud": "SoundCloud",
+  "sync": "Đồng bộ",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)"
 }

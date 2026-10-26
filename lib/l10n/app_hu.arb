@@ -277,5 +277,9 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "nincs drop",
   "planSearching": "drop keresése…",
-  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés"
+  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés",
+  "djFlowDeck": "DJ Flow Deck",
+  "soundCloud": "SoundCloud",
+  "sync": "Szinkronizálás",
+  "rustAudioEngine": "Rust Hangmotor (deckengine)"
 }

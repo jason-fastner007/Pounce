@@ -277,5 +277,9 @@
   "planDrop": "الذروة {time}",
   "planNoDrop": "لا ذروة",
   "planSearching": "جارٍ البحث عن الذروة…",
-  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث"
+  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث",
+  "djFlowDeck": "منصة DJ Flow",
+  "soundCloud": "ساوند كلاود",
+  "sync": "مزامنة",
+  "rustAudioEngine": "محرك صوت Rust (deckengine)"
 }
