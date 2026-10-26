@@ -301,6 +301,10 @@ s('planNoDrop', en='no drop', de='kein Drop', fr='pas de drop', ru='без др�
 s('planSearching', en='looking for the drop…', de='Drop wird gesucht…', fr='recherche du drop…', ru='ищем дроп…', hu='drop keresése…', vi='đang tìm drop…', ar='جارٍ البحث عن الذروة…', es='buscando el drop…')
 s('planText', en='Entry {entry} · {drop} · {fade} s fade', de='Einstieg {entry} · {drop} · {fade} s Blende', fr='Entrée {entry} · {drop} · fondu {fade} s', ru='Вход {entry} · {drop} · переход {fade} с', hu='Belépés {entry} · {drop} · {fade} mp áttűnés', vi='Vào {entry} · {drop} · chuyển {fade} giây', ar='الدخول {entry} · {drop} · تلاشٍ {fade} ث', es='Entrada {entry} · {drop} · fundido de {fade} s')
 
+s('djFlowDeck', en='DJ Flow Deck', de='DJ Flow Deck', fr='Platine DJ Flow', ru='DJ Flow Deck', hu='DJ Flow Deck', vi='Bàn DJ Flow', ar='منصة DJ Flow', es='Platina DJ Flow')
+s('soundCloud', en='SoundCloud', de='SoundCloud', fr='SoundCloud', ru='SoundCloud', hu='SoundCloud', vi='SoundCloud', ar='ساوند كلاود', es='SoundCloud')
+s('sync', en='Sync', de='Sync', fr='Sync', ru='Синхронизация', hu='Szinkronizálás', vi='Đồng bộ', ar='مزامنة', es='Sincronizar')
+s('rustAudioEngine', en='Rust Audio Engine (deckengine)', de='Rust Audio Engine (deckengine)', fr='Moteur audio Rust (deckengine)', ru='Аудиодвижок Rust (deckengine)', hu='Rust Hangmotor (deckengine)', vi='Rust Audio Engine (deckengine)', ar='محرك صوت Rust (deckengine)', es='Motor de audio Rust (deckengine)')
 PH = {
   'homeBecauseYouPlayed': {'title': {'type': 'String'}},
   'deletePlaylistConfirm': {'name': {'type': 'String'}},
