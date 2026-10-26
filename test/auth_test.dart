@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
 import 'package:pounce/sc/auth.dart';
+import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -115,5 +116,53 @@ void main() {
     await auth.complete('https://soundcloud.com/signin/callback?code=WEBCODE999&state=');
     expect(auth.usesWebClient, isTrue);
     expect((await sc.me()).username, 'web');
+  });
+
+  test('complete throws AuthException on invalid callback or missing verifier', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    // Invalid callback
+    expect(() => auth.complete('sc://auth?error=access_denied'), throwsA(isA<AuthException>()));
+
+    // Valid code but no verifier in store
+    expect(() => auth.complete('sc://auth?code=VALIDCODE'), throwsA(isA<AuthException>()));
+  });
+
+  test('setMe and logout manage user info and stored auth keys', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    store.set('auth.access', 'access_token_123');
+    store.set('auth.refresh', 'refresh_token_123');
+    store.set('auth.expires', 9999999999);
+
+    auth.setMe(const ScUser(id: 42, username: 'TestUser'));
+    expect(auth.me?.username, 'TestUser');
+    expect(store.get<Map>('auth.me')?['username'], 'TestUser');
+
+    auth.logout();
+    expect(auth.me, isNull);
+    expect(auth.loggedIn, isFalse);
+    expect(store.get<String>('auth.access'), isNull);
+    expect(store.get<String>('auth.refresh'), isNull);
+  });
+
+  test('token() triggers refresh when expiration is near', () async {
+    final store = Store.memory();
+    store.set('auth.access', 'old_access');
+    store.set('auth.refresh', 'refresh_tok');
+    // Set expiry to 30 seconds from now (< 60 seconds threshold)
+    store.set('auth.expires', DateTime.now().millisecondsSinceEpoch + 30000);
+
+    final client = MockClient((req) async {
+      return http.Response(jsonEncode({'access_token': 'new_access', 'expires_in': 3600}), 200);
+    });
+
+    final auth = ScAuth(store, client, (u) => u);
+    final tok = await auth.token();
+
+    expect(tok, 'new_access');
+    expect(store.get<String>('auth.access'), 'new_access');
   });
 }

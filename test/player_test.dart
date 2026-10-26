@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -333,5 +334,85 @@ void main() {
     expect(newPlayer.index, 1);
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
+  });
+
+  test('Autoplay extends queue when reaching end of queue', () async {
+    final client = MockClient((req) async {
+      if (req.url.path.contains('/related')) {
+        return http.Response(
+          jsonEncode({
+            'collection': [
+              {
+                'id': 99,
+                'title': 'Related Track',
+                'duration': 180000,
+                'user': {'id': 1, 'username': 'Artist'},
+                'transcodings': [
+                  {
+                    'url': 'https://api/x',
+                    'preset': 'mp3',
+                    'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'},
+                    'snipped': false,
+                  }
+                ],
+              }
+            ]
+          }),
+          200,
+        );
+      }
+      return http.Response('{"url":"https://cdn/a.mp3"}', 200);
+    });
+
+    final sc = SoundCloud(store, settings, client: client);
+    final apPlayer = PlayerController(engine, sc, settings, Library(store), store);
+    settings.autoplay = true;
+
+    await apPlayer.playQueue([_t(1)]);
+    expect(apPlayer.queue.length, 1);
+
+    await apPlayer.next(); // reaches end, triggers autoplay
+    expect(apPlayer.queue.length, 2);
+    expect(apPlayer.current!.id, 99);
+    apPlayer.dispose();
+  });
+
+  test('Live stream handling (isLive)', () async {
+    final liveTrack = _t(500, isLive: true);
+    await player.playQueue([liveTrack]);
+
+    expect(player.isLive, isTrue);
+    expect(player.duration, Duration.zero);
+
+    // Seek on live track should return early without seeking engine
+    await player.seek(const Duration(seconds: 10));
+    expect(engine.seekedTo, isNull);
+  });
+
+  test('previous() seeks to zero if position > 3s, else moves to previous track', () async {
+    await player.playQueue([_t(1), _t(2)], 1); // current track 2
+
+    // Position > 3s -> seek to 0
+    await player.seek(const Duration(seconds: 5));
+    await player.previous();
+    expect(player.current!.id, 2);
+    expect(engine.seekedTo, Duration.zero);
+
+    // Position <= 3s -> jump to track 1
+    await player.seek(Duration.zero);
+    await player.previous();
+    expect(player.current!.id, 1);
+  });
+
+  test('LoopMode.one seeks to start and replays when ended', () async {
+    await player.playQueue([_t(1)]);
+    player.repeat = LoopMode.one;
+
+    engine.emitState(const EngineState(playing: true, status: EngineStatus.ready));
+    engine.emitState(const EngineState(status: EngineStatus.ended));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, isTrue);
   });
 }

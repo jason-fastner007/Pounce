@@ -155,4 +155,32 @@ void main() {
     expect(controller.lookahead, 30);
     expect(store.get<int>('dj_lookahead'), 30);
   });
+
+  test('setEnergyMode updates energy state and triggers queue evaluation', () async {
+    final t1 = _t(1, bpm: 120.0);
+    final t2 = _t(2, bpm: 128.0); // energy build up candidate
+    final t3 = _t(3, bpm: 110.0); // energy cool down candidate
+
+    await player.playQueue([t1, t2, t3]);
+    controller.toggleDjFlow();
+
+    controller.setEnergyMode(EnergyMode.windDown);
+    expect(controller.state.energyMode, EnergyMode.windDown);
+    expect(store.get<String>('dj_energy'), 'windDown');
+
+    controller.setEnergyMode(EnergyMode.buildUp);
+    expect(controller.state.energyMode, EnergyMode.buildUp);
+    expect(store.get<String>('dj_energy'), 'buildUp');
+  });
+
+  test('BeatClock updates on position changes in DJ Flow', () async {
+    final t1 = _t(1, bpm: 120.0);
+    await player.playQueue([t1]);
+    controller.toggleDjFlow();
+
+    // Position in ms (at 120 BPM, 1 beat = 500 ms, 1 bar = 2000 ms)
+    await player.seek(const Duration(milliseconds: 1000));
+    expect(controller.beat.value, isA<BeatClock>());
+    expect(controller.beat.value.bar, greaterThanOrEqualTo(1));
+  });
 }
