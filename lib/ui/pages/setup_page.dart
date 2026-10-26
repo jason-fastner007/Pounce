@@ -52,7 +52,7 @@ class _SetupPageState extends State<SetupPage> {
               children: [
                 // Progress + skip
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 8, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 8, 0),
                   child: Row(
                     children: [
                       for (var i = 0; i < _count; i++)
@@ -79,7 +79,7 @@ class _SetupPageState extends State<SetupPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+                  padding: const EdgeInsetsDirectional.fromSTEB(24, 8, 24, 20),
                   child: Row(
                     children: [
                       if (_index > 0) TextButton(onPressed: () => _go(_index - 1), child: Text(l.setupBack)),
@@ -110,7 +110,7 @@ class _Step extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+    padding: const EdgeInsetsDirectional.fromSTEB(24, 32, 24, 24),
     children: [
       Text(
         title,
@@ -165,7 +165,7 @@ class _Welcome extends StatelessWidget {
     final l = context.l10n;
     final accent = Theme.of(context).colorScheme.primary;
     return ListView(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 24, 24),
       children: [
         const SizedBox(height: 16),
         Center(
