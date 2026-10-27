@@ -518,6 +518,7 @@ class _ModeButton extends StatelessWidget {
 
     return Tactile(
       onTap: onTap,
+      tooltip: '$label ($sub)',
       radius: Studio.br10,
       active: selected,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
