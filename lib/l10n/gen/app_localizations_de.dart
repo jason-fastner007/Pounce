@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -116,7 +115,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get emptyPlaylist => 'Diese Playlist ist leer';
 
   @override
-  String get emptyPlaylists => 'Erstelle Playlists und füge Tracks über das ⋮-Menü hinzu.';
+  String get emptyPlaylists =>
+      'Erstelle Playlists und füge Tracks über das ⋮-Menü hinzu.';
 
   @override
   String tracksCount(int count) {
@@ -252,22 +252,28 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieser Track ist DRM-geschützt und in Pounce noch nicht abspielbar – auch nicht mit Anmeldung';
 
   @override
-  String get protectedPlayable => 'DRM-geschützt – entschlüsselt vom DRM-Modul deines Browsers';
+  String get protectedPlayable =>
+      'DRM-geschützt – entschlüsselt vom DRM-Modul deines Browsers';
 
   @override
   String get account => 'Konto';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get login => 'Mit SoundCloud anmelden';
 
   @override
-  String get loginSubtitle => 'Likes, Playlists und deinen Stream synchronisieren';
+  String get loginSubtitle =>
+      'Likes, Playlists und deinen Stream synchronisieren';
 
   @override
   String get signup => 'Konto erstellen';
 
   @override
-  String get loginPrivacy => 'Die Anmeldung läuft auf der Seite von SoundCloud. Pounce sieht dein Passwort nie.';
+  String get loginPrivacy =>
+      'Die Anmeldung läuft auf der Seite von SoundCloud. Pounce sieht dein Passwort nie.';
 
   @override
   String get loginWaiting => 'Schließe die Anmeldung im Browser ab …';
@@ -415,7 +421,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get beatBg => 'Hintergrund im Takt';
 
   @override
-  String get beatBgDesc => 'Farben pulsieren und wechseln bei jedem erkannten Beat';
+  String get beatBgDesc =>
+      'Farben pulsieren und wechseln bei jedem erkannten Beat';
 
   @override
   String get beatLight => 'Leicht';
@@ -454,7 +461,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get artworkColors => 'Farben aus dem Cover';
 
   @override
-  String get artworkColorsDesc => 'Der Player passt seine Farben an das Cover an';
+  String get artworkColorsDesc =>
+      'Der Player passt seine Farben an das Cover an';
 
   @override
   String get accentColor => 'Akzentfarbe';
@@ -481,7 +489,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get autoplay => 'Autoplay';
 
   @override
-  String get autoplayDesc => 'Nach der Warteschlange ähnliche Tracks weiterspielen';
+  String get autoplayDesc =>
+      'Nach der Warteschlange ähnliche Tracks weiterspielen';
 
   @override
   String get network => 'Netzwerk';
@@ -490,7 +499,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get proxy => 'CORS-Proxy';
 
   @override
-  String get proxyDesc => 'Im Browser nötig, weil SoundCloud nur die eigene Website zulässt.';
+  String get proxyDesc =>
+      'Im Browser nötig, weil SoundCloud nur die eigene Website zulässt.';
 
   @override
   String get about => 'Über';
@@ -506,7 +516,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get previewBadge => 'Vorschau (30 s)';
 
   @override
-  String get previewHint => 'SoundCloud bietet von diesem Track nur eine 30-Sekunden-Vorschau an.';
+  String get previewHint =>
+      'SoundCloud bietet von diesem Track nur eine 30-Sekunden-Vorschau an.';
 
   @override
   String get openInYtMusic => 'Auf YouTube Music öffnen';
@@ -515,7 +526,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get skipPreviews => 'Vorschauen überspringen';
 
   @override
-  String get skipPreviewsDesc => '30-Sekunden-Vorschauen beim Weiterschalten der Warteschlange auslassen';
+  String get skipPreviewsDesc =>
+      '30-Sekunden-Vorschauen beim Weiterschalten der Warteschlange auslassen';
 
   @override
   String get fastStart => 'Schnellstart';
@@ -561,7 +573,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get djBuilding => 'Mix wird gebaut…';
 
   @override
-  String get djNothing => 'Nichts Passendes gefunden – probier eine andere Kategorie.';
+  String get djNothing =>
+      'Nichts Passendes gefunden – probier eine andere Kategorie.';
 
   @override
   String get djPickCategory => 'Wähle mindestens eine Kategorie';
@@ -604,7 +617,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get radioSource => 'Webradio';
 
   @override
-  String get radioSourceDesc => 'Zehntausende Sender von radio-browser.info. Aus: keine einzige Anfrage.';
+  String get radioSourceDesc =>
+      'Zehntausende Sender von radio-browser.info. Aus: keine einzige Anfrage.';
 
   @override
   String get live => 'LIVE';
@@ -626,7 +640,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get updatesNone => 'Pounce ist aktuell';
 
   @override
-  String get updatesUnavailable => 'In diesem Build sind keine Updates verfügbar';
+  String get updatesUnavailable =>
+      'In diesem Build sind keine Updates verfügbar';
 
   @override
   String updateTitle(String version) {
@@ -648,13 +663,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get updateReleasePage => 'Release-Seite';
 
   @override
-  String get updateChecksumFailed => 'Prüfsumme stimmt nicht – der Download wurde verworfen.';
+  String get updateChecksumFailed =>
+      'Prüfsumme stimmt nicht – der Download wurde verworfen.';
 
   @override
-  String get updateNeedsPermission => 'Erlaube Pounce das Installieren von Apps und tippe dann erneut.';
+  String get updateNeedsPermission =>
+      'Erlaube Pounce das Installieren von Apps und tippe dann erneut.';
 
   @override
-  String get updateFailed => 'Update fehlgeschlagen – bitte später erneut versuchen.';
+  String get updateFailed =>
+      'Update fehlgeschlagen – bitte später erneut versuchen.';
 
   @override
   String get beta => 'Beta';
@@ -667,7 +685,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get setupWelcome => 'Willkommen bei Pounce';
 
   @override
-  String get setupTagline => 'Schnelle Musik von SoundCloud und Webradio – mit einem DJ, der für dich mixt.';
+  String get setupTagline =>
+      'Schnelle Musik von SoundCloud und Webradio – mit einem DJ, der für dich mixt.';
 
   @override
   String get setupStart => 'Los geht\'s';
@@ -688,10 +707,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get setupSourcesTitle => 'Woher soll die Musik kommen?';
 
   @override
-  String get setupSoundcloudDesc => 'Millionen Tracks, Mixe und Remixe. Immer an.';
+  String get setupSoundcloudDesc =>
+      'Millionen Tracks, Mixe und Remixe. Immer an.';
 
   @override
-  String get setupRadioDesc => 'Über 30.000 Sender über radio-browser.info. Aus = keine einzige Anfrage.';
+  String get setupRadioDesc =>
+      'Über 30.000 Sender über radio-browser.info. Aus = keine einzige Anfrage.';
 
   @override
   String get setupAccountTitle => 'Deine Likes mitnehmen?';
@@ -707,7 +728,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get setupDjTitle => 'Was soll dein DJ spielen?';
 
   @override
-  String get setupDjDesc => 'Wähle ein paar Stile. Du kannst sie jederzeit im DJ-Tab ändern.';
+  String get setupDjDesc =>
+      'Wähle ein paar Stile. Du kannst sie jederzeit im DJ-Tab ändern.';
 
   @override
   String get setupPrivacyTitle => 'Deine Privatsphäre';
@@ -735,6 +757,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String syncLast(int count) {
     return 'Synchronisiert ($count neue Events)';
   }
+
+  @override
+  String get sync => 'Sync';
 
   @override
   String get syncTitle => 'Gerätesynchronisation';
@@ -810,6 +835,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncDone => 'Synchronisiert';
 
   @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get engineTitle => 'Audio Engine & Performance';
 
   @override
@@ -818,7 +846,8 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get engineUnavailable => 'Nicht verfügbar – nur Schätzung aus der Wellenform';
+  String get engineUnavailable =>
+      'Nicht verfügbar – nur Schätzung aus der Wellenform';
 
   @override
   String get djFlowActiveDesc => 'Autonome Phrasen- & Tonart-Abstimmung';
