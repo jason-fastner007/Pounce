@@ -137,6 +137,7 @@
   "protectedHint": "This track is DRM-protected and can’t be played in Pounce yet – even when signed in",
   "protectedPlayable": "DRM-protected – decrypted by your browser’s DRM module",
   "account": "Account",
+  "srcSoundCloud": "SoundCloud",
   "login": "Sign in with SoundCloud",
   "loginSubtitle": "Sync likes, playlists and your stream",
   "signup": "Create account",
@@ -354,6 +355,7 @@
       }
     }
   },
+  "sync": "Sync",
   "syncTitle": "Device sync",
   "syncBackground": "Background sync",
   "syncServerActive": "Server active (port {port}) · peer-to-peer on your local network",
@@ -389,6 +391,7 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineTitle": "Audio engine & performance",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
