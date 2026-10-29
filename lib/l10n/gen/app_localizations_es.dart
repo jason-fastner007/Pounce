@@ -688,6 +688,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setupSourcesTitle => '¿De dónde debe venir la música?';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupSoundcloudDesc => 'Millones de pistas, mezclas y remixes. Siempre activo.';
 
   @override
@@ -810,7 +813,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get syncDone => 'Sincronizado';
 
   @override
+  String get syncAction => 'Sincronizar';
+
+  @override
   String get engineTitle => 'Motor de audio y rendimiento';
+
+  @override
+  String get engineRustTitle => 'Motor de audio Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

@@ -679,6 +679,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupSourcesTitle => 'Nhạc lấy từ đâu?';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupSoundcloudDesc => 'Hàng triệu bài hát, mix và remix. Luôn bật.';
 
   @override
@@ -796,7 +799,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncDone => 'Đã đồng bộ';
 
   @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

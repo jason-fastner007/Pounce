@@ -326,6 +326,7 @@
   "setupSkip": "Skip setup",
   "setupDone": "Start listening",
   "setupSourcesTitle": "Where should music come from?",
+  "setupSoundcloudTitle": "SoundCloud",
   "setupSoundcloudDesc": "Millions of tracks, mixes and remixes. Always on.",
   "setupRadioDesc": "30,000+ stations via radio-browser.info. Off = no requests at all.",
   "setupAccountTitle": "Bring your likes along?",
@@ -389,7 +390,9 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "syncAction": "Sync",
   "engineTitle": "Audio engine & performance",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {

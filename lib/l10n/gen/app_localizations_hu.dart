@@ -679,6 +679,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get setupSourcesTitle => 'Honnan jöjjön a zene?';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupSoundcloudDesc => 'Milliónyi szám, mix és remix. Mindig be van kapcsolva.';
 
   @override
@@ -796,7 +799,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
+
+  @override
+  String get engineRustTitle => 'Rust Hangmotor (deckengine)';
 
   @override
   String engineRustDesc(String label) {
