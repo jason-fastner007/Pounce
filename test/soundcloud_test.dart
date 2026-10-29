@@ -554,5 +554,99 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('ScException formatting and HTTP status errors', () async {
+      final exc = ScException('Rate limited', 429);
+      expect(exc.status, 429);
+      expect(exc.message, 'Rate limited');
+      expect(exc.toString(), 'ScException(429): Rate limited');
+
+      store.set('sc.cid', 'cid123');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((req) async => http.Response('Server error', 500));
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      expect(() => sc.track(999), throwsA(isA<ScException>().having((e) => e.status, 'status', 500)));
+    });
+
+    test('StreamInfo label formatting for live, opus, mp3 and drm', () {
+      const liveInfo = StreamInfo('https://stream', hls: true, live: true);
+      expect(liveInfo.label, 'LIVE · HLS');
+
+      const opusInfo = StreamInfo('https://stream', hls: false, mime: 'audio/ogg; codecs="opus"', preset: 'opus_160k');
+      expect(opusInfo.label, 'OPUS · 160k · PROG');
+
+      const mp3Info = StreamInfo('https://stream', hls: false, mime: 'audio/mpeg', preset: 'mp3_128k');
+      expect(mp3Info.label, 'MP3 · 128k · PROG');
+
+      const drmInfo = StreamInfo('https://stream', hls: true, mime: 'audio/mp4', preset: 'aac_160k', licenseToken: 'token');
+      expect(drmInfo.label, 'AAC · 160k · HLS · DRM');
+      expect(drmInfo.drm, isTrue);
+    });
+
+    test('stream resolution throws on blocked tracks and empty transcodings', () async {
+      store.set('sc.cid', 'cid123');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((req) async => http.Response('{}', 200));
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final blockedTrack = Track.fromJson({
+        'id': 1,
+        'title': 'Blocked',
+        'policy': 'BLOCK',
+        'track_authorization': 'auth_123',
+        'user': {'id': 1, 'username': 'User'},
+        'media': {
+          'transcodings': [
+            {'url': 'https://api/1', 'preset': 'mp3', 'format': {'protocol': 'progressive', 'mime_type': 'audio/mpeg'}, 'snipped': false}
+          ]
+        }
+      });
+
+      expect(() => sc.stream(blockedTrack), throwsA(isA<ScException>().having((e) => e.status, 'status', 451)));
+
+      final noMediaTrack = Track.fromJson({
+        'id': 2,
+        'title': 'No Media',
+        'user': {'id': 1, 'username': 'User'},
+        'track_authorization': 'auth',
+        'media': {
+          'transcodings': [
+            {'url': 'https://api/2', 'preset': 'mp3', 'format': {'protocol': 'unsupported', 'mime_type': 'audio/unknown'}, 'snipped': false}
+          ]
+        }
+      });
+
+      expect(() => sc.stream(noMediaTrack), throwsA(isA<ScException>().having((e) => e.status, 'status', 404)));
+    });
+
+    test('Track, ScPlaylist, and ScUser model parsing edge cases', () {
+      final track = Track.fromJson({
+        'id': 100,
+        'title': 'Edge Track',
+        'artwork_url': 'https://img.com/art-large.jpg',
+        'duration': 60000,
+        'policy': 'SNIP',
+      });
+
+      expect(track.id, 100);
+      expect(track.user.username, '');
+      expect(track.art('t300x300'), 'https://img.com/art-t300x300.jpg');
+      expect(track.isPreview, isTrue);
+
+      final playlist = ScPlaylist.fromJson({
+        'id': 200,
+        'title': 'Edge Playlist',
+      });
+      expect(playlist.id, 200);
+      expect(playlist.tracks, isEmpty);
+
+      final user = ScUser.fromJson({'id': 300});
+      expect(user.id, 300);
+      expect(user.username, '');
+      expect(user.avatarUrl, isNull);
+    });
   });
 }

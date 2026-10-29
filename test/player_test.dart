@@ -334,4 +334,54 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('AudioEngine model components, LoudMode, and logBandEdges', () {
+    const meta = MediaMeta(
+      id: '123',
+      title: 'Title',
+      artist: 'Artist',
+      artUrl: 'https://art.jpg',
+      duration: Duration(seconds: 180),
+    );
+    final metaMap = meta.toMap();
+    expect(metaMap['id'], '123');
+    expect(metaMap['title'], 'Title');
+    expect(metaMap['durationMs'], 180000);
+
+    const state = EngineState(status: EngineStatus.ready, playing: true, position: Duration(seconds: 10));
+    final updatedState = state.copyWith(position: const Duration(seconds: 20));
+    expect(updatedState.position, const Duration(seconds: 20));
+    expect(updatedState.playing, isTrue);
+
+    expect(LoudMode.off.lufs, isNull);
+    expect(LoudMode.quiet.lufs, -19.0);
+    expect(LoudMode.normal.lufs, -14.0);
+    expect(LoudMode.loud.lufs, -11.0);
+
+    const loudness = Loudness.none;
+    expect(loudness.momentary, isNull);
+    expect(loudness.limiterDb, 0);
+
+    final edges = logBandEdges(44100, 2048);
+    expect(edges.length, 65); // bands + 1
+    expect(edges.first, greaterThanOrEqualTo(1));
+  });
+
+  test('PlayerController empty queue edge cases', () async {
+    // Operations on empty queue should not crash or throw
+    await player.next();
+    expect(player.current, isNull);
+
+    await player.previous();
+    expect(player.current, isNull);
+
+    await player.jumpTo(0);
+    expect(player.current, isNull);
+
+    player.removeAt(0);
+    expect(player.queue, isEmpty);
+
+    await player.playQueue([_t(1), _t(2)]);
+    expect(player.queue.length, 2);
+  });
 }
