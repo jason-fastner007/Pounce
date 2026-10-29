@@ -583,6 +583,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get djSkip => 'Omitir (mezcla y aprende)';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcAll => 'Todo';
 
   @override
@@ -801,6 +804,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get syncPairFailed => 'Error de emparejamiento';
 
   @override
+  String get syncAction => 'Sincronizar';
+
+  @override
   String get syncNow => 'Sincronizar ahora';
 
   @override
@@ -811,6 +817,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get engineTitle => 'Motor de audio y rendimiento';
+
+  @override
+  String get engineRust => 'Motor de Audio Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

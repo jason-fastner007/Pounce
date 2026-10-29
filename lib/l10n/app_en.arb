@@ -279,6 +279,7 @@
   },
   "djStop": "Stop DJ",
   "djSkip": "Skip (mixes over and learns)",
+  "soundcloud": "SoundCloud",
   "srcAll": "All",
   "srcRadio": "Web radio",
   "radioSection": "Live radio · Stations",
@@ -386,10 +387,12 @@
   "syncPairAction": "Pair",
   "syncPaired": "Paired!",
   "syncPairFailed": "Pairing failed",
+  "syncAction": "Sync",
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "engineRust": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
