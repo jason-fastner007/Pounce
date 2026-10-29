@@ -585,6 +585,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get djSkip => 'Пропустить (свести и запомнить)';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcAll => 'Все';
 
   @override
@@ -803,6 +806,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get syncPairFailed => 'Не удалось подключить';
 
   @override
+  String get syncAction => 'Синхронизировать';
+
+  @override
   String get syncNow => 'Синхронизировать сейчас';
 
   @override
@@ -813,6 +819,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get engineTitle => 'Аудиодвижок и производительность';
+
+  @override
+  String get engineRust => 'Аудиодвижок Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

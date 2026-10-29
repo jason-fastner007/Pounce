@@ -1157,6 +1157,12 @@ abstract class AppLocalizations {
   /// **'Skip (mixes over and learns)'**
   String get djSkip;
 
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
   /// No description provided for @srcAll.
   ///
   /// In en, this message translates to:
@@ -1547,6 +1553,12 @@ abstract class AppLocalizations {
   /// **'Pairing failed'**
   String get syncPairFailed;
 
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
   /// No description provided for @syncNow.
   ///
   /// In en, this message translates to:
@@ -1570,6 +1582,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audio engine & performance'**
   String get engineTitle;
+
+  /// No description provided for @engineRust.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRust;
 
   /// No description provided for @engineRustDesc.
   ///

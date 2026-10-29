@@ -581,6 +581,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get djSkip => 'Skip (mixes over and learns)';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcAll => 'All';
 
   @override
@@ -797,6 +800,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncPairFailed => 'Pairing failed';
 
   @override
+  String get syncAction => 'Sync';
+
+  @override
   String get syncNow => 'Sync now';
 
   @override
@@ -807,6 +813,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get engineTitle => 'Audio engine & performance';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

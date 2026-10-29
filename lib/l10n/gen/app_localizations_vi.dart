@@ -574,6 +574,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get djSkip => 'Bỏ qua (chuyển mượt và học)';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcAll => 'Tất cả';
 
   @override
@@ -787,6 +790,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncPairFailed => 'Ghép nối thất bại';
 
   @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
   String get syncNow => 'Đồng bộ ngay';
 
   @override
@@ -797,6 +803,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

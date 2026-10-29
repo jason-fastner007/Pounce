@@ -588,6 +588,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get djSkip => 'تخطٍّ (مزج سلس وتعلّم)';
 
   @override
+  String get soundcloud => 'ساوند كلاود';
+
+  @override
   String get srcAll => 'الكل';
 
   @override
@@ -804,6 +807,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncPairFailed => 'فشل الاقتران';
 
   @override
+  String get syncAction => 'مزامنة';
+
+  @override
   String get syncNow => 'مزامنة الآن';
 
   @override
@@ -814,6 +820,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get engineTitle => 'محرك الصوت والأداء';
+
+  @override
+  String get engineRust => 'محرك الصوت Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
