@@ -487,6 +487,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get about => 'Giới thiệu';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get aboutText =>
       'Lấy cảm hứng từ KittyTune (alan7383), viết mới hoàn toàn bằng Flutter. Phần mềm tự do theo GPL-3.0.';
 
@@ -787,6 +790,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncPairFailed => 'Ghép nối thất bại';
 
   @override
+  String get sync => 'Đồng bộ';
+
+  @override
   String get syncNow => 'Đồng bộ ngay';
 
   @override
@@ -799,12 +805,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get engineTitle => 'Engine âm thanh & hiệu năng';
 
   @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · lưới nhịp, tông (chroma), độ lớn và dấu vân tay AI từ âm thanh thật';
   }
 
   @override
   String get engineUnavailable => 'Không khả dụng – chỉ ước tính từ dạng sóng';
+
+  @override
+  String get djFlowDeck => 'Bàn DJ Flow';
 
   @override
   String get djFlowActiveDesc => 'Tự động khớp câu nhạc & tông';

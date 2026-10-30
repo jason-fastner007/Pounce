@@ -1001,6 +1001,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
   /// No description provided for @aboutText.
   ///
   /// In en, this message translates to:
@@ -1547,6 +1553,12 @@ abstract class AppLocalizations {
   /// **'Pairing failed'**
   String get syncPairFailed;
 
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
   /// No description provided for @syncNow.
   ///
   /// In en, this message translates to:
@@ -1571,6 +1583,12 @@ abstract class AppLocalizations {
   /// **'Audio engine & performance'**
   String get engineTitle;
 
+  /// No description provided for @engineRustTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRustTitle;
+
   /// No description provided for @engineRustDesc.
   ///
   /// In en, this message translates to:
@@ -1582,6 +1600,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available – estimate from the waveform only'**
   String get engineUnavailable;
+
+  /// No description provided for @djFlowDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow Deck'**
+  String get djFlowDeck;
 
   /// No description provided for @djFlowActiveDesc.
   ///

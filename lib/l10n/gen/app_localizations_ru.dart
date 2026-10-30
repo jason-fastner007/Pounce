@@ -499,6 +499,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О приложении';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get aboutText => 'Вдохновлено KittyTune (alan7383), написано с нуля на Flutter. Свободное ПО под GPL-3.0.';
 
   @override
@@ -803,6 +806,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get syncPairFailed => 'Не удалось подключить';
 
   @override
+  String get sync => 'Синхронизация';
+
+  @override
   String get syncNow => 'Синхронизировать сейчас';
 
   @override
@@ -815,12 +821,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get engineTitle => 'Аудиодвижок и производительность';
 
   @override
+  String get engineRustTitle => 'Аудиодвижок Rust (deckengine)';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · сетка битов, тональность (хрома), громкость и ИИ-отпечаток по реальному звуку';
   }
 
   @override
   String get engineUnavailable => 'Недоступно – только оценка по форме волны';
+
+  @override
+  String get djFlowDeck => 'Дека DJ Flow';
 
   @override
   String get djFlowActiveDesc => 'Автоподбор фраз и тональности';

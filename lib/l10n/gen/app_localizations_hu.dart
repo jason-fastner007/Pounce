@@ -488,6 +488,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get about => 'Névjegy';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get aboutText => 'A KittyTune (alan7383) ihlette, Flutterben az alapoktól megírva. Szabad szoftver, GPL-3.0.';
 
   @override
@@ -787,6 +790,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncPairFailed => 'A párosítás sikertelen';
 
   @override
+  String get sync => 'Szinkronizálás';
+
+  @override
   String get syncNow => 'Szinkronizálás most';
 
   @override
@@ -799,12 +805,18 @@ class AppLocalizationsHu extends AppLocalizations {
   String get engineTitle => 'Hangmotor és teljesítmény';
 
   @override
+  String get engineRustTitle => 'Rust Hangmotor (deckengine)';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · ütemrács, hangnem (kroma), hangosság és MI-ujjlenyomat valódi hangból';
   }
 
   @override
   String get engineUnavailable => 'Nem elérhető – csak becslés a hullámformából';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Pult';
 
   @override
   String get djFlowActiveDesc => 'Automatikus frázis- és hangnemillesztés';

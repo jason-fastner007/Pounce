@@ -226,6 +226,7 @@
   "proxy": "CORS proxy",
   "proxyDesc": "Required in the browser, because SoundCloud only allows its own website.",
   "about": "About",
+  "soundcloud": "SoundCloud",
   "aboutText": "Inspired by KittyTune by alan7383 and written from scratch in Flutter. Free software under GPL-3.0.",
   "licenses": "Open-source licenses",
   "previewBadge": "Preview (30s)",
@@ -386,10 +387,12 @@
   "syncPairAction": "Pair",
   "syncPaired": "Paired!",
   "syncPairFailed": "Pairing failed",
+  "sync": "Sync",
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
@@ -399,6 +402,7 @@
     }
   },
   "engineUnavailable": "Not available – estimate from the waveform only",
+  "djFlowDeck": "DJ Flow Deck",
   "djFlowActiveDesc": "Automatic phrase & key matching",
   "djTapToActivate": "Tap to activate",
   "djAnalyzing": "Analysing audio…",

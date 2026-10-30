@@ -502,6 +502,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get about => 'حول';
 
   @override
+  String get soundcloud => 'ساوند كلاود';
+
+  @override
   String get aboutText => 'مستوحى من KittyTune (alan7383) ومكتوب من الصفر بـ Flutter. برنامج حر بترخيص GPL-3.0.';
 
   @override
@@ -804,6 +807,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncPairFailed => 'فشل الاقتران';
 
   @override
+  String get sync => 'مزامنة';
+
+  @override
   String get syncNow => 'مزامنة الآن';
 
   @override
@@ -816,12 +822,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get engineTitle => 'محرك الصوت والأداء';
 
   @override
+  String get engineRustTitle => 'محرك صوت Rust (deckengine)';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · شبكة الإيقاع والمقام (كروما) وشدة الصوت وبصمة الذكاء الاصطناعي من الصوت الحقيقي';
   }
 
   @override
   String get engineUnavailable => 'غير متاح – تقدير من شكل الموجة فقط';
+
+  @override
+  String get djFlowDeck => 'لوحة DJ Flow';
 
   @override
   String get djFlowActiveDesc => 'مطابقة تلقائية للجمل والمقام';
