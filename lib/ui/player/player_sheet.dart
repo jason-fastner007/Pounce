@@ -434,7 +434,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 builder: (context, _) {
                   final dj = context.deps.dj;
                   return IconButton(
-                    tooltip: 'DJ Flow Deck',
+                    tooltip: context.l10n.djFlowDeck,
                     onPressed: () => _setPane(_pane == _Pane.dj ? _Pane.art : _Pane.dj),
                     icon: Icon(
                       Icons.album_rounded,

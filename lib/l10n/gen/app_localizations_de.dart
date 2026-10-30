@@ -496,6 +496,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get about => 'Über';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get aboutText =>
       'Inspiriert von KittyTune (alan7383), komplett neu in Flutter geschrieben. Freie Software unter GPL-3.0.';
 
@@ -801,6 +804,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncPairFailed => 'Kopplung fehlgeschlagen';
 
   @override
+  String get sync => 'Sync';
+
+  @override
   String get syncNow => 'Jetzt synchronisieren';
 
   @override
@@ -813,12 +819,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get engineTitle => 'Audio Engine & Performance';
 
   @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String engineRustDesc(String label) {
     return '$label · Beat-Raster, Tonart (Chroma), Lautheit, KI-Fingerabdruck aus echtem Audio';
   }
 
   @override
   String get engineUnavailable => 'Nicht verfügbar – nur Schätzung aus der Wellenform';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Deck';
 
   @override
   String get djFlowActiveDesc => 'Autonome Phrasen- & Tonart-Abstimmung';
