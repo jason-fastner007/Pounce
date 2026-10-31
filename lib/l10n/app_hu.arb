@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "nincs drop",
   "planSearching": "drop keresése…",
+  "soundcloud": "SoundCloud",
+  "sync": "Szinkronizálás",
+  "engineRustAudioEngine": "Rust Audio Engine (deckengine)",
+  "djFlowAndAutomix": "DJ Flow & Automix",
+  "bpm": "BPM",
   "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés"
 }
