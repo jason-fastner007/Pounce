@@ -851,6 +851,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get statGrid => 'Сетка';
 
   @override
+  String get statDownbeat => 'Сильная доля';
+
+  @override
   String get statKey => 'Тональность';
 
   @override
@@ -913,6 +916,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get bandHigh => 'ВЕРХ (хэты и воздух)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow и Автомикс';
+
+  @override
+  String get djDeck => 'DJ Дека';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Дека';
 
   @override
   String planDrop(String time) {

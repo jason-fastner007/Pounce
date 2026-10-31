@@ -421,6 +421,7 @@
     }
   },
   "statGrid": "Grid",
+  "statDownbeat": "Downbeat",
   "statKey": "Key",
   "statLoudness": "Loudness",
   "statEnergy": "Energy",
@@ -455,6 +456,9 @@
   "bandBass": "BASS (kick & sub)",
   "bandMid": "MID (vocals & melody)",
   "bandHigh": "HIGH (hi-hats & air)",
+  "djFlowAndAutomix": "DJ Flow & Automix",
+  "djDeck": "DJ Deck",
+  "djFlowDeck": "DJ Flow Deck",
   "planDrop": "Drop {time}",
   "@planDrop": {
     "placeholders": {

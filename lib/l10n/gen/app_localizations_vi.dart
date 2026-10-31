@@ -835,6 +835,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get statGrid => 'Lưới';
 
   @override
+  String get statDownbeat => 'Phách mạnh';
+
+  @override
   String get statKey => 'Tông';
 
   @override
@@ -897,6 +900,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get bandHigh => 'CAO (hi-hat & air)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow & Tự động mix';
+
+  @override
+  String get djDeck => 'Bàn DJ';
+
+  @override
+  String get djFlowDeck => 'Bàn DJ Flow';
 
   @override
   String planDrop(String time) {
