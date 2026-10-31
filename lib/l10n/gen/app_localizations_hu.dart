@@ -910,6 +910,21 @@ class AppLocalizationsHu extends AppLocalizations {
   String get planSearching => 'drop keresése…';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
+  String get sync => 'Szinkronizálás';
+
+  @override
+  String get engineRustAudioEngine => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get bpm => 'BPM';
+
+  @override
   String planText(String entry, String drop, String fade) {
     return 'Belépés $entry · $drop · $fade mp áttűnés';
   }

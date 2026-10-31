@@ -277,5 +277,10 @@
   "planDrop": "الذروة {time}",
   "planNoDrop": "لا ذروة",
   "planSearching": "جارٍ البحث عن الذروة…",
+  "soundcloud": "SoundCloud",
+  "sync": "مزامنة",
+  "engineRustAudioEngine": "محرك الصوت Rust (deckengine)",
+  "djFlowAndAutomix": "تدفق DJ والمزج التلقائي",
+  "bpm": "BPM",
   "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث"
 }
