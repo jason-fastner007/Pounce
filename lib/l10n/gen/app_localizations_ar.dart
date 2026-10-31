@@ -852,6 +852,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get statGrid => 'الشبكة';
 
   @override
+  String get statDownbeat => 'النبضة القوية';
+
+  @override
   String get statKey => 'المقام';
 
   @override
@@ -914,6 +917,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bandHigh => 'الحاد (الصنج والهواء)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow ومزج تلقائي';
+
+  @override
+  String get djDeck => 'منصة DJ';
+
+  @override
+  String get djFlowDeck => 'منصة DJ Flow';
 
   @override
   String planDrop(String time) {

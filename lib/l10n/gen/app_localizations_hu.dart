@@ -835,6 +835,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get statGrid => 'Rács';
 
   @override
+  String get statDownbeat => 'Downbeat';
+
+  @override
   String get statKey => 'Hangnem';
 
   @override
@@ -897,6 +900,15 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get bandHigh => 'MAGAS (cintányér és levegő)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow és Automix';
+
+  @override
+  String get djDeck => 'DJ Pult';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Pult';
 
   @override
   String planDrop(String time) {

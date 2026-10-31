@@ -850,6 +850,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get statGrid => 'Grille';
 
   @override
+  String get statDownbeat => 'Temps fort';
+
+  @override
   String get statKey => 'Tonalité';
 
   @override
@@ -912,6 +915,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get bandHigh => 'AIGUS (charleston & air)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djDeck => 'Platine DJ';
+
+  @override
+  String get djFlowDeck => 'Platine DJ Flow';
 
   @override
   String planDrop(String time) {

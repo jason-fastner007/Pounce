@@ -63,7 +63,7 @@ class DjDeckView extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'DJ Flow & Automix',
+                                l10n.djFlowAndAutomix,
                                 style: TextStyle(
                                   fontFamily: Studio.sans,
                                   fontSize: 15,
@@ -205,7 +205,7 @@ class DjDeckView extends StatelessWidget {
                         runSpacing: 6,
                         children: [
                           _Stat(l10n.statGrid, '${(info.confidence * 100).round()} %'),
-                          _Stat('Downbeat', '${(info.downbeatConfidence * 100).round()} %'),
+                          _Stat(l10n.statDownbeat, '${(info.downbeatConfidence * 100).round()} %'),
                           _Stat(l10n.statKey, '${(info.keyConfidence * 100).round()} %'),
                           if (info.lufs != null) _Stat(l10n.statLoudness, '${info.lufs!.toStringAsFixed(1)} LUFS'),
                           _Stat(l10n.statEnergy, '${info.energyLevel}/10'),

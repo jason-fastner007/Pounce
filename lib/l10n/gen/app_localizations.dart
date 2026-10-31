@@ -1631,6 +1631,12 @@ abstract class AppLocalizations {
   /// **'Grid'**
   String get statGrid;
 
+  /// No description provided for @statDownbeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Downbeat'**
+  String get statDownbeat;
+
   /// No description provided for @statKey.
   ///
   /// In en, this message translates to:
@@ -1750,6 +1756,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'HIGH (hi-hats & air)'**
   String get bandHigh;
+
+  /// No description provided for @djFlowAndAutomix.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow & Automix'**
+  String get djFlowAndAutomix;
+
+  /// No description provided for @djDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Deck'**
+  String get djDeck;
+
+  /// No description provided for @djFlowDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow Deck'**
+  String get djFlowDeck;
 
   /// No description provided for @planDrop.
   ///

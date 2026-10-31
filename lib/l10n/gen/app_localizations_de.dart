@@ -849,6 +849,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get statGrid => 'Raster';
 
   @override
+  String get statDownbeat => 'Downbeat';
+
+  @override
   String get statKey => 'Tonart';
 
   @override
@@ -911,6 +914,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bandHigh => 'HIGH (Hi-Hats & Air)';
+
+  @override
+  String get djFlowAndAutomix => 'DJ Flow & Automix';
+
+  @override
+  String get djDeck => 'DJ Deck';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Deck';
 
   @override
   String planDrop(String time) {
