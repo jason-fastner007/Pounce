@@ -139,7 +139,7 @@ class DjPage extends StatelessWidget {
                     style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(52),
                       foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(borderRadius: Studio.br16),
+                      shape: const RoundedRectangleBorder(borderRadius: Studio.br16),
                     ),
                     onPressed: selected.isEmpty || mix.building ? null : () => _start(context),
                     icon: mix.building

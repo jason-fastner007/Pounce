@@ -86,7 +86,7 @@ class TrackTile extends StatelessWidget {
                                         EqualizerBars(playing: d.player.playing, size: 14, color: accent),
                                   )
                                 : hover && track.playable
-                                ? Icon(Icons.play_arrow_rounded, key: const ValueKey('p'), size: 20, color: Studio.text)
+                                ? const Icon(Icons.play_arrow_rounded, key: ValueKey('p'), size: 20, color: Studio.text)
                                 : Text(
                                     '$index',
                                     key: const ValueKey('i'),
