@@ -15,7 +15,7 @@ dependencies:
   http: ^1.6.0
   intl: ^0.20.3
   path_provider: ^2.1.6
-  web: ^1.1.1
+  web: ^1.1.2
   native_player:
     path: packages/native_player
   native_auth:
