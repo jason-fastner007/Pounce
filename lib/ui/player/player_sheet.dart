@@ -526,7 +526,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                       ValueListenableBuilder<BeatClock>(
                         valueListenable: dj.beat,
                         builder: (context, b, _) => Text(
-                          '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
+                          '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? context.l10n.statKey} · ${context.l10n.djBar(b.bar)} (${context.l10n.djBeatInBar(b.beatInBar)})',
                           style: TextStyle(
                             fontFamily: Studio.mono,
                             fontSize: 11.5,

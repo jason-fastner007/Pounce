@@ -478,5 +478,16 @@
         "type": "String"
       }
     }
+  },
+  "sync": "Sync",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
+  "srcSoundCloud": "SoundCloud",
+  "djBeatInBar": "Beat {beat}",
+  "@djBeatInBar": {
+    "placeholders": {
+      "beat": {
+        "type": "int"
+      }
+    }
   }
 }

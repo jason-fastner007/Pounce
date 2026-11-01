@@ -277,5 +277,9 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "pas de drop",
   "planSearching": "recherche du drop…",
-  "planText": "Entrée {entry} · {drop} · fondu {fade} s"
+  "planText": "Entrée {entry} · {drop} · fondu {fade} s",
+  "sync": "Sync",
+  "engineRustTitle": "Moteur audio Rust (deckengine)",
+  "srcSoundCloud": "SoundCloud",
+  "djBeatInBar": "Temps {beat}"
 }

@@ -923,4 +923,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Entry $entry · $drop · $fade s fade';
   }
+
+  @override
+  String get sync => 'Sync';
+
+  @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
+  String djBeatInBar(int beat) {
+    return 'Beat $beat';
+  }
 }

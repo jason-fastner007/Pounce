@@ -930,4 +930,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'الدخول $entry · $drop · تلاشٍ $fade ث';
   }
+
+  @override
+  String get sync => 'مزامنة';
+
+  @override
+  String get engineRustTitle => 'محرك صوت Rust (deckengine)';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
+  String djBeatInBar(int beat) {
+    return 'النبضة $beat';
+  }
 }
