@@ -1,0 +1,2 @@
+I need to add two keys to tool/gen_arb.py since "Sync" and "Rust Audio Engine (deckengine)" are missing in gen_arb.py and hardcoded in settings_page.dart, and the same for "Takt" string in player_sheet.dart. Wait, I should look closely at how Takt string is translated, it's mixed with BPM and Key.
+Wait, "SoundCloud" doesn't need translation, right? "Sync" maybe? "Rust Audio Engine (deckengine)" maybe? Let's check tool/gen_arb.py for those strings.

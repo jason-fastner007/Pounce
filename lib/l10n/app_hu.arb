@@ -277,5 +277,9 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "nincs drop",
   "planSearching": "drop keresése…",
-  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés"
+  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés",
+  "sync": "Szinkronizálás",
+  "engineRustTitle": "Rust Hangmotor (deckengine)",
+  "srcSoundCloud": "SoundCloud",
+  "djBeatInBar": "Ütés {beat}"
 }

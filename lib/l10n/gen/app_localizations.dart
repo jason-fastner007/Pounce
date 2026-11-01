@@ -1774,6 +1774,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry {entry} · {drop} · {fade} s fade'**
   String planText(String entry, String drop, String fade);
+
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
+  /// No description provided for @engineRustTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRustTitle;
+
+  /// No description provided for @srcSoundCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get srcSoundCloud;
+
+  /// No description provided for @djBeatInBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat {beat}'**
+  String djBeatInBar(int beat);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
