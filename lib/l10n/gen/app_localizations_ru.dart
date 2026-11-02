@@ -692,6 +692,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get setupSoundcloudDesc => 'Миллионы треков, миксов и ремиксов. Всегда включено.';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupRadioDesc => 'Более 30 000 станций через radio-browser.info. Выкл. = ни одного запроса.';
 
   @override
@@ -800,6 +803,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get syncPaired => 'Подключено!';
 
   @override
+  String get syncLabel => 'Синхронизация';
+
+  @override
   String get syncPairFailed => 'Не удалось подключить';
 
   @override
@@ -820,6 +826,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get engineRustTitle => 'Rust аудиодвижок (deckengine)';
+
+  @override
   String get engineUnavailable => 'Недоступно – только оценка по форме волны';
 
   @override
@@ -836,6 +845,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get djKeyUncertain => 'неуверенно';
+
+  @override
+  String get djBpm => 'уд/мин';
 
   @override
   String djBar(int bar) {

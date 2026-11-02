@@ -682,6 +682,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get setupSoundcloudDesc => 'Milliónyi szám, mix és remix. Mindig be van kapcsolva.';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupRadioDesc => 'Több mint 30 000 állomás a radio-browser.info-n keresztül. Ki = egyetlen kérés sem.';
 
   @override
@@ -784,6 +787,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncPaired => 'Párosítva!';
 
   @override
+  String get syncLabel => 'Szinkronizálás';
+
+  @override
   String get syncPairFailed => 'A párosítás sikertelen';
 
   @override
@@ -804,6 +810,9 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
+  String get engineRustTitle => 'Rust hangmotor (deckengine)';
+
+  @override
   String get engineUnavailable => 'Nem elérhető – csak becslés a hullámformából';
 
   @override
@@ -820,6 +829,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get djKeyUncertain => 'bizonytalan';
+
+  @override
+  String get djBpm => 'BPM';
 
   @override
   String djBar(int bar) {

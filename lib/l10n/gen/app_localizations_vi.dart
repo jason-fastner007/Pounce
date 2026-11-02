@@ -682,6 +682,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupSoundcloudDesc => 'Hàng triệu bài hát, mix và remix. Luôn bật.';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupRadioDesc => 'Hơn 30.000 đài qua radio-browser.info. Tắt = không gửi yêu cầu nào.';
 
   @override
@@ -784,6 +787,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncPaired => 'Đã ghép nối!';
 
   @override
+  String get syncLabel => 'Đồng bộ';
+
+  @override
   String get syncPairFailed => 'Ghép nối thất bại';
 
   @override
@@ -804,6 +810,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get engineUnavailable => 'Không khả dụng – chỉ ước tính từ dạng sóng';
 
   @override
@@ -820,6 +829,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get djKeyUncertain => 'không chắc';
+
+  @override
+  String get djBpm => 'BPM';
 
   @override
   String djBar(int bar) {

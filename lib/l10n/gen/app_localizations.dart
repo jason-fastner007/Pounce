@@ -1361,6 +1361,12 @@ abstract class AppLocalizations {
   /// **'Millions of tracks, mixes and remixes. Always on.'**
   String get setupSoundcloudDesc;
 
+  /// No description provided for @setupSoundcloudTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get setupSoundcloudTitle;
+
   /// No description provided for @setupRadioDesc.
   ///
   /// In en, this message translates to:
@@ -1541,6 +1547,12 @@ abstract class AppLocalizations {
   /// **'Paired!'**
   String get syncPaired;
 
+  /// No description provided for @syncLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncLabel;
+
   /// No description provided for @syncPairFailed.
   ///
   /// In en, this message translates to:
@@ -1577,6 +1589,12 @@ abstract class AppLocalizations {
   /// **'{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio'**
   String engineRustDesc(String label);
 
+  /// No description provided for @engineRustTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRustTitle;
+
   /// No description provided for @engineUnavailable.
   ///
   /// In en, this message translates to:
@@ -1612,6 +1630,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'uncertain'**
   String get djKeyUncertain;
+
+  /// No description provided for @djBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'BPM'**
+  String get djBpm;
 
   /// No description provided for @djBar.
   ///
