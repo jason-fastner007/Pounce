@@ -353,22 +353,29 @@ void main() {
   test('playTrack, playNext and addToQueue start playing when queue was empty', () async {
     expect(player.current, isNull);
 
-    // playNext with empty current starts playing the track
+    // playNext with empty current calls playTrack -> playQueue
     player.playNext(_t(1));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
+    await pumpEventQueue();
     expect(player.current?.id, 1);
 
-    final p2 = PlayerController(_FakeEngine(), SoundCloud(store, settings), settings, Library(store), Store.memory());
-    expect(p2.current, isNull);
-    p2.addToQueue(_t(2));
-    await Future<void>.delayed(const Duration(milliseconds: 20));
-    expect(p2.current?.id, 2);
-    p2.dispose();
+    // create new player controller with empty queue
+    final emptyPlayer = PlayerController(
+      _FakeEngine(),
+      SoundCloud(Store.memory(), settings),
+      settings,
+      Library(Store.memory()),
+      Store.memory(),
+    );
+    expect(emptyPlayer.current, isNull);
 
-    final p3 = PlayerController(_FakeEngine(), SoundCloud(store, settings), settings, Library(store), Store.memory());
-    await p3.playTrack(_t(3));
-    expect(p3.current?.id, 3);
-    p3.dispose();
+    // addToQueue with empty current calls playTrack -> playQueue
+    emptyPlayer.addToQueue(_t(2));
+    await pumpEventQueue();
+    expect(emptyPlayer.current?.id, 2);
+
+    // playTrack loads track directly
+    await emptyPlayer.playTrack(_t(3));
+    expect(emptyPlayer.current?.id, 3);
   });
 
   test('LoopMode.one repeats same track from start on ended event', () async {
