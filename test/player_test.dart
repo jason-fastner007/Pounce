@@ -334,4 +334,129 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('toggle playback switches between playing and pause', () async {
+    await player.playQueue([_t(1)]);
+    expect(player.playing, false);
+
+    await player.toggle();
+    expect(engine.played, true);
+
+    engine.emitState(const EngineState(playing: true, status: EngineStatus.ready));
+    await Future<void>.delayed(Duration.zero);
+    expect(player.playing, true);
+
+    await player.toggle();
+    expect(engine.paused, true);
+  });
+
+  test('playTrack, playNext and addToQueue start playing when queue was empty', () async {
+    expect(player.current, isNull);
+
+    // playNext with empty current calls playTrack -> playQueue
+    player.playNext(_t(1));
+    await pumpEventQueue();
+    expect(player.current?.id, 1);
+
+    // create new player controller with empty queue
+    final emptyPlayer = PlayerController(
+      _FakeEngine(),
+      SoundCloud(Store.memory(), settings),
+      settings,
+      Library(Store.memory()),
+      Store.memory(),
+    );
+    expect(emptyPlayer.current, isNull);
+
+    // addToQueue with empty current calls playTrack -> playQueue
+    emptyPlayer.addToQueue(_t(2));
+    await pumpEventQueue();
+    expect(emptyPlayer.current?.id, 2);
+
+    // playTrack loads track directly
+    await emptyPlayer.playTrack(_t(3));
+    expect(emptyPlayer.current?.id, 3);
+  });
+
+  test('LoopMode.one repeats same track from start on ended event', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.repeat = LoopMode.one;
+
+    engine.seekedTo = null;
+    engine.played = false;
+
+    // Reset _staleEnded by first emitting ready state
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+
+    // Now emit ended state
+    engine.emitState(const EngineState(status: EngineStatus.ended));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, true);
+    expect(player.current?.id, 1);
+  });
+
+  test('live track duration is zero and stream is marked live', () async {
+    final live = _t(50, isLive: true);
+    await player.playQueue([live]);
+
+    expect(player.isLive, true);
+    expect(player.duration, Duration.zero);
+    expect(player.stream?.live, true);
+
+    await player.seek(const Duration(seconds: 10));
+    expect(player.position.value, Duration.zero);
+  });
+
+  test('autoplay extends queue via related tracks when reaching end', () async {
+    settings.autoplay = true;
+
+    final mockScClient = MockClient((req) async {
+      if (req.url.path.contains('/related')) {
+        return http.Response(
+          '{"collection":[{"id":100,"title":"Related Track","duration":180000,"user":{"id":2,"username":"Rel"}}]}',
+          200,
+        );
+      }
+      return http.Response('{"url":"https://cdn/related.mp3"}', 200);
+    });
+
+    final sc = SoundCloud(store, settings, client: mockScClient);
+    final autoPlayer = PlayerController(engine, sc, settings, Library(store), store);
+
+    await autoPlayer.playQueue([_t(1)]);
+    expect(autoPlayer.queue.length, 1);
+
+    await autoPlayer.next(); // reaches end, triggers autoplay
+    expect(autoPlayer.queue.length, 2);
+    expect(autoPlayer.queue.last.id, 100);
+
+    autoPlayer.dispose();
+  });
+
+  test('property getters: shuffle, loading, buffered, hasNext, livePosition, djFits', () async {
+    expect(PlayerController.djFits(_t(1, durationMs: 120000)), isTrue);
+    expect(PlayerController.djFits(_t(2, isPreview: true)), isFalse);
+    expect(PlayerController.djFits(_t(3, durationMs: 7 * 60000)), isFalse);
+    expect(PlayerController.djFits(_t(4, isLive: true)), isTrue);
+
+    await player.playQueue([_t(1), _t(2)]);
+    expect(player.hasNext, isTrue);
+    expect(player.shuffle, isFalse);
+
+    engine.emitState(const EngineState(
+      status: EngineStatus.loading,
+      buffered: Duration(seconds: 30),
+      playing: true,
+      position: Duration(seconds: 10),
+      duration: Duration(seconds: 60),
+    ));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(player.loading, isTrue);
+    expect(player.buffered, const Duration(seconds: 30));
+    expect(player.livePosition.inSeconds, greaterThanOrEqualTo(10));
+  });
 }
