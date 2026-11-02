@@ -327,6 +327,7 @@
   "setupDone": "Start listening",
   "setupSourcesTitle": "Where should music come from?",
   "setupSoundcloudDesc": "Millions of tracks, mixes and remixes. Always on.",
+  "setupSoundcloudTitle": "SoundCloud",
   "setupRadioDesc": "30,000+ stations via radio-browser.info. Off = no requests at all.",
   "setupAccountTitle": "Bring your likes along?",
   "setupAccountDesc": "Optional: sign in to SoundCloud to import likes and playlists. Pounce works fine without an account.",
@@ -385,6 +386,7 @@
   "syncPasteCode": "Paste pairing code",
   "syncPairAction": "Pair",
   "syncPaired": "Paired!",
+  "syncLabel": "Sync",
   "syncPairFailed": "Pairing failed",
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
@@ -398,12 +400,14 @@
       }
     }
   },
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineUnavailable": "Not available – estimate from the waveform only",
   "djFlowActiveDesc": "Automatic phrase & key matching",
   "djTapToActivate": "Tap to activate",
   "djAnalyzing": "Analysing audio…",
   "djNoKey": "No key detected",
   "djKeyUncertain": "uncertain",
+  "djBpm": "BPM",
   "djBar": "Bar {bar}/4",
   "@djBar": {
     "placeholders": {

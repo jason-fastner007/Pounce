@@ -688,6 +688,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupSoundcloudDesc => 'Millions of tracks, mixes and remixes. Always on.';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupRadioDesc => '30,000+ stations via radio-browser.info. Off = no requests at all.';
 
   @override
@@ -794,6 +797,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncPaired => 'Paired!';
 
   @override
+  String get syncLabel => 'Sync';
+
+  @override
   String get syncPairFailed => 'Pairing failed';
 
   @override
@@ -814,6 +820,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
   String get engineUnavailable => 'Not available – estimate from the waveform only';
 
   @override
@@ -830,6 +839,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get djKeyUncertain => 'uncertain';
+
+  @override
+  String get djBpm => 'BPM';
 
   @override
   String djBar(int bar) {

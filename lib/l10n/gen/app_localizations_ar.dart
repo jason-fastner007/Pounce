@@ -695,6 +695,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupSoundcloudDesc => 'ملايين المقاطع والمزجات والريمكسات. مفعّل دائمًا.';
 
   @override
+  String get setupSoundcloudTitle => 'SoundCloud';
+
+  @override
   String get setupRadioDesc => 'أكثر من 30,000 محطة عبر radio-browser.info. إيقاف = لا طلبات إطلاقًا.';
 
   @override
@@ -801,6 +804,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncPaired => 'تم الاقتران!';
 
   @override
+  String get syncLabel => 'مزامنة';
+
+  @override
   String get syncPairFailed => 'فشل الاقتران';
 
   @override
@@ -821,6 +827,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get engineRustTitle => 'محرك صوت Rust (deckengine)';
+
+  @override
   String get engineUnavailable => 'غير متاح – تقدير من شكل الموجة فقط';
 
   @override
@@ -837,6 +846,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get djKeyUncertain => 'غير مؤكد';
+
+  @override
+  String get djBpm => 'ن/د';
 
   @override
   String djBar(int bar) {
