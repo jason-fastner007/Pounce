@@ -554,5 +554,104 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('user, userTracks, userTopTracks fetch user profiles and their tracks', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/42') {
+          return http.Response(jsonEncode({'id': 42, 'username': 'Artist 42'}), 200);
+        } else if (path == '/users/42/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 4201,
+                  'title': 'Track 4201',
+                  'duration': 180000,
+                  'user': {'id': 42, 'username': 'Artist 42'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 4202,
+                  'title': 'Top Track 4202',
+                  'duration': 210000,
+                  'user': {'id': 42, 'username': 'Artist 42'},
+                }
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final u = await sc.user(42);
+      expect(u.id, 42);
+      expect(u.username, 'Artist 42');
+
+      final tracks = await sc.userTracks(42);
+      expect(tracks.items.length, 1);
+      expect(tracks.items.first.id, 4201);
+
+      final topTracks = await sc.userTopTracks(42);
+      expect(topTracks.items.length, 1);
+      expect(topTracks.items.first.id, 4202);
+    });
+
+    test('stream quality sorting respects StreamQuality.saver', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+      settings.quality = StreamQuality.saver;
+
+      final requestedUrls = <String>[];
+      final mockClient = MockClient((request) async {
+        requestedUrls.add(request.url.toString());
+        return http.Response(jsonEncode({'url': 'https://cdn/audio_saver.mp3'}), 200);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final track = Track.fromJson({
+        'id': 888,
+        'title': 'Quality Test Track',
+        'duration': 180000,
+        'user': {'id': 1, 'username': 'Artist'},
+        'track_authorization': 'auth',
+        'media': {
+          'transcodings': [
+            {
+              'url': 'https://api-v2.soundcloud.com/transcodings/hls_aac160',
+              'preset': 'aac_160k',
+              'duration': 180000,
+              'snipped': false,
+              'format': {'protocol': 'hls', 'mime_type': 'audio/mp4'},
+            },
+            {
+              'url': 'https://api-v2.soundcloud.com/transcodings/hls_aac96',
+              'preset': 'aac_96k',
+              'duration': 180000,
+              'snipped': false,
+              'format': {'protocol': 'hls', 'mime_type': 'audio/mp4'},
+            },
+          ]
+        }
+      });
+
+      final info = await sc.stream(track);
+      expect(info.url, 'https://cdn/audio_saver.mp3');
+      expect(requestedUrls.first, contains('hls_aac96'));
+    });
   });
 }

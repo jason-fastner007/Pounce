@@ -80,6 +80,48 @@ void main() {
       expect(settings.proxy, 'http://proxy.local');
       expect(store.get<String>('proxy'), 'http://proxy.local');
       expect(notified, isTrue);
+
+      notified = false;
+      settings.railExpanded = true;
+      expect(settings.railExpanded, isTrue);
+      expect(store.get<bool>('railExpanded'), isTrue);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.inspectorOpen = false;
+      expect(settings.inspectorOpen, isFalse);
+      expect(store.get<bool>('inspectorOpen'), isFalse);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.autoCheckUpdates = true;
+      expect(settings.autoCheckUpdates, isTrue);
+      expect(store.get<bool>('autoCheckUpdates'), isTrue);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.radioEnabled = false;
+      expect(settings.radioEnabled, isFalse);
+      expect(store.get<bool>('radioEnabled'), isFalse);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.fastStart = false;
+      expect(settings.fastStart, isFalse);
+      expect(store.get<bool>('fastStart'), isFalse);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.setupDone = true;
+      expect(settings.setupDone, isTrue);
+      expect(store.get<bool>('setupDone'), isTrue);
+      expect(notified, isTrue);
+
+      notified = false;
+      settings.recognitionOptIn = true;
+      expect(settings.recognitionOptIn, isTrue);
+      expect(store.get<bool>('recognitionOptIn'), isTrue);
+      expect(notified, isTrue);
     });
 
     test('BeatLevel intensity values', () {
