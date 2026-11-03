@@ -246,7 +246,7 @@ class _Sources extends StatelessWidget {
           _Card(
             child: ListTile(
               leading: const Icon(Icons.cloud_rounded),
-              title: Text(l.srcSoundCloud),
+              title: const Text('SoundCloud'),
               subtitle: Text(l.setupSoundcloudDesc),
               trailing: Icon(Icons.check_circle_rounded, color: Theme.of(context).colorScheme.primary),
             ),
