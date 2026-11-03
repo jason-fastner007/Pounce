@@ -1565,6 +1565,12 @@ abstract class AppLocalizations {
   /// **'Synced'**
   String get syncDone;
 
+  /// No description provided for @settingsSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get settingsSync;
+
   /// No description provided for @engineTitle.
   ///
   /// In en, this message translates to:
@@ -1576,6 +1582,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio'**
   String engineRustDesc(String label);
+
+  /// No description provided for @settingsEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get settingsEngine;
 
   /// No description provided for @engineUnavailable.
   ///
@@ -1672,6 +1684,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title'**
   String get srcTitle;
+
+  /// No description provided for @srcSoundCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get srcSoundCloud;
 
   /// No description provided for @djEnergiesLive.
   ///

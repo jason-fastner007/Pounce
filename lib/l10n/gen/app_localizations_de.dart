@@ -810,12 +810,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncDone => 'Synchronisiert';
 
   @override
+  String get settingsSync => 'Synchronisation';
+
+  @override
   String get engineTitle => 'Audio Engine & Performance';
 
   @override
   String engineRustDesc(String label) {
     return '$label · Beat-Raster, Tonart (Chroma), Lautheit, KI-Fingerabdruck aus echtem Audio';
   }
+
+  @override
+  String get settingsEngine => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineUnavailable => 'Nicht verfügbar – nur Schätzung aus der Wellenform';
@@ -868,6 +874,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get srcTitle => 'Titel';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Audio-Energien (live)';

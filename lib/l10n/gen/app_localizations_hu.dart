@@ -796,12 +796,18 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get settingsSync => 'Szinkronizálás';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
 
   @override
   String engineRustDesc(String label) {
     return '$label · ütemrács, hangnem (kroma), hangosság és MI-ujjlenyomat valódi hangból';
   }
+
+  @override
+  String get settingsEngine => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineUnavailable => 'Nem elérhető – csak becslés a hullámformából';
@@ -854,6 +860,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get srcTitle => 'Cím';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Hangenergiák (élő)';

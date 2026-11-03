@@ -812,12 +812,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get syncDone => 'Синхронизировано';
 
   @override
+  String get settingsSync => 'Синхронизация';
+
+  @override
   String get engineTitle => 'Аудиодвижок и производительность';
 
   @override
   String engineRustDesc(String label) {
     return '$label · сетка битов, тональность (хрома), громкость и ИИ-отпечаток по реальному звуку';
   }
+
+  @override
+  String get settingsEngine => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineUnavailable => 'Недоступно – только оценка по форме волны';
@@ -870,6 +876,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get srcTitle => 'Название';
+
+  @override
+  String get srcSoundCloud => 'SoundCloud';
 
   @override
   String get djEnergiesLive => 'Энергия аудио (live)';
