@@ -737,6 +737,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get sync => 'Синхронизация';
+
+  @override
   String get syncTitle => 'Синхронизация устройств';
 
   @override
@@ -810,6 +813,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get syncDone => 'Синхронизировано';
+
+  @override
+  String get engineName => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineTitle => 'Аудиодвижок и производительность';

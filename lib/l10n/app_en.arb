@@ -354,6 +354,7 @@
       }
     }
   },
+  "sync": "Sync",
   "syncTitle": "Device sync",
   "syncBackground": "Background sync",
   "syncServerActive": "Server active (port {port}) · peer-to-peer on your local network",
@@ -389,6 +390,7 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "engineName": "Rust Audio Engine (deckengine)",
   "engineTitle": "Audio engine & performance",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {

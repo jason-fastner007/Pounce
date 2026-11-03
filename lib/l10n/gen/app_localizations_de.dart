@@ -737,6 +737,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get sync => 'Sync';
+
+  @override
   String get syncTitle => 'Gerätesynchronisation';
 
   @override
@@ -808,6 +811,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get syncDone => 'Synchronisiert';
+
+  @override
+  String get engineName => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineTitle => 'Audio Engine & Performance';

@@ -728,6 +728,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get sync => 'Đồng bộ';
+
+  @override
   String get syncTitle => 'Đồng bộ thiết bị';
 
   @override
@@ -794,6 +797,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get syncDone => 'Đã đồng bộ';
+
+  @override
+  String get engineName => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';

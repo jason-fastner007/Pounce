@@ -728,6 +728,9 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
+  String get sync => 'Szinkronizálás';
+
+  @override
   String get syncTitle => 'Eszközszinkronizálás';
 
   @override
@@ -794,6 +797,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get syncDone => 'Szinkronizálva';
+
+  @override
+  String get engineName => 'Rust Audio Engine (deckengine)';
 
   @override
   String get engineTitle => 'Hangmotor és teljesítmény';

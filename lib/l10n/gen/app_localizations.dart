@@ -1439,6 +1439,12 @@ abstract class AppLocalizations {
   /// **'Synced ({count} new events)'**
   String syncLast(int count);
 
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
   /// No description provided for @syncTitle.
   ///
   /// In en, this message translates to:
@@ -1564,6 +1570,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Synced'**
   String get syncDone;
+
+  /// No description provided for @engineName.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineName;
 
   /// No description provided for @engineTitle.
   ///

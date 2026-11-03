@@ -740,6 +740,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get sync => 'مزامنة';
+
+  @override
   String get syncTitle => 'مزامنة الأجهزة';
 
   @override
@@ -811,6 +814,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get syncDone => 'تمت المزامنة';
+
+  @override
+  String get engineName => 'محرك صوت Rust (deckengine)';
 
   @override
   String get engineTitle => 'محرك الصوت والأداء';
