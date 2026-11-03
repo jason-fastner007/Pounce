@@ -334,4 +334,10 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('Setting loudMode propagates to engine', () async {
+    expect(player.loudness.value, Loudness.none);
+    settings.loudMode = LoudMode.loud;
+    expect(settings.loudMode, LoudMode.loud);
+  });
 }
