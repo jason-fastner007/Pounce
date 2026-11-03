@@ -554,5 +554,87 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('feed fetches stream items and maps tracks properly', () async {
+      store.set('sc.cid', 'test_client_id');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path.contains('/stream')) {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'type': 'track',
+                  'track': {
+                    'id': 7001,
+                    'title': 'Streamed Track',
+                    'user': {'id': 10, 'username': 'Artist 10'},
+                  },
+                },
+                // Malformed track entry that gets gracefully ignored
+                {'type': 'unknown'},
+              ],
+            }),
+            200,
+          );
+        }
+        return http.Response('{}', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final tracks = await sc.feed();
+      expect(tracks.length, 1);
+      expect(tracks.first.id, 7001);
+      expect(tracks.first.title, 'Streamed Track');
+    });
+
+    test('searchPlaylists queries soundcloud API and returns playlists', () async {
+      store.set('sc.cid', 'test_client_id');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        if (request.url.path.contains('/search/playlists_without_albums')) {
+          expect(request.url.queryParameters['q'], 'techno set');
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 8001,
+                  'title': 'Techno Set 2025',
+                  'user': {'id': 11, 'username': 'DJ Mix'},
+                  'track_count': 12,
+                },
+              ],
+              'next_href': 'https://api.soundcloud.com/next?page=2',
+            }),
+            200,
+          );
+        }
+        return http.Response('{}', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final page = await sc.searchPlaylists('techno set');
+      expect(page.items.length, 1);
+      expect(page.items.first.id, 8001);
+      expect(page.items.first.title, 'Techno Set 2025');
+      expect(page.next, 'https://api.soundcloud.com/next?page=2');
+    });
+
+    test('HTTP error throws ScException with status code', () async {
+      store.set('sc.cid', 'test_client_id');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        return http.Response('Not Found', 404, reasonPhrase: 'Not Found');
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+      expect(
+        () async => await sc.searchTracks('nothing'),
+        throwsA(isA<ScException>().having((e) => e.status, 'status', 404)),
+      );
+    });
   });
 }
