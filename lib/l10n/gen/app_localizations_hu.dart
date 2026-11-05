@@ -793,10 +793,16 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncNever => 'Még nincs szinkronizálva';
 
   @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
   String get syncDone => 'Szinkronizálva';
 
   @override
   String get engineTitle => 'Hangmotor és teljesítmény';
+
+  @override
+  String get engineRust => 'Rust hangmotor (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -814,6 +820,9 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get djAnalyzing => 'Hang elemzése…';
+
+  @override
+  String get djFlowDeck => 'DJ Flow Deck';
 
   @override
   String get djNoKey => 'Nem ismerhető fel hangnem';

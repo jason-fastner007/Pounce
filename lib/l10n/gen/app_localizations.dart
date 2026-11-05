@@ -1559,6 +1559,12 @@ abstract class AppLocalizations {
   /// **'Not synced yet'**
   String get syncNever;
 
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
   /// No description provided for @syncDone.
   ///
   /// In en, this message translates to:
@@ -1570,6 +1576,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audio engine & performance'**
   String get engineTitle;
+
+  /// No description provided for @engineRust.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRust;
 
   /// No description provided for @engineRustDesc.
   ///
@@ -1600,6 +1612,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Analysing audio…'**
   String get djAnalyzing;
+
+  /// No description provided for @djFlowDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow Deck'**
+  String get djFlowDeck;
 
   /// No description provided for @djNoKey.
   ///

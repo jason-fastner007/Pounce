@@ -793,10 +793,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncNever => 'Chưa đồng bộ';
 
   @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
   String get syncDone => 'Đã đồng bộ';
 
   @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRust => 'Engine âm thanh Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -814,6 +820,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get djAnalyzing => 'Đang phân tích âm thanh…';
+
+  @override
+  String get djFlowDeck => 'Bàn DJ Flow';
 
   @override
   String get djNoKey => 'Không nhận ra tông';

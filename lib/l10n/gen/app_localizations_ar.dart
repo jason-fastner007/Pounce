@@ -810,10 +810,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncNever => 'لم تتم المزامنة بعد';
 
   @override
+  String get syncAction => 'مزامنة';
+
+  @override
   String get syncDone => 'تمت المزامنة';
 
   @override
   String get engineTitle => 'محرك الصوت والأداء';
+
+  @override
+  String get engineRust => 'محرك الصوت Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -831,6 +837,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get djAnalyzing => 'جارٍ تحليل الصوت…';
+
+  @override
+  String get djFlowDeck => 'منصة DJ Flow';
 
   @override
   String get djNoKey => 'لم يُكتشف مقام';

@@ -808,10 +808,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get syncNever => 'Pas encore synchronisé';
 
   @override
+  String get syncAction => 'Synchroniser';
+
+  @override
   String get syncDone => 'Synchronisé';
 
   @override
   String get engineTitle => 'Moteur audio et performances';
+
+  @override
+  String get engineRust => 'Moteur audio Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -829,6 +835,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get djAnalyzing => 'Analyse de l\'audio…';
+
+  @override
+  String get djFlowDeck => 'Platine DJ Flow';
 
   @override
   String get djNoKey => 'Aucune tonalité détectée';
