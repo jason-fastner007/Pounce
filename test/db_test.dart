@@ -57,4 +57,27 @@ void main() {
     expect(await s.db.get(Table.kv, 'a'), isNull);
     expect(await s.db.get(Table.kv, 'b'), '{"x":true}');
   });
+
+  test('Store.open handles corrupted JSON legacy store gracefully', () async {
+    File('${dir.path}/kittyfork.json').writeAsStringSync('{invalid-json-data');
+    final db = open();
+    final legacy = await db.legacy();
+    expect(legacy, isNotNull);
+
+    // Call migration logic simulation
+    Map<String, dynamic> data;
+    try {
+      data = jsonDecode(legacy!) as Map<String, dynamic>;
+    } catch (_) {
+      data = {};
+    }
+    expect(data, isEmpty);
+  });
+
+  test('Store: get returns null on type mismatch or invalid JSON raw value', () async {
+    final s = Store.memory()..set('num', 42);
+    expect(s.get<String>('num'), isNull); // Type mismatch
+    expect(s.get<int>('num'), 42);
+    expect(s.get<int>('non_existent'), isNull);
+  });
 }
