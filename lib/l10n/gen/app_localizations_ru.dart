@@ -809,10 +809,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get syncNever => 'Ещё не синхронизировано';
 
   @override
+  String get syncAction => 'Синхронизировать';
+
+  @override
   String get syncDone => 'Синхронизировано';
 
   @override
   String get engineTitle => 'Аудиодвижок и производительность';
+
+  @override
+  String get engineRust => 'Аудиодвижок Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
@@ -830,6 +836,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get djAnalyzing => 'Анализ аудио…';
+
+  @override
+  String get djFlowDeck => 'Дека DJ Flow';
 
   @override
   String get djNoKey => 'Тональность не определена';

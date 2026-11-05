@@ -388,8 +388,10 @@
   "syncPairFailed": "Pairing failed",
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
+  "syncAction": "Sync",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "engineRust": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
@@ -402,6 +404,7 @@
   "djFlowActiveDesc": "Automatic phrase & key matching",
   "djTapToActivate": "Tap to activate",
   "djAnalyzing": "Analysing audio…",
+  "djFlowDeck": "DJ Flow Deck",
   "djNoKey": "No key detected",
   "djKeyUncertain": "uncertain",
   "djBar": "Bar {bar}/4",
