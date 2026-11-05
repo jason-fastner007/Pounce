@@ -334,4 +334,56 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('toggle plays when paused and pauses when playing', () async {
+    await player.playQueue([_t(1)]);
+    expect(player.playing, isFalse);
+
+    await player.toggle();
+    expect(engine.played, isTrue);
+
+    // Simulate engine state playing
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+    expect(player.playing, isTrue);
+
+    await player.toggle();
+    expect(engine.paused, isTrue);
+  });
+
+  test('LoopMode.one seeks to zero and replays on track ended', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.cycleRepeat(); // LoopMode.all
+    player.cycleRepeat(); // LoopMode.one
+    expect(player.repeat, LoopMode.one);
+
+    // Initial state before ended
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+
+    // Emit ended state
+    engine.emitState(const EngineState(status: EngineStatus.ended, playing: false));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, isTrue);
+    expect(player.current!.id, 1); // stays on track 1
+  });
+
+  test('prebufferTrack ignores live tracks or repeated track prebuffering', () async {
+    final liveTrack = _t(5, isLive: true);
+    await player.playQueue([_t(1), liveTrack]);
+
+    await player.prebufferTrack(liveTrack);
+    expect(engine.prebuffered, isEmpty);
+
+    final regularTrack = _t(2);
+    await player.prebufferTrack(regularTrack);
+    expect(engine.prebuffered, ['2']);
+
+    // Calling it again with same track & start should early return
+    engine.prebuffered.clear();
+    await player.prebufferTrack(regularTrack);
+    expect(engine.prebuffered, isEmpty);
+  });
 }

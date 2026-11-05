@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
+import 'package:pounce/sc/auth.dart';
 import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 
@@ -553,6 +554,100 @@ void main() {
       final bytes = await sc.range('https://cdn.com/audio.mp3', 2, 5);
 
       expect(bytes, [30, 40, 50, 60]);
+    });
+
+    test('user, userTracks, and userTopTracks endpoints', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+
+      final mockClient = MockClient((request) async {
+        final path = request.url.path;
+        if (path == '/users/42') {
+          return http.Response(jsonEncode({'id': 42, 'username': 'Artist42'}), 200);
+        } else if (path == '/users/42/tracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 1001,
+                  'title': 'Track 1001',
+                  'duration': 180000,
+                  'user': {'id': 42, 'username': 'Artist42'},
+                }
+              ]
+            }),
+            200,
+          );
+        } else if (path == '/users/42/toptracks') {
+          return http.Response(
+            jsonEncode({
+              'collection': [
+                {
+                  'id': 1002,
+                  'title': 'Top Track 1002',
+                  'duration': 210000,
+                  'user': {'id': 42, 'username': 'Artist42'},
+                }
+              ]
+            }),
+            200,
+          );
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      final sc = SoundCloud(store, settings, client: mockClient);
+
+      final u = await sc.user(42);
+      expect(u.id, 42);
+      expect(u.username, 'Artist42');
+
+      final tracks = await sc.userTracks(42);
+      expect(tracks.items.length, 1);
+      expect(tracks.items.first.title, 'Track 1001');
+
+      final topTracks = await sc.userTopTracks(42);
+      expect(topTracks.items.length, 1);
+      expect(topTracks.items.first.title, 'Top Track 1002');
+    });
+
+    test('setLiked with mobile API when auth is not web client', () async {
+      store.set('sc.cid', 'testcid123456789012345678901234');
+      store.set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+      store.set('auth.access', 'test_access_token');
+      store.set('auth.refresh', 'ref_token');
+      store.set('auth.expires', DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch);
+
+      String? recordedPath;
+      String? recordedBody;
+
+      late final SoundCloud sc;
+      final mockClient = MockClient((request) async {
+        if (request.url.host == 'api-mobile.soundcloud.com') {
+          recordedPath = request.url.path;
+          recordedBody = request.body;
+          return http.Response('{}', 200);
+        }
+        return http.Response('Not Found', 404);
+      });
+
+      sc = SoundCloud(store, settings, client: mockClient);
+      final auth = ScAuth(store, mockClient, sc.wrap);
+      sc.auth = auth;
+
+      final track = Track(
+        id: 555,
+        title: 'Like Test',
+        user: const ScUser(id: 1, username: 'u'),
+        durationMs: 120000,
+      );
+
+      await sc.setLiked(track, true);
+      expect(recordedPath, '/likes/tracks/create');
+      expect(recordedBody, contains('soundcloud:tracks:555'));
+
+      await sc.setLiked(track, false);
+      expect(recordedPath, '/likes/tracks/delete');
     });
   });
 }
