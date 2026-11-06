@@ -913,4 +913,21 @@ class AppLocalizationsHu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Belépés $entry · $drop · $fade mp áttűnés';
   }
+
+  @override
+  String get syncAction => 'Szinkronizálás';
+
+  @override
+  String get engineRustTitle => 'Rust Hangmotor (deckengine)';
+
+  @override
+  String get djFlowTitle => 'DJ Flow és Automix';
+
+  @override
+  String get djFlowDeckTooltip => 'DJ Flow Deck';
+
+  @override
+  String bpmKeyBarText(String bpm, String key, int bar, int beat) {
+    return '$bpm BPM · $key · $bar/4. ütem ($beat. ütés)';
+  }
 }

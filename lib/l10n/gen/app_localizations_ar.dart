@@ -930,4 +930,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'الدخول $entry · $drop · تلاشٍ $fade ث';
   }
+
+  @override
+  String get syncAction => 'مزامنة';
+
+  @override
+  String get engineRustTitle => 'محرك الصوت Rust (deckengine)';
+
+  @override
+  String get djFlowTitle => 'DJ Flow & Automix';
+
+  @override
+  String get djFlowDeckTooltip => 'DJ Flow Deck';
+
+  @override
+  String bpmKeyBarText(String bpm, String key, int bar, int beat) {
+    return '$bpm BPM · $key · المازورة $bar/4 (النبضة $beat)';
+  }
 }

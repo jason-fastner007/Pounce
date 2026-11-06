@@ -1774,6 +1774,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry {entry} · {drop} · {fade} s fade'**
   String planText(String entry, String drop, String fade);
+
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
+  /// No description provided for @engineRustTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRustTitle;
+
+  /// No description provided for @djFlowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow & Automix'**
+  String get djFlowTitle;
+
+  /// No description provided for @djFlowDeckTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'DJ Flow Deck'**
+  String get djFlowDeckTooltip;
+
+  /// No description provided for @bpmKeyBarText.
+  ///
+  /// In en, this message translates to:
+  /// **'{bpm} BPM · {key} · Bar {bar}/4 (Beat {beat})'**
+  String bpmKeyBarText(String bpm, String key, int bar, int beat);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -300,6 +300,11 @@ s('planDrop', en='Drop {time}', de='Drop {time}', fr='Drop {time}', ru='Дроп
 s('planNoDrop', en='no drop', de='kein Drop', fr='pas de drop', ru='без дропа', hu='nincs drop', vi='không có drop', ar='لا ذروة', es='sin drop')
 s('planSearching', en='looking for the drop…', de='Drop wird gesucht…', fr='recherche du drop…', ru='ищем дроп…', hu='drop keresése…', vi='đang tìm drop…', ar='جارٍ البحث عن الذروة…', es='buscando el drop…')
 s('planText', en='Entry {entry} · {drop} · {fade} s fade', de='Einstieg {entry} · {drop} · {fade} s Blende', fr='Entrée {entry} · {drop} · fondu {fade} s', ru='Вход {entry} · {drop} · переход {fade} с', hu='Belépés {entry} · {drop} · {fade} mp áttűnés', vi='Vào {entry} · {drop} · chuyển {fade} giây', ar='الدخول {entry} · {drop} · تلاشٍ {fade} ث', es='Entrada {entry} · {drop} · fundido de {fade} s')
+s('syncAction', en='Sync', de='Sync', fr='Sync', ru='Синхронизация', hu='Szinkronizálás', vi='Đồng bộ', ar='مزامنة', es='Sincronizar')
+s('engineRustTitle', en='Rust Audio Engine (deckengine)', de='Rust Audio Engine (deckengine)', fr='Moteur audio Rust (deckengine)', ru='Rust Audio Engine (deckengine)', hu='Rust Hangmotor (deckengine)', vi='Rust Audio Engine (deckengine)', ar='محرك الصوت Rust (deckengine)', es='Motor de audio Rust (deckengine)')
+s('djFlowTitle', en='DJ Flow & Automix', de='DJ Flow & Automix', fr='DJ Flow & Automix', ru='DJ Flow & Automix', hu='DJ Flow és Automix', vi='DJ Flow & Automix', ar='DJ Flow & Automix', es='DJ Flow & Automix')
+s('djFlowDeckTooltip', en='DJ Flow Deck', de='DJ Flow Deck', fr='Platine DJ Flow', ru='Дека DJ Flow', hu='DJ Flow Deck', vi='Bàn DJ Flow', ar='DJ Flow Deck', es='Platina DJ Flow')
+s('bpmKeyBarText', en='{bpm} BPM · {key} · Bar {bar}/4 (Beat {beat})', de='{bpm} BPM · {key} · Takt {bar}/4 (Beat {beat})', fr='{bpm} BPM · {key} · Mesure {bar}/4 (Temps {beat})', ru='{bpm} BPM · {key} · Такт {bar}/4 (Доля {beat})', hu='{bpm} BPM · {key} · {bar}/4. ütem ({beat}. ütés)', vi='{bpm} BPM · {key} · Ô nhịp {bar}/4 (Phách {beat})', ar='{bpm} BPM · {key} · المازورة {bar}/4 (النبضة {beat})', es='{bpm} BPM · {key} · Compás {bar}/4 (Tiempo {beat})')
 
 PH = {
   'homeBecauseYouPlayed': {'title': {'type': 'String'}},
@@ -329,6 +334,7 @@ PH = {
   'planDrop': {'time': {'type': 'String'}},
   'planText': {'entry': {'type': 'String'}, 'drop': {'type': 'String'}, 'fade': {'type': 'String'}},
   'version': {'version': {'type': 'String'}},
+  'bpmKeyBarText': {'bpm': {'type': 'String'}, 'key': {'type': 'String'}, 'bar': {'type': 'int'}, 'beat': {'type': 'int'}},
 }
 langs = ['en', 'de', 'fr', 'ru', 'hu', 'vi', 'ar', 'es']
 os.makedirs('lib/l10n', exist_ok=True)

@@ -928,4 +928,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Entrée $entry · $drop · fondu $fade s';
   }
+
+  @override
+  String get syncAction => 'Sync';
+
+  @override
+  String get engineRustTitle => 'Moteur audio Rust (deckengine)';
+
+  @override
+  String get djFlowTitle => 'DJ Flow & Automix';
+
+  @override
+  String get djFlowDeckTooltip => 'Platine DJ Flow';
+
+  @override
+  String bpmKeyBarText(String bpm, String key, int bar, int beat) {
+    return '$bpm BPM · $key · Mesure $bar/4 (Temps $beat)';
+  }
 }

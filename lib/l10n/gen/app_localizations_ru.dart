@@ -929,4 +929,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Вход $entry · $drop · переход $fade с';
   }
+
+  @override
+  String get syncAction => 'Синхронизация';
+
+  @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get djFlowTitle => 'DJ Flow & Automix';
+
+  @override
+  String get djFlowDeckTooltip => 'Дека DJ Flow';
+
+  @override
+  String bpmKeyBarText(String bpm, String key, int bar, int beat) {
+    return '$bpm BPM · $key · Такт $bar/4 (Доля $beat)';
+  }
 }

@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "không có drop",
   "planSearching": "đang tìm drop…",
-  "planText": "Vào {entry} · {drop} · chuyển {fade} giây"
+  "planText": "Vào {entry} · {drop} · chuyển {fade} giây",
+  "syncAction": "Đồng bộ",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "Bàn DJ Flow",
+  "bpmKeyBarText": "{bpm} BPM · {key} · Ô nhịp {bar}/4 (Phách {beat})"
 }

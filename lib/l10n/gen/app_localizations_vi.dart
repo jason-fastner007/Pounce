@@ -913,4 +913,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String planText(String entry, String drop, String fade) {
     return 'Vào $entry · $drop · chuyển $fade giây';
   }
+
+  @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
+  String get engineRustTitle => 'Rust Audio Engine (deckengine)';
+
+  @override
+  String get djFlowTitle => 'DJ Flow & Automix';
+
+  @override
+  String get djFlowDeckTooltip => 'Bàn DJ Flow';
+
+  @override
+  String bpmKeyBarText(String bpm, String key, int bar, int beat) {
+    return '$bpm BPM · $key · Ô nhịp $bar/4 (Phách $beat)';
+  }
 }

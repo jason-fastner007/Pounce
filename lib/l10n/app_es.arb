@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "sin drop",
   "planSearching": "buscando el drop…",
-  "planText": "Entrada {entry} · {drop} · fundido de {fade} s"
+  "planText": "Entrada {entry} · {drop} · fundido de {fade} s",
+  "syncAction": "Sincronizar",
+  "engineRustTitle": "Motor de audio Rust (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "Platina DJ Flow",
+  "bpmKeyBarText": "{bpm} BPM · {key} · Compás {bar}/4 (Tiempo {beat})"
 }

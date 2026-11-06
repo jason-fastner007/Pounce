@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "kein Drop",
   "planSearching": "Drop wird gesucht…",
-  "planText": "Einstieg {entry} · {drop} · {fade} s Blende"
+  "planText": "Einstieg {entry} · {drop} · {fade} s Blende",
+  "syncAction": "Sync",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "DJ Flow Deck",
+  "bpmKeyBarText": "{bpm} BPM · {key} · Takt {bar}/4 (Beat {beat})"
 }

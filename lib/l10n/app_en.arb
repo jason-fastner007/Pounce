@@ -478,5 +478,26 @@
         "type": "String"
       }
     }
+  },
+  "syncAction": "Sync",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "DJ Flow Deck",
+  "bpmKeyBarText": "{bpm} BPM · {key} · Bar {bar}/4 (Beat {beat})",
+  "@bpmKeyBarText": {
+    "placeholders": {
+      "bpm": {
+        "type": "String"
+      },
+      "key": {
+        "type": "String"
+      },
+      "bar": {
+        "type": "int"
+      },
+      "beat": {
+        "type": "int"
+      }
+    }
   }
 }
