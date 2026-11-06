@@ -334,4 +334,93 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('removeAt ignores currently playing index and adjusts index on preceding removal', () async {
+    await player.playQueue([_t(1), _t(2), _t(3)], 1);
+    expect(player.index, 1);
+    expect(player.current!.id, 2);
+
+    // Removing current index should do nothing
+    player.removeAt(1);
+    expect(player.queue.map((e) => e.id), [1, 2, 3]);
+    expect(player.index, 1);
+
+    // Removing index before current decrements index
+    player.removeAt(0);
+    expect(player.queue.map((e) => e.id), [2, 3]);
+    expect(player.index, 0);
+    expect(player.current!.id, 2);
+  });
+
+  test('Live track duration and seeking restrictions', () async {
+    final liveTrack = _t(50, isLive: true);
+    await player.playQueue([liveTrack]);
+
+    expect(player.isLive, isTrue);
+    expect(player.duration, Duration.zero);
+
+    // Seeking on live stream is ignored
+    await player.seek(const Duration(seconds: 10));
+    expect(engine.seekedTo, isNull);
+    expect(player.position.value, Duration.zero);
+  });
+
+  test('LoopMode.one seeks to start and replays when track ends', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.repeat = LoopMode.one;
+
+    // Transition from playing to ended
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await pumpEventQueue();
+
+    engine.emitState(const EngineState(status: EngineStatus.ended));
+    await pumpEventQueue();
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, isTrue);
+    expect(player.current!.id, 1);
+  });
+
+  test('Autoplay extends queue when reaching end of queue', () async {
+    settings.autoplay = true;
+
+    final client = MockClient((req) async {
+      if (req.url.path.contains('/related')) {
+        return http.Response(
+          '{"collection":[{"id":88,"title":"Related","duration":180000,"user":{"id":1,"username":"u"}}]}',
+          200,
+        );
+      }
+      return http.Response('{"url":"https://cdn/a.mp3"}', 200);
+    });
+
+    final sc = SoundCloud(store, settings, client: client);
+    final autoPlayer = PlayerController(engine, sc, settings, Library(store), store);
+
+    await autoPlayer.playQueue([_t(1)]);
+    expect(autoPlayer.queue.length, 1);
+
+    await autoPlayer.next(auto: true);
+    await pumpEventQueue();
+
+    expect(autoPlayer.queue.map((e) => e.id), [1, 88]);
+    expect(autoPlayer.current!.id, 88);
+
+    autoPlayer.dispose();
+  });
+
+  test('Prebuffers upcoming track when conditions met', () async {
+    await player.playQueue([_t(1, durationMs: 200000), _t(2, durationMs: 200000)]);
+
+    // Emit playing state after 10s of playback with plenty of remaining time
+    engine.emitState(const EngineState(
+      status: EngineStatus.ready,
+      playing: true,
+      position: Duration(seconds: 10),
+      duration: Duration(seconds: 200),
+    ));
+    await pumpEventQueue();
+
+    expect(engine.prebuffered, contains('2'));
+  });
 }
