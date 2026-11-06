@@ -277,5 +277,10 @@
   "planDrop": "Дроп {time}",
   "planNoDrop": "без дропа",
   "planSearching": "ищем дроп…",
-  "planText": "Вход {entry} · {drop} · переход {fade} с"
+  "planText": "Вход {entry} · {drop} · переход {fade} с",
+  "syncAction": "Синхронизация",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "Дека DJ Flow",
+  "bpmKeyBarText": "{bpm} BPM · {key} · Такт {bar}/4 (Доля {beat})"
 }

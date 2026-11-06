@@ -277,5 +277,10 @@
   "planDrop": "Drop {time}",
   "planNoDrop": "nincs drop",
   "planSearching": "drop keresése…",
-  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés"
+  "planText": "Belépés {entry} · {drop} · {fade} mp áttűnés",
+  "syncAction": "Szinkronizálás",
+  "engineRustTitle": "Rust Hangmotor (deckengine)",
+  "djFlowTitle": "DJ Flow és Automix",
+  "djFlowDeckTooltip": "DJ Flow Deck",
+  "bpmKeyBarText": "{bpm} BPM · {key} · {bar}/4. ütem ({beat}. ütés)"
 }

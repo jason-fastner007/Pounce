@@ -277,5 +277,10 @@
   "planDrop": "الذروة {time}",
   "planNoDrop": "لا ذروة",
   "planSearching": "جارٍ البحث عن الذروة…",
-  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث"
+  "planText": "الدخول {entry} · {drop} · تلاشٍ {fade} ث",
+  "syncAction": "مزامنة",
+  "engineRustTitle": "محرك الصوت Rust (deckengine)",
+  "djFlowTitle": "DJ Flow & Automix",
+  "djFlowDeckTooltip": "DJ Flow Deck",
+  "bpmKeyBarText": "{bpm} BPM · {key} · المازورة {bar}/4 (النبضة {beat})"
 }

@@ -434,7 +434,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                 builder: (context, _) {
                   final dj = context.deps.dj;
                   return IconButton(
-                    tooltip: 'DJ Flow Deck',
+                    tooltip: context.l10n.djFlowDeckTooltip,
                     onPressed: () => _setPane(_pane == _Pane.dj ? _Pane.art : _Pane.dj),
                     icon: Icon(
                       Icons.album_rounded,
@@ -526,7 +526,7 @@ class _PlayerSheetState extends State<PlayerSheet> with TickerProviderStateMixin
                       ValueListenableBuilder<BeatClock>(
                         valueListenable: dj.beat,
                         builder: (context, b, _) => Text(
-                          '${state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--"} BPM · ${state.currentKey?.code ?? "Key"} · Takt ${b.bar}/4 (Beat ${b.beatInBar})',
+                          context.l10n.bpmKeyBarText(state.currentBpm > 0 ? state.currentBpm.toStringAsFixed(1) : "--", state.currentKey?.code ?? "Key", b.bar, b.beatInBar),
                           style: TextStyle(
                             fontFamily: Studio.mono,
                             fontSize: 11.5,
