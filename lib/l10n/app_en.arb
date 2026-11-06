@@ -478,5 +478,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "soundcloud": "SoundCloud",
+  "syncAction": "Sync",
+  "engineRust": "Rust Audio Engine (deckengine)"
 }
