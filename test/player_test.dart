@@ -140,6 +140,12 @@ void main() {
       if (req.url.path.contains('error')) {
         return http.Response('{"error":"not_found"}', 404);
       }
+      if (req.url.path.contains('/related')) {
+        return http.Response(
+          '{"collection":[{"id":500,"title":"Related Track","duration":180000,"user":{"id":1,"username":"u"}}]}',
+          200,
+        );
+      }
       return http.Response('{"url":"https://cdn/a.mp3"}', 200);
     });
     engine = _FakeEngine();
@@ -333,5 +339,64 @@ void main() {
     expect(newPlayer.index, 1);
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
+  });
+
+  test('toggle flips between play and pause', () async {
+    await player.playQueue([_t(1)]);
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: false));
+    await Future<void>.delayed(Duration.zero);
+
+    await player.toggle();
+    expect(engine.played, isTrue);
+
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+
+    await player.toggle();
+    expect(engine.paused, isTrue);
+  });
+
+  test('LoopMode.one seeks to start and replays on track ended', () async {
+    await player.playQueue([_t(1), _t(2)]);
+    player.cycleRepeat(); // LoopMode.all
+    player.cycleRepeat(); // LoopMode.one
+    expect(player.repeat, LoopMode.one);
+
+    // Active state first, then ended
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await Future<void>.delayed(Duration.zero);
+
+    engine.emitState(const EngineState(status: EngineStatus.ended, playing: false));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, isTrue);
+    expect(player.current!.id, 1);
+  });
+
+  test('autoplay extends queue with related tracks when end reached', () async {
+    settings.autoplay = true;
+    await player.playQueue([_t(1)]);
+    expect(player.queue.length, 1);
+
+    await player.next(auto: true);
+    expect(player.queue.length, 2);
+    expect(player.current!.id, 500);
+  });
+
+  test('prebuffering upcoming track when near playback end', () async {
+    final t1 = _t(1, durationMs: 60000);
+    final t2 = _t(2, durationMs: 60000);
+    await player.playQueue([t1, t2]);
+
+    engine.emitState(const EngineState(
+      status: EngineStatus.ready,
+      playing: true,
+      position: Duration(seconds: 40),
+      duration: Duration(seconds: 60),
+    ));
+    await Future<void>.delayed(Duration.zero);
+
+    expect(engine.prebuffered, contains('2'));
   });
 }

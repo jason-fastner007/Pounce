@@ -554,5 +554,17 @@ void main() {
 
       expect(bytes, [30, 40, 50, 60]);
     });
+
+    test('setLiked throws ScException when not logged in', () async {
+      final mockClient = MockClient((_) async => http.Response('{}', 200));
+      final sc = SoundCloud(store, settings, client: mockClient);
+      final track = Track.fromJson({
+        'id': 123,
+        'title': 'Test',
+        'user': {'id': 1, 'username': 'Artist'},
+      });
+
+      expect(() => sc.setLiked(track, true), throwsA(isA<ScException>()));
+    });
   });
 }
