@@ -586,6 +586,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get srcAll => 'Alle';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcRadio => 'Webradio';
 
   @override
@@ -810,7 +813,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get syncDone => 'Synchronisiert';
 
   @override
+  String get sync => 'Sync';
+
+  @override
   String get engineTitle => 'Audio Engine & Performance';
+
+  @override
+  String get rustAudioEngine => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

@@ -577,6 +577,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get srcAll => 'Mind';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String get srcRadio => 'Webrádió';
 
   @override
@@ -796,7 +799,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get sync => 'Szinkronizálás';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
+
+  @override
+  String get rustAudioEngine => 'Rust Hangmotor (deckengine)';
 
   @override
   String engineRustDesc(String label) {

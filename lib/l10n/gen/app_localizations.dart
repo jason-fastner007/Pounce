@@ -1163,6 +1163,12 @@ abstract class AppLocalizations {
   /// **'All'**
   String get srcAll;
 
+  /// No description provided for @soundcloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get soundcloud;
+
   /// No description provided for @srcRadio.
   ///
   /// In en, this message translates to:
@@ -1565,11 +1571,23 @@ abstract class AppLocalizations {
   /// **'Synced'**
   String get syncDone;
 
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get sync;
+
   /// No description provided for @engineTitle.
   ///
   /// In en, this message translates to:
   /// **'Audio engine & performance'**
   String get engineTitle;
+
+  /// No description provided for @rustAudioEngine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get rustAudioEngine;
 
   /// No description provided for @engineRustDesc.
   ///
