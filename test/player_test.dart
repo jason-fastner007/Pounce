@@ -334,4 +334,33 @@ void main() {
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
   });
+
+  test('PlayerController properties and convenience methods', () async {
+    expect(player.supportsLoudness, isFalse);
+    expect(player.loudness.value, Loudness.none);
+    expect(player.spectrum, isNull);
+    expect(player.streamTitle.value, isNull);
+    expect(player.shuffle, isFalse);
+    expect(player.loading, isFalse);
+    expect(player.buffered, Duration.zero);
+
+    // djFits test
+    expect(PlayerController.djFits(_t(1, durationMs: 180000)), isTrue);
+    expect(PlayerController.djFits(_t(2, durationMs: 400000)), isFalse); // > 6 mins
+    expect(PlayerController.djFits(_t(3, isPreview: true)), isFalse);
+    expect(PlayerController.djFits(_t(4, isLive: true, durationMs: 400000)), isTrue);
+
+    // hasNext with queue
+    await player.playQueue([_t(1), _t(2)], 0);
+    expect(player.hasNext, isTrue);
+    await player.next();
+    expect(player.hasNext, isFalse);
+
+    // livePosition when not playing
+    expect(player.livePosition, Duration.zero);
+
+    // toggle
+    await player.toggle();
+    expect(engine.played, isTrue);
+  });
 }
