@@ -145,6 +145,116 @@ void main() {
       expect(buildMatch.score, greaterThan(80.0));
       expect(windMatch.score, greaterThan(80.0));
     });
+
+    test('scoreCandidate covers relative major/minor, adjacent, distance 2/3 and energy differences', () {
+      final tr = mockTrack(4);
+
+      // Relative major/minor (e.g. 8A to 8B)
+      final relMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8B,
+        mode: EnergyMode.hold,
+      );
+      expect(relMatch.harmonicDistance, 1);
+      expect(relMatch.matchDescription, contains('Relative key (8A→8B)'));
+
+      // Adjacent on wheel (e.g. 8A to 9A)
+      final adjMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key9A,
+        mode: EnergyMode.hold,
+      );
+      expect(adjMatch.harmonicDistance, 1);
+      expect(adjMatch.matchDescription, contains('Harmonic (8A→9A)'));
+
+      // Distance 2 on wheel (e.g. 8A to 10A)
+      final dist2Match = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key10A,
+        mode: EnergyMode.hold,
+      );
+      expect(dist2Match.harmonicDistance, 2);
+      expect(dist2Match.matchDescription, contains('Key change (8A→10A)'));
+
+      // Distance 3 on wheel (e.g. 8A to 11A)
+      final dist3Match = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key11A,
+        mode: EnergyMode.hold,
+      );
+      expect(dist3Match.harmonicDistance, 3);
+
+      // Distance > 3 on wheel (e.g. 8A to 2A)
+      final dist4Match = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key2A,
+        mode: EnergyMode.hold,
+      );
+      expect(dist4Match.harmonicDistance, greaterThan(3));
+
+      // Candidate key without current key
+      final noCurrKeyMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: null,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        mode: EnergyMode.hold,
+      );
+      expect(noCurrKeyMatch.matchDescription, contains('Key 8A'));
+
+      // Energy level evaluation across modes
+      final energyBuildMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        mode: EnergyMode.buildUp,
+        candidateEnergy: 8,
+        currentEnergy: 5,
+      );
+      expect(energyBuildMatch.score, greaterThan(80.0));
+
+      final energyWindMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        mode: EnergyMode.windDown,
+        candidateEnergy: 5,
+        currentEnergy: 8,
+      );
+      expect(energyWindMatch.score, greaterThan(80.0));
+
+      final energyHoldMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        mode: EnergyMode.hold,
+        candidateEnergy: 6,
+        currentEnergy: 6,
+      );
+      expect(energyHoldMatch.score, greaterThan(80.0));
+    });
   });
 
   group('DjFlowController components & mixEntry tests', () {
