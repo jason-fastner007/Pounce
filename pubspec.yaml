@@ -24,7 +24,7 @@ dependencies:
   material_ui: ^1.10.0
   cupertino_ui: ^1.1.6
   crypto: ^3.0.8
-  sqlite3: ^3.8.0
+  sqlite3: ^3.7.0
   qr: ^4.0.1
   url_launcher: ^6.3.3
 dev_dependencies:
