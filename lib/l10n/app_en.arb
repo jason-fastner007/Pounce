@@ -280,6 +280,7 @@
   "djStop": "Stop DJ",
   "djSkip": "Skip (mixes over and learns)",
   "srcAll": "All",
+  "soundcloud": "SoundCloud",
   "srcRadio": "Web radio",
   "radioSection": "Live radio · Stations",
   "radioFavorites": "Favourite stations",
@@ -389,7 +390,9 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "sync": "Sync",
   "engineTitle": "Audio engine & performance",
+  "rustAudioEngine": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
