@@ -695,6 +695,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupSignIn => 'Đăng nhập SoundCloud';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get setupDjTitle => 'DJ của bạn sẽ phát gì?';
 
   @override
@@ -790,6 +793,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncNow => 'Đồng bộ ngay';
 
   @override
+  String get syncAction => 'Đồng bộ';
+
+  @override
   String get syncNever => 'Chưa đồng bộ';
 
   @override
@@ -797,6 +803,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

@@ -708,6 +708,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupSignIn => 'تسجيل الدخول إلى SoundCloud';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get setupDjTitle => 'ماذا يشغّل الدي جي الخاص بك؟';
 
   @override
@@ -807,6 +810,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get syncNow => 'مزامنة الآن';
 
   @override
+  String get syncAction => 'مزامنة';
+
+  @override
   String get syncNever => 'لم تتم المزامنة بعد';
 
   @override
@@ -814,6 +820,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get engineTitle => 'محرك الصوت والأداء';
+
+  @override
+  String get engineRust => 'محرك الصوت Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

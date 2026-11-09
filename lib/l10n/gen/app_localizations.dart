@@ -1385,6 +1385,12 @@ abstract class AppLocalizations {
   /// **'Sign in to SoundCloud'**
   String get setupSignIn;
 
+  /// No description provided for @srcSoundCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'SoundCloud'**
+  String get srcSoundCloud;
+
   /// No description provided for @setupDjTitle.
   ///
   /// In en, this message translates to:
@@ -1553,6 +1559,12 @@ abstract class AppLocalizations {
   /// **'Sync now'**
   String get syncNow;
 
+  /// No description provided for @syncAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncAction;
+
   /// No description provided for @syncNever.
   ///
   /// In en, this message translates to:
@@ -1570,6 +1582,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Audio engine & performance'**
   String get engineTitle;
+
+  /// No description provided for @engineRust.
+  ///
+  /// In en, this message translates to:
+  /// **'Rust Audio Engine (deckengine)'**
+  String get engineRust;
 
   /// No description provided for @engineRustDesc.
   ///

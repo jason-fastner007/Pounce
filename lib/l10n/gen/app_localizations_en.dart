@@ -701,6 +701,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupSignIn => 'Sign in to SoundCloud';
 
   @override
+  String get srcSoundCloud => 'SoundCloud';
+
+  @override
   String get setupDjTitle => 'What does your DJ play?';
 
   @override
@@ -800,6 +803,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncNow => 'Sync now';
 
   @override
+  String get syncAction => 'Sync';
+
+  @override
   String get syncNever => 'Not synced yet';
 
   @override
@@ -807,6 +813,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get engineTitle => 'Audio engine & performance';
+
+  @override
+  String get engineRust => 'Rust Audio Engine (deckengine)';
 
   @override
   String engineRustDesc(String label) {

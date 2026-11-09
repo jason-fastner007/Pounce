@@ -331,6 +331,7 @@
   "setupAccountTitle": "Bring your likes along?",
   "setupAccountDesc": "Optional: sign in to SoundCloud to import likes and playlists. Pounce works fine without an account.",
   "setupSignIn": "Sign in to SoundCloud",
+  "srcSoundCloud": "SoundCloud",
   "setupDjTitle": "What does your DJ play?",
   "setupDjDesc": "Pick a few styles. You can change them any time in the DJ tab.",
   "setupPrivacyTitle": "Your privacy",
@@ -387,9 +388,11 @@
   "syncPaired": "Paired!",
   "syncPairFailed": "Pairing failed",
   "syncNow": "Sync now",
+  "syncAction": "Sync",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
   "engineTitle": "Audio engine & performance",
+  "engineRust": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
