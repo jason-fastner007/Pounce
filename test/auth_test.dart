@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:pounce/core/settings.dart';
 import 'package:pounce/core/store.dart';
 import 'package:pounce/sc/auth.dart';
+import 'package:pounce/sc/models.dart';
 import 'package:pounce/sc/soundcloud.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -115,5 +116,85 @@ void main() {
     await auth.complete('https://soundcloud.com/signin/callback?code=WEBCODE999&state=');
     expect(auth.usesWebClient, isTrue);
     expect((await sc.me()).username, 'web');
+  });
+
+  test('deviceId generates 32 hex chars and is persisted', () {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+    final id1 = auth.deviceId;
+    expect(id1.length, 32);
+    expect(RegExp(r'^[0-9a-f]{32}$').hasMatch(id1), isTrue);
+    expect(store.get<String>('auth.device'), id1);
+    expect(auth.deviceId, id1);
+  });
+
+  test('complete throws on invalid callback or no pending login', () async {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    expect(() => auth.complete('not-a-valid-code'), throwsA(isA<AuthException>()));
+
+    expect(() => auth.complete('sc://auth?code=validcode123'), throwsA(isA<AuthException>()));
+  });
+
+  test('token auto-refreshes when nearing expiration', () async {
+    final store = Store.memory();
+    var refreshed = false;
+    final client = MockClient((req) async {
+      refreshed = true;
+      return http.Response(jsonEncode({'access_token': 'NEW_ACCESS', 'expires_in': 3600}), 200);
+    });
+    final auth = ScAuth(store, client, (u) => u);
+
+    // No access token
+    expect(await auth.token(), isNull);
+
+    // Token set with expiry far in the future
+    store.set('auth.access', 'EXISTING_TOKEN');
+    store.set('auth.expires', DateTime.now().millisecondsSinceEpoch + 300000);
+    expect(await auth.token(), 'EXISTING_TOKEN');
+    expect(refreshed, isFalse);
+
+    // Token nearing expiry (< 60s)
+    store.set('auth.expires', DateTime.now().millisecondsSinceEpoch + 10000);
+    store.set('auth.refresh', 'REFRESH_TOKEN');
+    final tok = await auth.token();
+    expect(tok, 'NEW_ACCESS');
+    expect(refreshed, isTrue);
+  });
+
+  test('setMe and logout update state and Store and notify listeners', () {
+    final store = Store.memory();
+    final auth = ScAuth(store, http.Client(), (u) => u);
+
+    var notifyCount = 0;
+    auth.addListener(() => notifyCount++);
+
+    const user = ScUser(id: 42, username: 'tester', avatarUrl: 'https://img/avatar.jpg');
+    auth.setMe(user);
+    expect(auth.me?.id, 42);
+    expect(store.get<Map>('auth.me')?['id'], 42);
+    expect(notifyCount, 1);
+
+    // Re-instantiate from store to check constructor deserialization
+    final auth2 = ScAuth(store, http.Client(), (u) => u);
+    expect(auth2.me?.username, 'tester');
+
+    store.set('auth.access', 'ACC');
+    store.set('auth.refresh', 'REF');
+    store.set('auth.expires', 999999);
+    store.set('auth.verifier', 'VER');
+    store.set('auth.client', 'CLI');
+
+    auth.logout();
+    expect(auth.me, isNull);
+    expect(auth.loggedIn, isFalse);
+    expect(store.get<String>('auth.access'), isNull);
+    expect(store.get<String>('auth.refresh'), isNull);
+    expect(store.get<int>('auth.expires'), isNull);
+    expect(store.get<Map>('auth.me'), isNull);
+    expect(store.get<String>('auth.verifier'), isNull);
+    expect(store.get<String>('auth.client'), isNull);
+    expect(notifyCount, 2);
   });
 }
