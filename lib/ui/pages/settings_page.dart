@@ -623,7 +623,7 @@ class _SyncGroup extends StatelessWidget {
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_syncStatus(l, sync))));
                 },
-                child: const Text('Sync'),
+                child: Text(l.sync),
               ),
             ),
           ],
@@ -653,7 +653,7 @@ class _RustEngineGroup extends StatelessWidget {
       children: [
         ListTile(
           leading: Icon(Icons.speed_rounded, color: rust ? const Color(0xFF00E676) : Studio.text3),
-          title: const Text('Rust Audio Engine (deckengine)'),
+          title: Text(l.engineRustTitle),
           subtitle: Text(rust ? l.engineRustDesc(engine.label) : l.engineUnavailable),
           trailing: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
