@@ -303,6 +303,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scPlaylists => 'Danh sách phát SoundCloud của bạn';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String transferLikes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -796,7 +799,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncDone => 'Đã đồng bộ';
 
   @override
+  String get syncButton => 'Đồng bộ';
+
+  @override
   String get engineTitle => 'Engine âm thanh & hiệu năng';
+
+  @override
+  String get engineRustTitle => 'Engine âm thanh Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {

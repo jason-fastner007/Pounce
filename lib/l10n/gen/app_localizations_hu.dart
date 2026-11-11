@@ -303,6 +303,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get scPlaylists => 'SoundCloud-listáid';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String transferLikes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -796,7 +799,13 @@ class AppLocalizationsHu extends AppLocalizations {
   String get syncDone => 'Szinkronizálva';
 
   @override
+  String get syncButton => 'Szinkronizálás';
+
+  @override
   String get engineTitle => 'Hangmotor és teljesítmény';
+
+  @override
+  String get engineRustTitle => 'Rust hangmotor (deckengine)';
 
   @override
   String engineRustDesc(String label) {

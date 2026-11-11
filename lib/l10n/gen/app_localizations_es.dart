@@ -310,6 +310,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get scPlaylists => 'Tus listas de SoundCloud';
 
   @override
+  String get soundcloud => 'SoundCloud';
+
+  @override
   String transferLikes(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -810,7 +813,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get syncDone => 'Sincronizado';
 
   @override
+  String get syncButton => 'Sincronizar';
+
+  @override
   String get engineTitle => 'Motor de audio y rendimiento';
+
+  @override
+  String get engineRustTitle => 'Motor de audio Rust (deckengine)';
 
   @override
   String engineRustDesc(String label) {
