@@ -160,6 +160,7 @@
   "logoutConfirm": "Sign out? Your likes stay on this device.",
   "homeStream": "Your stream",
   "scPlaylists": "Your SoundCloud playlists",
+  "soundcloud": "SoundCloud",
   "transferLikes": "{count, plural, =1{Transfer 1 local like to your account?} other{Transfer {count} local likes to your account?}}",
   "@transferLikes": {
     "placeholders": {
@@ -389,7 +390,9 @@
   "syncNow": "Sync now",
   "syncNever": "Not synced yet",
   "syncDone": "Synced",
+  "syncButton": "Sync",
   "engineTitle": "Audio engine & performance",
+  "engineRustTitle": "Rust Audio Engine (deckengine)",
   "engineRustDesc": "{label} · beat grid, key (chroma), loudness and AI fingerprint from real audio",
   "@engineRustDesc": {
     "placeholders": {
