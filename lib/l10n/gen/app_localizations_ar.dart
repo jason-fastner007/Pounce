@@ -254,8 +254,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذا المقطع محمي بإدارة الحقوق الرقمية ولا يمكن لـ Pounce تشغيله بعد، حتى بعد تسجيل الدخول';
 
   @override
-  String get protectedPlayable =>
-      'محمي بإدارة الحقوق الرقمية – تفك وحدة DRM في متصفحك تشفيره';
+  String get protectedPlayable => 'محمي بإدارة الحقوق الرقمية – تفك وحدة DRM في متصفحك تشفيره';
 
   @override
   String get account => 'الحساب';
@@ -270,8 +269,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signup => 'إنشاء حساب';
 
   @override
-  String get loginPrivacy =>
-      'يتم تسجيل الدخول على صفحة SoundCloud نفسها، ولا يرى Pounce كلمة مرورك أبدًا.';
+  String get loginPrivacy => 'يتم تسجيل الدخول على صفحة SoundCloud نفسها، ولا يرى Pounce كلمة مرورك أبدًا.';
 
   @override
   String get loginWaiting => 'أكمل تسجيل الدخول في المتصفح…';
@@ -341,8 +339,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loudTitle => 'وضع الصوت';
 
   @override
-  String get loudDesc =>
-      'يوازن بين المقاطع العالية والمنخفضة (ITU-R BS.1770) مع محدِّد مدمج ضد التشويه.';
+  String get loudDesc => 'يوازن بين المقاطع العالية والمنخفضة (ITU-R BS.1770) مع محدِّد مدمج ضد التشويه.';
 
   @override
   String get loudOff => 'إيقاف';
@@ -492,8 +489,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get autoplay => 'التشغيل التلقائي';
 
   @override
-  String get autoplayDesc =>
-      'متابعة تشغيل مقاطع مشابهة عند انتهاء قائمة الانتظار';
+  String get autoplayDesc => 'متابعة تشغيل مقاطع مشابهة عند انتهاء قائمة الانتظار';
 
   @override
   String get network => 'الشبكة';
@@ -502,15 +498,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get proxy => 'وكيل CORS';
 
   @override
-  String get proxyDesc =>
-      'مطلوب في المتصفح لأن SoundCloud لا يسمح إلا بموقعه الخاص.';
+  String get proxyDesc => 'مطلوب في المتصفح لأن SoundCloud لا يسمح إلا بموقعه الخاص.';
 
   @override
   String get about => 'حول';
 
   @override
-  String get aboutText =>
-      'مستوحى من KittyTune (alan7383) ومكتوب من الصفر بـ Flutter. برنامج حر بترخيص GPL-3.0.';
+  String get aboutText => 'مستوحى من KittyTune (alan7383) ومكتوب من الصفر بـ Flutter. برنامج حر بترخيص GPL-3.0.';
 
   @override
   String get licenses => 'تراخيص المصادر المفتوحة';
@@ -519,8 +513,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get previewBadge => 'معاينة (30 ث)';
 
   @override
-  String get previewHint =>
-      'لا يقدّم SoundCloud سوى معاينة مدتها 30 ثانية لهذا المقطع.';
+  String get previewHint => 'لا يقدّم SoundCloud سوى معاينة مدتها 30 ثانية لهذا المقطع.';
 
   @override
   String get openInYtMusic => 'فتح في YouTube Music';
@@ -529,8 +522,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get skipPreviews => 'تخطي المعاينات';
 
   @override
-  String get skipPreviewsDesc =>
-      'تخطي معاينات الثلاثين ثانية عند الانتقال في قائمة الانتظار';
+  String get skipPreviewsDesc => 'تخطي معاينات الثلاثين ثانية عند الانتقال في قائمة الانتظار';
 
   @override
   String get fastStart => 'بدء سريع';
@@ -619,8 +611,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get radioSource => 'راديو الويب';
 
   @override
-  String get radioSourceDesc =>
-      'عشرات الآلاف من المحطات من radio-browser.info. عند الإيقاف: لا طلبات إطلاقًا.';
+  String get radioSourceDesc => 'عشرات الآلاف من المحطات من radio-browser.info. عند الإيقاف: لا طلبات إطلاقًا.';
 
   @override
   String get live => 'مباشر';
@@ -664,12 +655,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get updateReleasePage => 'صفحة الإصدار';
 
   @override
-  String get updateChecksumFailed =>
-      'المجموع الاختباري غير مطابق – تم حذف التنزيل.';
+  String get updateChecksumFailed => 'المجموع الاختباري غير مطابق – تم حذف التنزيل.';
 
   @override
-  String get updateNeedsPermission =>
-      'اسمح لـ Pounce بتثبيت التطبيقات ثم اضغط مجددًا.';
+  String get updateNeedsPermission => 'اسمح لـ Pounce بتثبيت التطبيقات ثم اضغط مجددًا.';
 
   @override
   String get updateFailed => 'فشل التحديث – حاول لاحقًا.';
@@ -678,15 +667,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get beta => 'تجريبي';
 
   @override
-  String get betaNote =>
-      'Pounce في مرحلة تجريبية. قد تتغير بعض الأشياء أو تتعطل – ملاحظاتك على GitHub مرحب بها.';
+  String get betaNote => 'Pounce في مرحلة تجريبية. قد تتغير بعض الأشياء أو تتعطل – ملاحظاتك على GitHub مرحب بها.';
 
   @override
   String get setupWelcome => 'مرحبًا بك في Pounce';
 
   @override
-  String get setupTagline =>
-      'موسيقى سريعة من SoundCloud والراديو عبر الإنترنت – مع دي جي يمزج لك.';
+  String get setupTagline => 'موسيقى سريعة من SoundCloud والراديو عبر الإنترنت – مع دي جي يمزج لك.';
 
   @override
   String get setupStart => 'لنبدأ';
@@ -707,12 +694,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupSourcesTitle => 'من أين تأتي الموسيقى؟';
 
   @override
-  String get setupSoundcloudDesc =>
-      'ملايين المقاطع والمزجات والريمكسات. مفعّل دائمًا.';
+  String get setupSoundcloudDesc => 'ملايين المقاطع والمزجات والريمكسات. مفعّل دائمًا.';
 
   @override
-  String get setupRadioDesc =>
-      'أكثر من 30,000 محطة عبر radio-browser.info. إيقاف = لا طلبات إطلاقًا.';
+  String get setupRadioDesc => 'أكثر من 30,000 محطة عبر radio-browser.info. إيقاف = لا طلبات إطلاقًا.';
 
   @override
   String get setupAccountTitle => 'هل تريد جلب إعجاباتك؟';
@@ -728,15 +713,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get setupDjTitle => 'ماذا يشغّل الدي جي الخاص بك؟';
 
   @override
-  String get setupDjDesc =>
-      'اختر بعض الأنماط. يمكنك تغييرها في أي وقت من تبويب DJ.';
+  String get setupDjDesc => 'اختر بعض الأنماط. يمكنك تغييرها في أي وقت من تبويب DJ.';
 
   @override
   String get setupPrivacyTitle => 'خصوصيتك';
 
   @override
-  String get setupPrivacyDesc =>
-      'لا تتبّع ولا إعلانات ولا معرّفات للجهاز. كل ما يلي معطّل حتى تفعّله.';
+  String get setupPrivacyDesc => 'لا تتبّع ولا إعلانات ولا معرّفات للجهاز. كل ما يلي معطّل حتى تفعّله.';
 
   @override
   String get setupRecognition => 'التعرّف على الأغاني (Echolot)';

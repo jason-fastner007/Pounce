@@ -246,12 +246,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get protected => 'Được bảo vệ';
 
   @override
-  String get protectedHint =>
-      'Bài hát này được bảo vệ DRM và Pounce chưa thể phát – kể cả khi đã đăng nhập';
+  String get protectedHint => 'Bài hát này được bảo vệ DRM và Pounce chưa thể phát – kể cả khi đã đăng nhập';
 
   @override
-  String get protectedPlayable =>
-      'Được bảo vệ DRM – do mô-đun DRM của trình duyệt giải mã';
+  String get protectedPlayable => 'Được bảo vệ DRM – do mô-đun DRM của trình duyệt giải mã';
 
   @override
   String get account => 'Tài khoản';
@@ -260,15 +258,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get login => 'Đăng nhập bằng SoundCloud';
 
   @override
-  String get loginSubtitle =>
-      'Đồng bộ lượt thích, danh sách phát và luồng của bạn';
+  String get loginSubtitle => 'Đồng bộ lượt thích, danh sách phát và luồng của bạn';
 
   @override
   String get signup => 'Tạo tài khoản';
 
   @override
-  String get loginPrivacy =>
-      'Bạn đăng nhập trên trang của SoundCloud. Pounce không bao giờ thấy mật khẩu của bạn.';
+  String get loginPrivacy => 'Bạn đăng nhập trên trang của SoundCloud. Pounce không bao giờ thấy mật khẩu của bạn.';
 
   @override
   String get loginWaiting => 'Hoàn tất đăng nhập trong trình duyệt…';
@@ -302,8 +298,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get logout => 'Đăng xuất';
 
   @override
-  String get logoutConfirm =>
-      'Đăng xuất? Lượt thích vẫn được giữ trên thiết bị này.';
+  String get logoutConfirm => 'Đăng xuất? Lượt thích vẫn được giữ trên thiết bị này.';
 
   @override
   String get homeStream => 'Luồng của bạn';
@@ -334,8 +329,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loudTitle => 'Chế độ âm lượng';
 
   @override
-  String get loudDesc =>
-      'Cân bằng bài lớn và nhỏ (ITU-R BS.1770), có bộ giới hạn tích hợp chống méo tiếng.';
+  String get loudDesc => 'Cân bằng bài lớn và nhỏ (ITU-R BS.1770), có bộ giới hạn tích hợp chống méo tiếng.';
 
   @override
   String get loudOff => 'Tắt';
@@ -494,8 +488,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get proxy => 'Proxy CORS';
 
   @override
-  String get proxyDesc =>
-      'Cần thiết trên trình duyệt vì SoundCloud chỉ cho phép trang web của họ.';
+  String get proxyDesc => 'Cần thiết trên trình duyệt vì SoundCloud chỉ cho phép trang web của họ.';
 
   @override
   String get about => 'Giới thiệu';
@@ -511,8 +504,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get previewBadge => 'Bản nghe thử (30 giây)';
 
   @override
-  String get previewHint =>
-      'SoundCloud chỉ cung cấp bản nghe thử 30 giây của bài này.';
+  String get previewHint => 'SoundCloud chỉ cung cấp bản nghe thử 30 giây của bài này.';
 
   @override
   String get openInYtMusic => 'Mở trong YouTube Music';
@@ -521,8 +513,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get skipPreviews => 'Bỏ qua bản nghe thử';
 
   @override
-  String get skipPreviewsDesc =>
-      'Bỏ qua bản nghe thử 30 giây khi hàng đợi chuyển bài';
+  String get skipPreviewsDesc => 'Bỏ qua bản nghe thử 30 giây khi hàng đợi chuyển bài';
 
   @override
   String get fastStart => 'Khởi động nhanh';
@@ -611,8 +602,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get radioSource => 'Radio trực tuyến';
 
   @override
-  String get radioSourceDesc =>
-      'Hàng chục nghìn đài từ radio-browser.info. Tắt: không gửi yêu cầu nào.';
+  String get radioSourceDesc => 'Hàng chục nghìn đài từ radio-browser.info. Tắt: không gửi yêu cầu nào.';
 
   @override
   String get live => 'TRỰC TIẾP';
@@ -659,8 +649,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get updateChecksumFailed => 'Sai mã kiểm tra – bản tải đã bị huỷ.';
 
   @override
-  String get updateNeedsPermission =>
-      'Cho phép Pounce cài đặt ứng dụng rồi chạm lại.';
+  String get updateNeedsPermission => 'Cho phép Pounce cài đặt ứng dụng rồi chạm lại.';
 
   @override
   String get updateFailed => 'Cập nhật thất bại – thử lại sau.';
@@ -676,8 +665,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupWelcome => 'Chào mừng đến với Pounce';
 
   @override
-  String get setupTagline =>
-      'Nhạc nhanh từ SoundCloud và radio web – cùng một DJ trộn nhạc cho bạn.';
+  String get setupTagline => 'Nhạc nhanh từ SoundCloud và radio web – cùng một DJ trộn nhạc cho bạn.';
 
   @override
   String get setupStart => 'Bắt đầu';
@@ -698,12 +686,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupSourcesTitle => 'Nhạc lấy từ đâu?';
 
   @override
-  String get setupSoundcloudDesc =>
-      'Hàng triệu bài hát, mix và remix. Luôn bật.';
+  String get setupSoundcloudDesc => 'Hàng triệu bài hát, mix và remix. Luôn bật.';
 
   @override
-  String get setupRadioDesc =>
-      'Hơn 30.000 đài qua radio-browser.info. Tắt = không gửi yêu cầu nào.';
+  String get setupRadioDesc => 'Hơn 30.000 đài qua radio-browser.info. Tắt = không gửi yêu cầu nào.';
 
   @override
   String get setupAccountTitle => 'Mang theo lượt thích của bạn?';
@@ -719,8 +705,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get setupDjTitle => 'DJ của bạn sẽ phát gì?';
 
   @override
-  String get setupDjDesc =>
-      'Chọn vài phong cách. Bạn có thể đổi bất cứ lúc nào trong tab DJ.';
+  String get setupDjDesc => 'Chọn vài phong cách. Bạn có thể đổi bất cứ lúc nào trong tab DJ.';
 
   @override
   String get setupPrivacyTitle => 'Quyền riêng tư của bạn';
