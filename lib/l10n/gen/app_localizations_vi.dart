@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -119,12 +120,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String tracksCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count bài hát',
-      zero: 'Không có bài hát',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count bài hát', zero: 'Không có bài hát');
     return '$_temp0';
   }
 
@@ -777,11 +773,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String syncPeers(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Đã ghép $count thiết bị',
-    );
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'Đã ghép $count thiết bị');
     return '$_temp0';
   }
 
