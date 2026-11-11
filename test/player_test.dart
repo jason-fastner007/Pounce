@@ -119,9 +119,11 @@ Track _t(
   policy: isPreview ? 'SNIP' : null,
   streamUrl: isLive ? 'https://live.stream/hls.m3u8' : null,
   trackAuthorization: 'x',
-  transcodings: transcodings ?? const [
-    Transcoding(url: 'https://api/x', preset: 'mp3', protocol: 'progressive', mime: 'audio/mpeg', snipped: false),
-  ],
+  transcodings:
+      transcodings ??
+      const [
+        Transcoding(url: 'https://api/x', preset: 'mp3', protocol: 'progressive', mime: 'audio/mpeg', snipped: false),
+      ],
 );
 
 void main() {
@@ -321,17 +323,123 @@ void main() {
     player.dispose(); // Persists queue, index, and pos
 
     // Create new player controller with same store to test restoration
-    final newPlayer = PlayerController(
-      _FakeEngine(),
-      SoundCloud(store, settings),
-      settings,
-      Library(store),
-      store,
-    );
+    final newPlayer = PlayerController(_FakeEngine(), SoundCloud(store, settings), settings, Library(store), store);
 
     expect(newPlayer.queue.map((e) => e.id), [10, 11]);
     expect(newPlayer.index, 1);
     expect(newPlayer.position.value, const Duration(milliseconds: 500));
     newPlayer.dispose();
+  });
+
+  test('Live stream duration is Duration.zero and seek is ignored', () async {
+    final live = _t(50, isLive: true, durationMs: 500000);
+    await player.playQueue([live]);
+
+    expect(player.isLive, isTrue);
+    expect(player.duration, Duration.zero);
+
+    await player.seek(const Duration(seconds: 15));
+    expect(player.position.value, Duration.zero);
+    expect(engine.seekedTo, isNull);
+  });
+
+  test('playNext and addToQueue when queue is empty directly start playback', () async {
+    expect(player.current, isNull);
+
+    player.playNext(_t(60));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await pumpEventQueue();
+    expect(player.current?.id, 60);
+
+    final emptyPlayer = PlayerController(
+      _FakeEngine(),
+      SoundCloud(store, settings),
+      settings,
+      Library(store),
+      Store.memory(),
+    );
+    expect(emptyPlayer.current, isNull);
+    emptyPlayer.addToQueue(_t(61));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await pumpEventQueue();
+    expect(emptyPlayer.current?.id, 61);
+    emptyPlayer.dispose();
+  });
+
+  test('LoudMode setting change notifies engine', () async {
+    settings.loudMode = LoudMode.loud;
+    await pumpEventQueue();
+    expect(settings.loudMode, LoudMode.loud);
+  });
+
+  test('previous rewinds to start when position > 3 seconds, or moves to previous track when at start', () async {
+    await player.playQueue([_t(1), _t(2)], 1);
+    expect(player.index, 1);
+
+    // Position > 3 seconds rewinds to 0
+    await player.seek(const Duration(seconds: 4));
+    expect(player.position.value, const Duration(seconds: 4));
+    await player.previous();
+    expect(player.index, 1);
+    expect(player.position.value, Duration.zero);
+
+    // Position <= 3 seconds moves to previous track
+    await player.previous();
+    expect(player.index, 0);
+  });
+
+  test('LoopMode.one repeats the same track when playback ends', () async {
+    await player.playQueue([_t(1), _t(2)], 0);
+    player.repeat = LoopMode.one;
+
+    engine.played = false;
+    engine.seekedTo = null;
+
+    // Simulate playback ended
+    engine.emitState(const EngineState(status: EngineStatus.ready, playing: true));
+    await pumpEventQueue();
+    engine.emitState(const EngineState(status: EngineStatus.ended, playing: false));
+    await pumpEventQueue();
+
+    expect(engine.seekedTo, Duration.zero);
+    expect(engine.played, isTrue);
+    expect(player.index, 0);
+  });
+
+  test('Autoplay extends queue with related tracks when queue ends', () async {
+    settings.autoplay = true;
+
+    final client = MockClient((req) async {
+      if (req.url.path.contains('/related')) {
+        return http.Response(
+          '{"collection":[{"id":701,"title":"Auto Related","duration":220000,"user":{"id":1,"username":"u"}}]}',
+          200,
+        );
+      }
+      return http.Response('{"url":"https://cdn/x.mp3"}', 200);
+    });
+
+    final autoStore = Store.memory()
+      ..set('sc.cid', 'id')
+      ..set('sc.cidAt', DateTime.now().millisecondsSinceEpoch);
+    final autoSettings = Settings(autoStore)..autoplay = true;
+
+    final autoPlayer = PlayerController(
+      _FakeEngine(),
+      SoundCloud(autoStore, autoSettings, client: client),
+      autoSettings,
+      Library(autoStore),
+      autoStore,
+    );
+
+    await autoPlayer.playQueue([_t(100)]);
+    expect(autoPlayer.queue.length, 1);
+
+    await autoPlayer.next();
+    expect(autoPlayer.queue.length, 2);
+    expect(autoPlayer.current?.id, 701);
+
+    await pumpEventQueue();
+    autoPlayer.dispose();
   });
 }
