@@ -6,11 +6,11 @@ import 'package:pounce/dj/harmonic_mixer.dart';
 import 'package:pounce/sc/models.dart';
 
 Track mockTrack(int id, {String title = 'Test Track'}) => Track.fromJson({
-      'id': id,
-      'title': title,
-      'duration': 180000,
-      'user': {'id': 1, 'username': 'Artist'},
-    });
+  'id': id,
+  'title': title,
+  'duration': 180000,
+  'user': {'id': 1, 'username': 'Artist'},
+});
 
 void main() {
   group('CamelotKey tests', () {
@@ -144,6 +144,106 @@ void main() {
 
       expect(buildMatch.score, greaterThan(80.0));
       expect(windMatch.score, greaterThan(80.0));
+    });
+
+    test('scoreCandidate covers relative major/minor and adjacent wheel keys', () {
+      final tr = mockTrack(4);
+
+      final relMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8B,
+        mode: EnergyMode.hold,
+      );
+      expect(relMatch.isHarmonic, isTrue);
+      expect(relMatch.matchDescription, contains('Relative key'));
+      expect(relMatch.transitionStyle, TransitionStyle.smartBassCross);
+
+      final adjMatch = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key9A,
+        mode: EnergyMode.hold,
+      );
+      expect(adjMatch.isHarmonic, isTrue);
+      expect(adjMatch.matchDescription, contains('Harmonic'));
+      expect(adjMatch.transitionStyle, TransitionStyle.smartBassCross);
+    });
+
+    test('scoreCandidate covers harmonic distances 2 and 3 and distant keys', () {
+      final tr = mockTrack(5);
+
+      final dist2 = HarmonicMixer.scoreCandidate(
+        currentBpm: 120.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 125.0, // deltaPct > 0.01 -> energyDropCut
+        candidateKey: CamelotKey.key10A,
+        mode: EnergyMode.hold,
+      );
+      expect(dist2.harmonicDistance, 2);
+      expect(dist2.isHarmonic, isFalse);
+      expect(dist2.matchDescription, contains('Key change'));
+      expect(dist2.transitionStyle, TransitionStyle.energyDropCut);
+
+      final dist3 = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: CamelotKey.key8A,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key11A,
+        mode: EnergyMode.hold,
+      );
+      expect(dist3.harmonicDistance, 3);
+      expect(dist3.isHarmonic, isFalse);
+      expect(dist3.transitionStyle, TransitionStyle.powerSwap);
+    });
+
+    test('scoreCandidate covers candidateEnergy and currentEnergy adjustments', () {
+      final tr = mockTrack(6);
+
+      final matchHold = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: null,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        candidateEnergy: 3,
+        currentEnergy: 3,
+        mode: EnergyMode.hold,
+      );
+      expect(matchHold.matchDescription, contains('Key 8A'));
+      // In hold mode with d=0: (4 - 0).clamp(-8, 4) = +4. With bpmScore=40, harmonic=20, energy=20+4 -> 84.
+      expect(matchHold.score, 84.0);
+
+      final matchBuild = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: null,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: CamelotKey.key8A,
+        candidateEnergy: 5,
+        currentEnergy: 2,
+        mode: EnergyMode.buildUp,
+      );
+      // In buildUp with deltaPct=0: energyScore base is 15.0, energy diff d=3 gives +8.0. Total = 40+20+23 = 83.
+      expect(matchBuild.score, 83.0);
+
+      final matchWind = HarmonicMixer.scoreCandidate(
+        currentBpm: 124.0,
+        currentKey: null,
+        candidateTrack: tr,
+        candidateBpm: 124.0,
+        candidateKey: null,
+        candidateEnergy: 1,
+        currentEnergy: 4,
+        mode: EnergyMode.windDown,
+      );
+      expect(matchWind.score, greaterThan(0));
     });
   });
 
